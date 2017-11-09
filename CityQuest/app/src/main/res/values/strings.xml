@@ -92,4 +92,6 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="quest_step_goal_label">Goal:</string>
+    <string name="check_button_label">Check me</string>
+    <string name="keyword_field_hint">Enter keyword</string>
 </resources>

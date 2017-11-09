@@ -1,5 +1,7 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
+import android.content.Context;
+
 public class FinalQuestStep extends QuestStep {
 
     public FinalQuestStep(String title, String description) {
@@ -7,7 +9,7 @@ public class FinalQuestStep extends QuestStep {
     }
 
     @Override
-    public boolean check(Object input) {
+    public boolean check(Context context) {
         return true;
     }
 }

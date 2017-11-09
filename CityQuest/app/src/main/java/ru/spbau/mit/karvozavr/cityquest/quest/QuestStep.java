@@ -1,11 +1,13 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
+import android.content.Context;
+
 import java.io.Serializable;
 
 /**
  * Represents a single quest step
  */
-public abstract class QuestStep implements Serializable{
+public abstract class QuestStep implements Serializable {
     public final String title;
     public final String description;
     public final String goal;
@@ -22,5 +24,5 @@ public abstract class QuestStep implements Serializable{
         this.actionLabel = actionLabel;
     }
 
-    public abstract boolean check(Object input);
+    public abstract boolean check(Context context);
 }

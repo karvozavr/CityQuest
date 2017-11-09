@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class QuestProvider {
+public class QuestController {
 
-    private static String savedQuestName = "savedQuest.cqq";
-    private static String hasSavedQuest = "hasSavedQuest";
+    private static final String savedQuestName = "savedQuest.cqq";
+    private static final String hasSavedQuest = "hasSavedQuest";
     public static int progress = 0;
 
     public static QuestStep getCurrentQuestStep(Activity context) {

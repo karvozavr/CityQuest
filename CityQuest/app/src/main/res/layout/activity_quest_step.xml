@@ -36,7 +36,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_quest_step" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_quest_step" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -52,19 +54,6 @@
 
 
     </android.support.design.widget.FloatingActionButton>
-
-    <Button
-        android:id="@+id/action_button"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="100dp"
-        android:layout_height="24dp"
-        android:layout_margin="200dp"
-        android:background="@color/colorPrimary"
-        android:text="Button"
-        android:textColor="@android:color/white"
-        android:visibility="gone"
-        app:layout_anchor="@+id/fab"
-        app:layout_anchorGravity="left|center" />
 
     <TextView
         android:id="@+id/textView"
