@@ -1,24 +1,26 @@
 package ru.spbau.mit.karvozavr.cityquest.ui;
 
-import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
+import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
-import ru.spbau.mit.karvozavr.cityquest.quest.QuestStep;
 
 public class QuestStepActivity extends AppCompatActivity {
 
-    private QuestStep currentQuestStep;
-    boolean isActive = false;
-    Button actionButton;
+    private AbstractQuestStep currentQuestStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +43,8 @@ public class QuestStepActivity extends AppCompatActivity {
         TextView goal = findViewById(R.id.step_goal);
         goal.setText(currentQuestStep.goal);
 
+        // Set check button listener
         Button checkButton = findViewById(R.id.check_button);
-        checkButton.setOnClickListener(view -> {
-            if (currentQuestStep.check(this)) {
-                Toast.makeText(this, "Yes!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Wrong this time", Toast.LENGTH_LONG).show();
-            }
-        });
+        checkButton.setOnClickListener(view -> currentQuestStep.check(this));
     }
 }

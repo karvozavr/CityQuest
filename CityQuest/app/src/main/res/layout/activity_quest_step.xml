@@ -11,7 +11,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:background="@drawable/ic_launcher_background"
+        android:background="@mipmap/saint_petersburg"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -54,15 +54,6 @@
 
 
     </android.support.design.widget.FloatingActionButton>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="137dp"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_anchor="@+id/fab"
-        app:layout_anchorGravity="left|center"
-        tools:layout_editor_absoluteX="247dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

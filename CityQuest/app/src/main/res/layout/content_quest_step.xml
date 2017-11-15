@@ -40,7 +40,7 @@
 
         <Button
             android:id="@+id/check_button"
-            style="@android:style/Widget.DeviceDefault.Button.Borderless"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/check_button_label" />

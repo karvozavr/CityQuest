@@ -17,13 +17,17 @@ public class QuestController {
     private static final String hasSavedQuest = "hasSavedQuest";
     public static int progress = 0;
 
-    public static QuestStep getCurrentQuestStep(Activity context) {
+    public static AbstractQuestStep getCurrentQuestStep(Activity context) {
         Quest quest = getCurrentQuest(context);
         return quest.getStep(getCurrentQuestProgress(quest));
     }
 
     private static int getCurrentQuestProgress(Quest quest) {
         return progress;
+    }
+
+    public static void proceedToNextStep() {
+        ++progress;
     }
 
     public static Quest getCurrentQuest(Activity context) {
@@ -39,7 +43,7 @@ public class QuestController {
             }
         } else {
             // THIS IS TEMPORAL TODO
-            QuestStep step1 = new KeywordQuestStep(
+            AbstractQuestStep step1 = new KeywordQuestStep(
                     "Step1",
                     "This is step1",
                     "enter lol or kek",
@@ -47,7 +51,7 @@ public class QuestController {
 
             );
 
-            QuestStep step2 = new FinalQuestStep("Step2", "This is step2");
+            AbstractQuestStep step2 = new FinalQuestStep("Step2", "This is step2");
 
             QuestInfo questInfo = new QuestInfo(
                     1,
@@ -61,7 +65,7 @@ public class QuestController {
                     null
             );
 
-            Quest quest = new Quest(questInfo, new QuestStep[]{step1, step2});
+            Quest quest = new Quest(questInfo, new AbstractQuestStep[]{step1, step2});
             try (FileOutputStream fos = context.openFileOutput(savedQuestName, Context.MODE_PRIVATE);
                  ObjectOutputStream os = new ObjectOutputStream(fos)) {
                 os.writeObject(quest);

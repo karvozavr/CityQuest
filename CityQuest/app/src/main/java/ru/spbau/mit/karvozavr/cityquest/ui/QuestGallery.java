@@ -1,0 +1,15 @@
+package ru.spbau.mit.karvozavr.cityquest.ui;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+import ru.spbau.mit.karvozavr.cityquest.R;
+
+public class QuestGallery extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_quest_gallery);
+    }
+}
