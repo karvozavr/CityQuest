@@ -55,12 +55,12 @@ public class QuestController {
 
             QuestInfo questInfo = new QuestInfo(
                     1,
-                    null,
+                    "Cool quest",
                     null,
                     null,
                     null,
                     33.5f,
-                    null,
+                    "This is a cool quest.",
                     null,
                     null
             );

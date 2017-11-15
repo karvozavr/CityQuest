@@ -51,6 +51,7 @@ public class KeywordQuestStep extends AbstractQuestStep {
         Button button = dialogView.findViewById(R.id.check_dialog_button);
 
         AlertDialog checkDialog = checkDialogBuilder.create();
+
         button.setOnClickListener((view) -> {
             if (keywords.contains(keywordField.getText().toString().toLowerCase())) {
                 Toast.makeText(context, "Yes!", Toast.LENGTH_LONG).show();

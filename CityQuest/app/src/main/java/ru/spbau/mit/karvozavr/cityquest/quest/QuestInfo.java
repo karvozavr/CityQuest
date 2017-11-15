@@ -1,6 +1,6 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
-import android.media.Image;
+import android.graphics.drawable.Drawable;
 import android.media.Rating;
 
 import java.io.Serializable;
@@ -11,7 +11,7 @@ public class QuestInfo implements Serializable {
     public final int id;
     public final String name;
     public final User author;
-    public final Image image;
+    public final Drawable image;
     public final Duration averageTime;
     public final float averageDistance;
     public final String description;
@@ -20,16 +20,16 @@ public class QuestInfo implements Serializable {
 
     public QuestInfo(
             int id,
-            String name,
+            String title,
             User author,
-            Image image,
+            Drawable image,
             Duration averageTime,
             float averageDistance,
             String description,
             String shortDescription,
             Rating rating) {
         this.id = id;
-        this.name = name;
+        this.name = title;
         this.author = author;
         this.image = image;
         this.averageTime = averageTime;
