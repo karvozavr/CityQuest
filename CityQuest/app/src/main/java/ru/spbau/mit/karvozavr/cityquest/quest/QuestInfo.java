@@ -5,14 +5,13 @@ import android.media.Rating;
 
 import java.io.Serializable;
 
-import javax.xml.datatype.Duration;
+import java.time.Duration;
 
 public class QuestInfo implements Serializable {
     public final int id;
     public final String name;
     public final User author;
     public final Drawable image;
-    public final Duration averageTime;
     public final float averageDistance;
     public final String description;
     public final String shortDescription;
@@ -23,7 +22,6 @@ public class QuestInfo implements Serializable {
             String title,
             User author,
             Drawable image,
-            Duration averageTime,
             float averageDistance,
             String description,
             String shortDescription,
@@ -32,7 +30,6 @@ public class QuestInfo implements Serializable {
         this.name = title;
         this.author = author;
         this.image = image;
-        this.averageTime = averageTime;
         this.averageDistance = averageDistance;
         this.description = description;
         this.shortDescription = shortDescription;

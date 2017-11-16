@@ -1,11 +1,11 @@
 package ru.spbau.mit.karvozavr.cityquest.ui.adapters;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
@@ -35,9 +35,11 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         Drawable drawable;
         QuestInfo questInfo = quests[position];
         TextView name = holder.questInfoView.findViewById(R.id.quest_title);
-        TextView description = holder.questInfoView.findViewById(R.id.quest_description);
+        TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
+        TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
         name.setText(questInfo.name);
-        description.setText(Float.toString(questInfo.averageDistance) + " km");
+        avgDistance.setText(Float.toString(questInfo.averageDistance) + " km");
+        description.setText(questInfo.shortDescription);
     }
 
     @Override

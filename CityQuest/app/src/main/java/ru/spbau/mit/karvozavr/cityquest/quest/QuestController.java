@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.Duration;
+
 
 public class QuestController {
 
@@ -58,10 +60,9 @@ public class QuestController {
                     "Cool quest",
                     null,
                     null,
-                    null,
                     33.5f,
-                    "This is a cool quest.",
-                    null,
+                    "Lorem ipsum dolor sit amet. Through the gates of hell, as we make our way to heaven. Through the Nazi lines. Primo victoria.",
+                    "Lorem ipsum dolor sit amet. Through the gates of hell, as we make our way to heaven. Through the Nazi lines. Primo victoria.",
                     null
             );
 
