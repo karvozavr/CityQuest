@@ -15,7 +15,7 @@ public class QuestInfo implements Serializable {
     public final float averageDistance;
     public final String description;
     public final String shortDescription;
-    public final Rating rating;
+    public final float rating;
 
     public QuestInfo(
             int id,
@@ -25,7 +25,7 @@ public class QuestInfo implements Serializable {
             float averageDistance,
             String description,
             String shortDescription,
-            Rating rating) {
+            float rating) {
         this.id = id;
         this.name = title;
         this.author = author;

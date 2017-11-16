@@ -24,7 +24,7 @@ public class KeywordQuestStep extends AbstractQuestStep {
     private final List<String> keywords;
 
     public KeywordQuestStep(String title, String description, String goal, String[] keywords) {
-        super(title, description, goal, "quest_step_action_label_keyword");
+        super(title, description, goal, "keyword_quest_step_label");
         this.keywords = new ArrayList<>();
 
         // keywords should be compared case insensitive

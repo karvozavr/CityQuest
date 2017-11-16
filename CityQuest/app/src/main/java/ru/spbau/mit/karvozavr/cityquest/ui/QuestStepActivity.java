@@ -45,6 +45,7 @@ public class QuestStepActivity extends AppCompatActivity {
 
         // Set check button listener
         Button checkButton = findViewById(R.id.check_button);
+        checkButton.setText(getResources().getIdentifier(currentQuestStep.actionLabel, "string", getPackageName()));
         checkButton.setOnClickListener(view -> currentQuestStep.check(this));
     }
 }
