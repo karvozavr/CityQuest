@@ -154,7 +154,7 @@ class JsonReaderQuestParser {
             case "final" :
                 return new FinalQuestStep(title, description);
             case "geo" :
-                return new GeoQuestStep(title, description, goal, null, null);
+                return new GeoQuestStep(title, description, goal, null);
             case "key" :
                 return new KeywordQuestStep(title, description, goal, (String[]) keywords.toArray());
 
