@@ -19,5 +19,5 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/check_button_label" />
+        android:text="@string/keyword_quest_step_label" />
 </LinearLayout>

@@ -22,15 +22,6 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/goal_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/quest_step_goal_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/step_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +34,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/check_button_label" />
+            android:text="@string/keyword_quest_step_label" />
 
     </LinearLayout>
 

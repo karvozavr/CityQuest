@@ -64,7 +64,7 @@
                 android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
 
-            <RatingBar
+            <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/quest_rating_bar"
                 style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
                 android:layout_width="wrap_content"
