@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class QuestInfo implements Serializable {
     public final int id;
-    public final String name;
+    public String name;
     public final User author;
     public final Drawable image;
     public final float averageDistance;

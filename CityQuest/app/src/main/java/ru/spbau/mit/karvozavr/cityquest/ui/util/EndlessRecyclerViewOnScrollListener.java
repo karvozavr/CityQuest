@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
+import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
 
 public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingListener {
@@ -25,12 +26,11 @@ public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingLis
 
     /**
      * Get previous batch.
-     * <p>
      * We know, that current batch is not first.
      */
     private void onLoadPrev() {
-        int position = layoutManager.findFirstVisibleItemPosition() + batchSize;
         adapter.loadPrevBatch();
+        int position = layoutManager.findFirstVisibleItemPosition() + batchSize;
         layoutManager.scrollToPosition(position);
         loading = false;
     }
@@ -39,8 +39,8 @@ public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingLis
      * Get next batch.
      */
     private void onLoadNext() {
-        int position = layoutManager.findFirstVisibleItemPosition() - batchSize;
         adapter.loadNextBatch();
+        int position = layoutManager.findFirstVisibleItemPosition() - batchSize;
         layoutManager.scrollToPosition(position);
         loading = false;
     }
@@ -52,7 +52,7 @@ public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingLis
         synchronized (this) {
             int currentPosition = layoutManager.findFirstVisibleItemPosition();
             if (velocityY > 0) {
-                if (!loading && (batchSize * 2 - currentPosition) <= visibleThresholdToLoadNew) {
+                if (!loading && !ServerMock.isEnd && (batchSize * 2 - currentPosition) <= visibleThresholdToLoadNew) {
                     loading = true;
                     onLoadNext();
                 }

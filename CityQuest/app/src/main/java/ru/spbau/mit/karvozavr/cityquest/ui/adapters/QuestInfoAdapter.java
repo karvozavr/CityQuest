@@ -40,35 +40,40 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
     public void onBindViewHolder(QuestInfoViewHolder holder, int position) {
 
         QuestInfo questInfo = quests.get(position);
-        TextView name = holder.questInfoView.findViewById(R.id.quest_title);
-        TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
-        TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
-        AppCompatRatingBar ratingBar = holder.questInfoView.findViewById(R.id.quest_rating_bar);
 
-        ratingBar.setRating(questInfo.rating);
-        name.setText(questInfo.name + Integer.valueOf(firstLoaded + position + 1).toString());
-        avgDistance.setText(Float.toString(questInfo.averageDistance) + " km");
-        description.setText(questInfo.shortDescription);
+        if (questInfo != null) {
+            TextView name = holder.questInfoView.findViewById(R.id.quest_title);
+            TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
+            TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
+            AppCompatRatingBar ratingBar = holder.questInfoView.findViewById(R.id.quest_rating_bar);
+
+            ratingBar.setRating(questInfo.rating);
+            name.setText(questInfo.name);
+            avgDistance.setText(Float.toString(questInfo.averageDistance) + " km");
+            description.setText(questInfo.shortDescription);
 
 
-        Button questStartButton = holder.questInfoView.findViewById(R.id.quest_start_button);
-        questStartButton.setOnClickListener((view) -> {
-            Intent intent = new Intent(holder.questInfoView.getContext(), QuestStepActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("quest_id", questInfo.id);
-            holder.questInfoView.getContext().startActivity(intent);
-        });
+            Button questStartButton = holder.questInfoView.findViewById(R.id.quest_start_button);
+            questStartButton.setOnClickListener((view) -> {
+                Intent intent = new Intent(holder.questInfoView.getContext(), QuestStepActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("quest_id", questInfo.id);
+                holder.questInfoView.getContext().startActivity(intent);
+            });
 
-        // TODO picture
-        // TODO info button
+            // TODO picture
+            // TODO info button
+        }
     }
 
     public void loadPrevBatch() {
         firstLoaded -= batchSize;
-        quests = new ArrayList<>(quests.subList(0, batchSize));
 
         // TODO server
-        quests.addAll(ServerMock.getQuestInfosBatch(firstLoaded - batchSize, firstLoaded));
+        ArrayList<QuestInfo> newQuests = ServerMock.getQuestInfosBatch(firstLoaded, firstLoaded + batchSize);
+        newQuests.addAll(quests.subList(0, batchSize));
+        quests = newQuests;
+
         notifyDataSetChanged();
     }
 
@@ -77,7 +82,7 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         quests = new ArrayList<>(quests.subList(batchSize, batchSize * 2));
 
         // TODO server
-        quests.addAll(ServerMock.getQuestInfosBatch(firstLoaded + batchSize * 2, firstLoaded + batchSize * 3));
+        quests.addAll(ServerMock.getQuestInfosBatch(firstLoaded + batchSize, firstLoaded + batchSize * 2));
         notifyDataSetChanged();
     }
 
