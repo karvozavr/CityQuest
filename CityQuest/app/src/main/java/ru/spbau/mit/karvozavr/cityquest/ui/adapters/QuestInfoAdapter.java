@@ -1,7 +1,6 @@
 package ru.spbau.mit.karvozavr.cityquest.ui.adapters;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
@@ -9,28 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
-import ru.spbau.mit.karvozavr.cityquest.ui.QuestGalleryActivity;
+import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
 import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
 
 public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.QuestInfoViewHolder> {
 
-    private QuestInfo[] quests;
+    private ArrayList<QuestInfo> quests;
+    public int firstLoaded = 0;
+    public final int batchSize = 15;
 
-    public QuestInfoAdapter(QuestInfo[] quests) {
+    public QuestInfoAdapter(ArrayList<QuestInfo> quests) {
         this.quests = quests;
     }
 
     @Override
     public QuestInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View questInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_quest, null);
-        QuestInfoViewHolder viewHolder = new QuestInfoViewHolder(questInfoView);
-
-        return viewHolder;
+        return new QuestInfoViewHolder(questInfoView);
     }
 
     /**
@@ -39,14 +39,14 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
     @Override
     public void onBindViewHolder(QuestInfoViewHolder holder, int position) {
 
-        QuestInfo questInfo = quests[position];
+        QuestInfo questInfo = quests.get(position);
         TextView name = holder.questInfoView.findViewById(R.id.quest_title);
         TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
         TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
-        AppCompatRatingBar ratingBar =  holder.questInfoView.findViewById(R.id.quest_rating_bar);
+        AppCompatRatingBar ratingBar = holder.questInfoView.findViewById(R.id.quest_rating_bar);
 
         ratingBar.setRating(questInfo.rating);
-        name.setText(questInfo.name);
+        name.setText(questInfo.name + Integer.valueOf(firstLoaded + position + 1).toString());
         avgDistance.setText(Float.toString(questInfo.averageDistance) + " km");
         description.setText(questInfo.shortDescription);
 
@@ -63,9 +63,27 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         // TODO info button
     }
 
+    public void loadPrevBatch() {
+        firstLoaded -= batchSize;
+        quests = new ArrayList<>(quests.subList(0, batchSize));
+
+        // TODO server
+        quests.addAll(ServerMock.getQuestInfosBatch(firstLoaded - batchSize, firstLoaded));
+        notifyDataSetChanged();
+    }
+
+    public void loadNextBatch() {
+        firstLoaded += batchSize;
+        quests = new ArrayList<>(quests.subList(batchSize, batchSize * 2));
+
+        // TODO server
+        quests.addAll(ServerMock.getQuestInfosBatch(firstLoaded + batchSize * 2, firstLoaded + batchSize * 3));
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return quests.length;
+        return quests.size();
     }
 
     public static class QuestInfoViewHolder extends RecyclerView.ViewHolder {

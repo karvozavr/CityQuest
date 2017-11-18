@@ -92,6 +92,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="quest_step_goal_label">Goal:</string>
+    <string name="geo_quest_step_label">Check position</string>
     <string name="keyword_quest_step_label">Check me</string>
     <string name="final_quest_step_label">Finish quest</string>
     <string name="keyword_field_hint">Enter keyword</string>

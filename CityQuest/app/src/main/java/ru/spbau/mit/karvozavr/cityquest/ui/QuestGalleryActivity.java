@@ -2,46 +2,60 @@ package ru.spbau.mit.karvozavr.cityquest.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
-import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
-import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
+import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
 
 public class QuestGalleryActivity extends AppCompatActivity {
-
-    private Button questStartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_gallery);
 
+        /*FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());*/
+
+        loadGallery();
+    }
+
+    private void loadGallery() {
         RecyclerView galleryRecyclerView = findViewById(R.id.gallery_recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        galleryRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        galleryRecyclerView.setLayoutManager(layoutManager);
 
-        // use a linear layout manager
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        galleryRecyclerView.setLayoutManager(mLayoutManager);
+        // TODO
+        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter(ServerMock.getQuestInfosBatch(0, 30));
 
-        // TODO TEMP
-        QuestInfo info = QuestController.getSampleQuest().info;
+        galleryRecyclerView.setAdapter(questInfoAdapter);
+        galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
 
-        // specify an adapter (see also next example)
-        RecyclerView.Adapter mAdapter = new QuestInfoAdapter(new QuestInfo[]{info, info, info, info, info, info, info, info, info, info, info, info, info, info, info});
-        galleryRecyclerView.setAdapter(mAdapter);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            new Handler().post(() -> {
+                // TODO
+                Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                ServerMock.getQuestInfosBatch(0, 30);
+                swipeRefreshLayout.setRefreshing(false);
+            });
+        });
     }
 
     @Override
@@ -53,9 +67,11 @@ public class QuestGalleryActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) QuestGalleryActivity.this.getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = null;
+
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
+
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(QuestGalleryActivity.this.getComponentName()));
         }

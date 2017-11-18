@@ -94,6 +94,7 @@
     <string name="action_settings">Настройки:</string>
     <string name="quest_step_goal_label">Цель:</string>
     <string name="keyword_quest_step_label">Проверить</string>
+    <string name="geo_quest_step_label">Проверить</string>
     <string name="final_quest_step_label">Завершить квест</string>
     <string name="keyword_field_hint">Введите кодовое слово:</string>
     <string name="quest_gallery_start_button_label">Начать квест</string>
