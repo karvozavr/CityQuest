@@ -2,7 +2,10 @@ package ru.spbau.mit.karvozavr.cityquest.quest;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Rating;
 
 import java.io.FileInputStream;
@@ -32,12 +35,28 @@ public class QuestController {
         return progress;
     }
 
-    public static void proceedToNextStep() {
+    public static void proceedToNextStep(Activity context) {
         ++progress;
+
+        // refresh activity
+        Intent intent = context.getIntent();
+        context.finish();
+        context.startActivity(intent);
     }
 
     public static Quest getSampleQuest() {
         // THIS IS TEMPORAL TODO
+
+        Location location = new Location("Hotel");
+        location.setLatitude(60.00953);
+        location.setLongitude(30.35279);
+        AbstractQuestStep step0 = new GeoQuestStep(
+                "Общажка - общажечка",
+                "Доберитесь до общажки",
+                "Я сказал доберитесь!",
+                location
+        );
+
         AbstractQuestStep step1 = new KeywordQuestStep(
                 "Загадочная улица",
                 "Перед вами находится улица с очень запоминающимся названием.",
@@ -59,7 +78,7 @@ public class QuestController {
                 3.5f
         );
 
-        return new Quest(questInfo, new AbstractQuestStep[]{step1, step2});
+        return new Quest(questInfo, new AbstractQuestStep[]{step0, step1, step2});
     }
 
     public static void startNewQuest(int questID, Activity context) {
@@ -70,8 +89,6 @@ public class QuestController {
         try (FileOutputStream fos = context.openFileOutput(savedQuestName, Context.MODE_PRIVATE);
              ObjectOutputStream os = new ObjectOutputStream(fos)) {
             os.writeObject(quest);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,7 +106,7 @@ public class QuestController {
              ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             return (Quest) objectInputStream.readObject();
         } catch (FileNotFoundException e) {
-            // download from server
+            // TODO download from server
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

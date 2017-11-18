@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
@@ -19,11 +20,11 @@ import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
 
 public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.QuestInfoViewHolder> {
 
-    private ArrayList<QuestInfo> quests;
+    private List<QuestInfo> quests;
     public int firstLoaded = 0;
     public final int batchSize = 15;
 
-    public QuestInfoAdapter(ArrayList<QuestInfo> quests) {
+    public QuestInfoAdapter(List<QuestInfo> quests) {
         this.quests = quests;
     }
 
@@ -70,7 +71,7 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         firstLoaded -= batchSize;
 
         // TODO server
-        ArrayList<QuestInfo> newQuests = ServerMock.getQuestInfosBatch(firstLoaded, firstLoaded + batchSize);
+        List<QuestInfo> newQuests = ServerMock.getQuestInfosBatch(firstLoaded, firstLoaded + batchSize);
         newQuests.addAll(quests.subList(0, batchSize));
         quests = newQuests;
 
