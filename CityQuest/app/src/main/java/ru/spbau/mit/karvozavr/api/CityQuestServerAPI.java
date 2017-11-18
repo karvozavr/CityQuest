@@ -1,19 +1,8 @@
 package ru.spbau.mit.karvozavr.api;
 
-import android.util.JsonReader;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
@@ -21,43 +10,77 @@ import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 public class CityQuestServerAPI {
     public static boolean isEnd = false;
+    private static final String SERVER_DOMAIN_NAME = "https://ru.wikipedia.org";
 
-    public Quest getQuestByID(int id) {
-        String url = "https://ru.wikipedia.org";
+    public static Quest getQuestByID(int id) throws LoadingErrorException {
+        return QuestController.getSampleQuest();
+
+        /*String url = SERVER_DOMAIN_NAME + "";  //
         try (InputStream is = new URL(url).openStream()) {
             JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
 
-            return readQuestFromJson(jsonReader);
+            return JsonReaderQuestParser.readQuestFromJson(jsonReader);
         } catch (Exception e) {
-
-        }
-        return null;
+            throw new LoadingErrorException();
+        }*/
     }
 
-    public QuestInfo getQuestInfo(int questId) {
-        return null;
+    public static QuestInfo getQuestInfoById(int questId) throws LoadingErrorException {
+        return QuestController.getSampleQuest().info;
+
+        /*String url = SERVER_DOMAIN_NAME + "";
+        try (InputStream is = new URL(url).openStream()) {
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
+
+            return JsonReaderQuestParser.readQuestInfoFromJson(jsonReader);
+        } catch (Exception e) {
+            throw new LoadingErrorException();
+        }*/
     }
 
-    public QuestInfo[] getQuestInfosFromToByName(int startingFrom, int amount, String name) {
-        return null;
+    public static List<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount)
+            throws LoadingErrorException {
+        return getQuestInfosFromToByName(startingFrom, amount, "");
     }
 
-    public QuestInfo[] getQuestInfosFromTo(int startingFrom, int amount) {
-        return null;
+    public static List<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name)
+            throws LoadingErrorException {
+
+        ArrayList<QuestInfo> list = new ArrayList<>();
+        int border = startingFrom + amount >= numberOfQuests() ? amount : numberOfQuests();
+        if (border == 42)
+
+        for (int i = 0; i < border; i++)
+            list.add(QuestController.getSampleQuest().info);
+
+        return list;
+
+        /*String url = SERVER_DOMAIN_NAME + "";
+        try (InputStream is = new URL(url).openStream()) {
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
+
+            isEnd = numberOfQuests() <= startingFrom + amount;
+
+            return JsonReaderQuestParser.readQuestInfosFromJson(jsonReader);
+        } catch (Exception e) {
+            throw new LoadingErrorException();
+        }*/
     }
 
-    private Quest readQuestFromJson (JsonReader reader) throws IOException {
-        QuestInfo info = null;
-        //ArrayList<AbstractQuestStep> steps = null;
-        AbstractQuestStep[] steps = new AbstractQuestStep[0];
+    private static int numberOfQuests() throws LoadingErrorException {
+        return 42;
 
-        /*reader.beginObject();
-        while (reader.hasNext()) {
-            info = readQuestInfoFromJson(reader);
-            steps = readQuestStepsFromJson(reader);
-        }
-        reader.endObject();*/
+        /*String url = SERVER_DOMAIN_NAME + "";
+        try (InputStream is = new URL(url).openStream()) {
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
 
-        return new Quest(info, steps);
+            jsonReader.beginObject();
+            int result = jsonReader.nextInt();
+            jsonReader.endObject();
+
+            return result;
+        } catch (Exception e) {
+            throw new LoadingErrorException();
+        }*/
     }
 }
