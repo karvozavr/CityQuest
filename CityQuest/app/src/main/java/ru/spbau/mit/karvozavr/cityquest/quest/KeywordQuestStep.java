@@ -50,12 +50,7 @@ public class KeywordQuestStep extends AbstractQuestStep {
         button.setOnClickListener((view) -> {
             if (keywords.contains(keywordField.getText().toString().toLowerCase())) {
                 Toast.makeText(context, "Yes!", Toast.LENGTH_LONG).show();
-                QuestController.proceedToNextStep();
-
-                // refresh activity
-                Intent intent = context.getIntent();
-                context.finish();
-                context.startActivity(intent);
+                QuestController.proceedToNextStep(context);
             } else {
                 Toast.makeText(context, "Wrong this time", Toast.LENGTH_LONG).show();
             }

@@ -48,14 +48,14 @@ public class QuestGalleryActivity extends AppCompatActivity {
         galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            new Handler().post(() -> {
+        swipeRefreshLayout.setOnRefreshListener(() -> new Handler().post(() -> {
+            if (((QuestInfoAdapter) questInfoAdapter).firstLoaded == 0) {
                 // TODO
                 Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                 ServerMock.getQuestInfosBatch(0, 30);
-                swipeRefreshLayout.setRefreshing(false);
-            });
-        });
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }));
     }
 
     @Override
