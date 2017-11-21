@@ -105,5 +105,5 @@ venv.bak/
 
 # database and all that stuff
 db.sqlite3
-migrations/*.py
-!migrations/__init__.py
+**/migrations/*.py
+!**/migrations/__init__.py
