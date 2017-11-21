@@ -103,3 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# database and all that stuff
+db.sqlite3
+migrations/*.py
+!migrations/__init__.py
