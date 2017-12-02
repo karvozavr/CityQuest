@@ -1,7 +1,5 @@
 package ru.spbau.mit.karvozavr.api;
 
-import android.location.Location;
-import android.location.LocationManager;
 import android.util.JsonReader;
 
 import java.io.IOException;
@@ -98,7 +96,7 @@ class JsonReaderQuestParser {
         reader.endObject();
 
         return new QuestInfo(id, name, null, null, averageDistance,
-                description, rating);
+                description, rating, 0);
     }
 
     private static ArrayList<AbstractQuestStep> readQuestStepsFromJson(JsonReader reader)
