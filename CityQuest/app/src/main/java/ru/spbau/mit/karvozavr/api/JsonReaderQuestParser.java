@@ -27,7 +27,7 @@ class JsonReaderQuestParser {
 
         Type collectionType = new TypeToken<ArrayList<QuestInfo>>(){}.getType();
 
-        return gson.fromJson(reader, collectionType);
+	return gson.fromJson(reader, collectionType);
     }
 
     static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is)

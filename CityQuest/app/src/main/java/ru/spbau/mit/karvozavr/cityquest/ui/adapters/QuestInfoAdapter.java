@@ -13,7 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.spbau.mit.karvozavr.cityquest.QuestInfoActivity;
 import ru.spbau.mit.karvozavr.cityquest.R;
+import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
 import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
@@ -57,21 +59,25 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
             Button questStartButton = holder.questInfoView.findViewById(R.id.quest_start_button);
             questStartButton.setOnClickListener((view) -> {
                 Intent intent = new Intent(holder.questInfoView.getContext(), QuestStepActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("quest_id", questInfo.id);
+                intent.putExtra("quest_id", questInfo.id);
+                holder.questInfoView.getContext().startActivity(intent);
+            });
+
+            Button questInfoButton = holder.questInfoView.findViewById(R.id.quest_info_button);
+            questInfoButton.setOnClickListener((view) -> {
+                Intent intent = new Intent(holder.questInfoView.getContext(), QuestInfoActivity.class);
+                intent.putExtra("quest_info", questInfo);
                 holder.questInfoView.getContext().startActivity(intent);
             });
 
             // TODO picture
-            // TODO info button
         }
     }
 
     public void loadPrevBatch() {
         firstLoaded -= batchSize;
 
-        // TODO server
-        List<QuestInfo> newQuests = ServerMock.getQuestInfosBatch(firstLoaded, firstLoaded + batchSize);
+        List<QuestInfo> newQuests = QuestController.getQuestInfoList(firstLoaded, firstLoaded + batchSize);
         newQuests.addAll(quests.subList(0, batchSize));
         quests = newQuests;
 
@@ -82,8 +88,7 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         firstLoaded += batchSize;
         quests = new ArrayList<>(quests.subList(batchSize, batchSize * 2));
 
-        // TODO server
-        quests.addAll(ServerMock.getQuestInfosBatch(firstLoaded + batchSize, firstLoaded + batchSize * 2));
+        quests.addAll(QuestController.getQuestInfoList(firstLoaded + batchSize, firstLoaded + batchSize * 2));
         notifyDataSetChanged();
     }
 
