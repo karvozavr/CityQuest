@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 
 /**
  * Class to get needed services and permissions.
- * <p>
+ *
  * All permissions are must-have: if they are not granted, then app will not work properly.
  */
 public class ServiceProvider {

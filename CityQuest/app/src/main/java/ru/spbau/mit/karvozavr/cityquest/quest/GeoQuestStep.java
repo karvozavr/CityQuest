@@ -34,7 +34,6 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
         new Handler().postDelayed(() -> {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             if (ServiceProvider.getLocationAccess(context)) {
-                @SuppressLint("MissingPermission")
                 Location location = getLastKnownLocation(locationManager);
 
                 if (location == null) {
@@ -60,6 +59,9 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
         }, 1000);
     }
 
+    /**
+     * Returns last known location with highest possible accuracy.
+     */
     @SuppressLint("MissingPermission")
     private Location getLastKnownLocation(LocationManager locationManager) {
         List<String> providers = locationManager.getProviders(true);
