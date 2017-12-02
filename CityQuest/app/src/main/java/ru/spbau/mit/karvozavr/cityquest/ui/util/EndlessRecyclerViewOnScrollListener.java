@@ -50,6 +50,7 @@ public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingLis
 
         // Only one load at one time
         synchronized (this) {
+            // TODO server
             int currentPosition = layoutManager.findFirstVisibleItemPosition();
             if (velocityY > 0) {
                 if (!loading && !ServerMock.isEnd && (batchSize * 2 - currentPosition) <= visibleThresholdToLoadNew) {

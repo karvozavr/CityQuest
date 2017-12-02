@@ -4,8 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,13 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.InterfaceUtils;
 
 public class QuestGalleryActivity extends AppCompatActivity {
 
@@ -70,6 +68,25 @@ public class QuestGalleryActivity extends AppCompatActivity {
 
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(QuestGalleryActivity.this.getComponentName()));
+            searchView.setOnCloseListener(() -> {
+                // TODO cancel search
+                Toast.makeText(QuestGalleryActivity.this, "Close", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    // TODO search
+                    Toast.makeText(QuestGalleryActivity.this, "Query", Toast.LENGTH_SHORT).show();
+                    InterfaceUtils.hideSoftKeyboard(QuestGalleryActivity.this);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
         }
 
         return super.onCreateOptionsMenu(menu);
