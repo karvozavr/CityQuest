@@ -98,7 +98,7 @@ class JsonReaderQuestParser {
         reader.endObject();
 
         return new QuestInfo(id, name, null, null, averageDistance,
-                description, shortDescription, rating);
+                description, rating);
     }
 
     private static ArrayList<AbstractQuestStep> readQuestStepsFromJson(JsonReader reader)

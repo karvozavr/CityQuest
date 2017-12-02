@@ -13,13 +13,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.List;
+
 import ru.spbau.mit.karvozavr.cityquest.R;
-import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
+import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
+import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
-import ru.spbau.mit.karvozavr.cityquest.ui.util.InterfaceUtils;
 
 public class QuestGalleryActivity extends AppCompatActivity {
+
+    private RecyclerView galleryRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,26 +34,34 @@ public class QuestGalleryActivity extends AppCompatActivity {
     }
 
     private void loadGallery() {
-        RecyclerView galleryRecyclerView = findViewById(R.id.gallery_recycler_view);
+        galleryRecyclerView = findViewById(R.id.gallery_recycler_view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         galleryRecyclerView.setLayoutManager(layoutManager);
 
         // TODO
-        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter(ServerMock.getQuestInfosBatch(0, 30));
+        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter(getInitQuestInfos());
 
         galleryRecyclerView.setAdapter(questInfoAdapter);
         galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
 
+        initRefreshLayout();
+    }
+
+    private void initRefreshLayout() {
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> new Handler().post(() -> {
-            if (((QuestInfoAdapter) questInfoAdapter).firstLoaded == 0) {
+            if (((QuestInfoAdapter) galleryRecyclerView.getAdapter()).firstLoaded == 0) {
                 // TODO
                 Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                ServerMock.getQuestInfosBatch(0, 30);
+                getInitQuestInfos();
             }
             swipeRefreshLayout.setRefreshing(false);
         }));
+    }
+
+    private List<QuestInfo> getInitQuestInfos() {
+        return QuestController.getQuestInfoList(0, 30);
     }
 
     @Override
@@ -57,9 +69,7 @@ public class QuestGalleryActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.gallery_search, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
         SearchManager searchManager = (SearchManager) QuestGalleryActivity.this.getSystemService(Context.SEARCH_SERVICE);
-
         SearchView searchView = null;
 
         if (searchItem != null) {
@@ -69,17 +79,23 @@ public class QuestGalleryActivity extends AppCompatActivity {
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(QuestGalleryActivity.this.getComponentName()));
             searchView.setOnCloseListener(() -> {
-                // TODO cancel search
                 Toast.makeText(QuestGalleryActivity.this, "Close", Toast.LENGTH_SHORT).show();
+                QuestController.currentQuery = "";
+
+                // refresh gallery
+                loadGallery();
                 return false;
             });
+
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    // TODO search
+                    QuestController.currentQuery = query;
                     Toast.makeText(QuestGalleryActivity.this, "Query", Toast.LENGTH_SHORT).show();
-                    InterfaceUtils.hideSoftKeyboard(QuestGalleryActivity.this);
-                    return true;
+
+                    // refresh gallery
+                    loadGallery();
+                    return false;
                 }
 
                 @Override
