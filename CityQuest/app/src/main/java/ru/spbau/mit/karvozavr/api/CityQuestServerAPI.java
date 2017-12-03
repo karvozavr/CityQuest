@@ -13,7 +13,7 @@ import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 
 public class CityQuestServerAPI {
     private static boolean isEnd = false;
-    private static final String SERVER_DOMAIN_NAME = "http://127.0.0.1:8000/get_data/";
+    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/get_data/";
 
     public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
         String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
