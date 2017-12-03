@@ -9,12 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
-import ru.spbau.mit.karvozavr.cityquest.QuestInfoActivity;
+import ru.spbau.mit.karvozavr.cityquest.ui.QuestInfoActivity;
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
@@ -54,8 +52,8 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
 
             ratingBar.setRating(questInfo.rating);
             name.setText(questInfo.name);
-            avgDistance.setText(Float.toString(questInfo.averageDistance) + " km");
-            usersPassed.setText(Integer.toString(questInfo.usersPassed) + " passed");
+            avgDistance.setText(String.format("%s %s", Float.toString(questInfo.averageDistance), "km"));
+            usersPassed.setText(String.format("%s %s", Integer.toString(questInfo.usersPassed), "passed"));
             description.setText(questInfo.shortDescription);
 
             Button questStartButton = holder.questInfoView.findViewById(R.id.quest_start_button);

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
@@ -94,6 +95,11 @@ public class QuestGalleryActivity extends AppCompatActivity {
                 }
             });
         }
+
+//        Button continueQuestButton = (Button) menu.findItem(R.id.continue_current_quest);
+//        continueQuestButton.setOnClickListener((view) -> {
+//            // TODO
+//        });
 
         return super.onCreateOptionsMenu(menu);
     }

@@ -32,6 +32,10 @@ public class QuestController {
         context = activity;
     }
 
+    /*boolean getCurrentQuestInfo() {
+        TODO
+    }*/
+
     @NonNull
     public static AbstractQuestStep getCurrentQuestStep() {
         if (currentQuest == null) {

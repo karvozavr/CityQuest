@@ -1,16 +1,15 @@
-package ru.spbau.mit.karvozavr.cityquest;
+package ru.spbau.mit.karvozavr.cityquest.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRatingBar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
-import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
 
 public class QuestInfoActivity extends AppCompatActivity {
 
@@ -44,10 +43,9 @@ public class QuestInfoActivity extends AppCompatActivity {
 
             Button questStartButton = findViewById(R.id.quest_start_button);
             questStartButton.setOnClickListener((view) -> {
-                Intent intent = new Intent(QuestInfoActivity.this, QuestStepActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("quest_id", questInfo.id);
-                QuestInfoActivity.this.startActivity(intent);
+                Intent intent = new Intent(this, QuestStepActivity.class);
+                intent.putExtra("quest_info", questInfo);
+                startActivity(intent);
             });
 
             Button questInfoButton = findViewById(R.id.quest_info_button);
