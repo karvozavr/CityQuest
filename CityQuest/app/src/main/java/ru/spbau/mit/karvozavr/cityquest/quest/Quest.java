@@ -16,10 +16,9 @@ public class Quest implements Serializable {
      * @param info quest info
      * @param steps quest steps
      */
-    public Quest(QuestInfo info, AbstractQuestStep[] steps) {
+    public Quest(QuestInfo info, ArrayList<AbstractQuestStep> steps) {
         this.info = info;
-        this.steps = new ArrayList<>();
-        this.steps.addAll(Arrays.asList(steps));
+        this.steps = steps;
     }
 
     public AbstractQuestStep getStep(int index) {

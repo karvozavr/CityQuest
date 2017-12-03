@@ -1,7 +1,7 @@
 package ru.spbau.mit.karvozavr.cityquest.ui.adapters;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.AsyncTask;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,38 +9,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
 import ru.spbau.mit.karvozavr.cityquest.QuestInfoActivity;
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
-import ru.spbau.mit.karvozavr.cityquest.quest.ServerMock;
 import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
 
 public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.QuestInfoViewHolder> {
 
-    private List<QuestInfo> quests;
-    public int firstLoaded = 0;
+    private ArrayList<QuestInfo> quests = new ArrayList<>();
+    public int nextToLoad = 0;
     public final int batchSize = 15;
+    public boolean loading = false;
 
-    public QuestInfoAdapter(List<QuestInfo> quests) {
-        this.quests = quests;
+    public QuestInfoAdapter() {
+        loadNextBatch();
     }
 
     @Override
-    public QuestInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public QuestInfoAdapter.QuestInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View questInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_quest, null);
-        return new QuestInfoViewHolder(questInfoView);
+        return new QuestInfoAdapter.QuestInfoViewHolder(questInfoView);
     }
 
     /**
      * Replace the contents of a view (invoked by the layout manager)
      */
     @Override
-    public void onBindViewHolder(QuestInfoViewHolder holder, int position) {
+    public void onBindViewHolder(QuestInfoAdapter.QuestInfoViewHolder holder, int position) {
 
         QuestInfo questInfo = quests.get(position);
 
@@ -48,18 +49,19 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
             TextView name = holder.questInfoView.findViewById(R.id.quest_title);
             TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
             TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
+            TextView usersPassed = holder.questInfoView.findViewById(R.id.quest_passed);
             AppCompatRatingBar ratingBar = holder.questInfoView.findViewById(R.id.quest_rating_bar);
 
             ratingBar.setRating(questInfo.rating);
             name.setText(questInfo.name);
             avgDistance.setText(Float.toString(questInfo.averageDistance) + " km");
+            usersPassed.setText(Integer.toString(questInfo.usersPassed) + " passed");
             description.setText(questInfo.shortDescription);
-
 
             Button questStartButton = holder.questInfoView.findViewById(R.id.quest_start_button);
             questStartButton.setOnClickListener((view) -> {
                 Intent intent = new Intent(holder.questInfoView.getContext(), QuestStepActivity.class);
-                intent.putExtra("quest_id", questInfo.id);
+                intent.putExtra("quest_info", questInfo);
                 holder.questInfoView.getContext().startActivity(intent);
             });
 
@@ -74,22 +76,36 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         }
     }
 
-    public void loadPrevBatch() {
-        firstLoaded -= batchSize;
-
-        List<QuestInfo> newQuests = QuestController.getQuestInfoList(firstLoaded, firstLoaded + batchSize);
-        newQuests.addAll(quests.subList(0, batchSize));
-        quests = newQuests;
-
-        notifyDataSetChanged();
+    public void loadNextBatch() {
+        loading = true;
+        new QuestInfoAdapter.AsyncLoadNextBatch().execute();
     }
 
-    public void loadNextBatch() {
-        firstLoaded += batchSize;
-        quests = new ArrayList<>(quests.subList(batchSize, batchSize * 2));
+    private void onNextBatchLoaded(ArrayList<QuestInfo> infos) {
+        if (!infos.isEmpty()) {
+            quests.addAll(infos);
+            nextToLoad += infos.size();
+            notifyDataSetChanged();
+        }
 
-        quests.addAll(QuestController.getQuestInfoList(firstLoaded + batchSize, firstLoaded + batchSize * 2));
-        notifyDataSetChanged();
+        loading = false;
+    }
+
+    private class AsyncLoadNextBatch extends AsyncTask<Void, Void, Void> {
+
+        ArrayList<QuestInfo> infos = null;
+
+        @Override
+        protected Void doInBackground(Void... args) {
+            infos = QuestController.getQuestInfoList(nextToLoad, batchSize);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            onNextBatchLoaded(infos);
+        }
     }
 
     @Override

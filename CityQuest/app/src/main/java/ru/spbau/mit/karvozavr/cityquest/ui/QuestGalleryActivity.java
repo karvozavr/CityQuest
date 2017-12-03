@@ -13,11 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.List;
-
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
-import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
 
@@ -29,6 +26,7 @@ public class QuestGalleryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_gallery);
+        QuestController.invokeQuestController(QuestGalleryActivity.this);
 
         loadGallery();
     }
@@ -39,8 +37,7 @@ public class QuestGalleryActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         galleryRecyclerView.setLayoutManager(layoutManager);
 
-        // TODO
-        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter(getInitQuestInfos());
+        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter();
 
         galleryRecyclerView.setAdapter(questInfoAdapter);
         galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
@@ -51,17 +48,10 @@ public class QuestGalleryActivity extends AppCompatActivity {
     private void initRefreshLayout() {
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> new Handler().post(() -> {
-            if (((QuestInfoAdapter) galleryRecyclerView.getAdapter()).firstLoaded == 0) {
-                // TODO
-                Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                getInitQuestInfos();
-            }
+            galleryRecyclerView.setAdapter(new QuestInfoAdapter());
+            Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
             swipeRefreshLayout.setRefreshing(false);
         }));
-    }
-
-    private List<QuestInfo> getInitQuestInfos() {
-        return QuestController.getQuestInfoList(0, 30);
     }
 
     @Override

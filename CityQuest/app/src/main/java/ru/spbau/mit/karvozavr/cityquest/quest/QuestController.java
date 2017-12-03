@@ -4,28 +4,38 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
+import android.support.annotation.NonNull;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
+import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
+import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
 
 
 public class QuestController {
 
     public static String currentQuery = "";
     private static final String savedQuestName = "savedQuest.cqq";
-    private static final String hasSavedQuest = "hasSavedQuest";
+    private static final String savedQuestId = "savedQuestId";
     private static int progress = 0;
     private static Quest currentQuest = null;
+    private static Activity context = null;
 
-    public static AbstractQuestStep getCurrentQuestStep(Activity context) {
+    public static void invokeQuestController(Activity activity) {
+        context = activity;
+    }
+
+    @NonNull
+    public static AbstractQuestStep getCurrentQuestStep() {
         if (currentQuest == null) {
-            currentQuest = getCurrentQuest(context);
+            throw new NoSuchElementException();
         }
 
         return currentQuest.getStep(getCurrentQuestProgress(currentQuest));
@@ -47,14 +57,12 @@ public class QuestController {
     public static Quest getSampleQuest() {
         // THIS IS TEMPORAL TODO
 
-        Location location = new Location("Hotel");
-        location.setLatitude(60.00953);
-        location.setLongitude(30.35279);
         AbstractQuestStep step0 = new GeoQuestStep(
                 "Общажка - общажечка",
                 "Доберитесь до общажки",
                 "Я сказал доберитесь!",
-                location
+                60.00953,
+                30.35279
         );
 
         AbstractQuestStep step1 = new KeywordQuestStep(
@@ -77,51 +85,67 @@ public class QuestController {
                 3.5f,
                 25);
 
-        return new Quest(questInfo, new AbstractQuestStep[]{step0, step1, step2});
+        return new Quest(questInfo, new ArrayList<>(Arrays.asList(step0, step1, step2)));
     }
 
-    public static void startNewQuest(int questID, Activity context) {
+    public static void startNewQuest(@NonNull QuestInfo questInfo, @NonNull QuestStepActivity context) {
+        // TODO kill the progress
+        progress = 0;
+        context.loadTask.execute(questInfo);
+    }
 
-        SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
+    public static void onQuestLoaded(@NonNull Quest quest) {
+        saveQuestLocally(quest);
+    }
 
-        Quest quest = getSampleQuest();
+    private static void saveQuestLocally(@NonNull Quest quest) {
+        currentQuest = quest;
+
         try (FileOutputStream fos = context.openFileOutput(savedQuestName, Context.MODE_PRIVATE);
              ObjectOutputStream os = new ObjectOutputStream(fos)) {
-            os.writeObject(quest);
+            os.writeObject(currentQuest);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        sharedPreferences.edit().putBoolean(hasSavedQuest, true);
+        SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(savedQuestId, quest.info.id).apply();
     }
 
-    public static Quest getCurrentQuest(Activity context) {
+    public static void loadCurrentQuest(@NonNull QuestStepActivity context) {
         SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
-        if (!sharedPreferences.getBoolean(hasSavedQuest, false)) {
-            startNewQuest(context.getIntent().getIntExtra("quest_id", 0), context);
+        QuestInfo questInfo = (QuestInfo) context.getIntent().getSerializableExtra("quest_info");
+
+        if (currentQuest != null && currentQuest.info.id == questInfo.id) {
+            context.onQuestLoaded(currentQuest);
+            return;
         }
 
-        try (FileInputStream inputStream = context.openFileInput(savedQuestName);
-             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
-            return (Quest) objectInputStream.readObject();
-        } catch (FileNotFoundException e) {
-            // TODO download from server
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        if (sharedPreferences.getInt(savedQuestId, -1) != questInfo.id) {
+            startNewQuest(questInfo, context);
+        } else {
+            try (FileInputStream inputStream = context.openFileInput(savedQuestName);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+                context.onQuestLoaded((Quest) objectInputStream.readObject());
+            } catch (Exception e) {
+                startNewQuest(questInfo, context);
+            }
         }
-
-        return null;
     }
 
     public static void publishRating(float rating) {
         // TODO
     }
 
-    public static List<QuestInfo> getQuestInfoList(int from, int to) {
+    public static ArrayList<QuestInfo> getQuestInfoList(int startingFrom, int amount) {
+        ServiceProvider.getInternetAccess(context);
+
         if (currentQuery.equals("")) {
-            return ServerMock.getQuestInfosBatch(from, to);
+            return CityQuestServerAPI.getQuestInfosFromTo(startingFrom, amount);
         } else {
-            return ServerMock.getQuestInfosBatch(from, to).subList(5, 10);
+            return CityQuestServerAPI.getQuestInfosFromToByName(startingFrom, amount, currentQuery);
         }
     }
+
+
 }

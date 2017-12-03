@@ -3,13 +3,11 @@ package ru.spbau.mit.karvozavr.api;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
+import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
-import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
-
 
 public class CityQuestServerAPI {
     private static boolean isEnd = false;
@@ -22,18 +20,16 @@ public class CityQuestServerAPI {
 
             return new Quest(questInfo, steps);
         } catch (Exception e) {
-            throw new LoadingErrorException();
+            throw new LoadingErrorException("Failed to fetch data.", e);
         }
     }
 
-    public static List<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount)
-            throws LoadingErrorException {
+    public static ArrayList<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount) {
         return getQuestInfosFromToByName(startingFrom, amount, "");
     }
 
-    public static List<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name)
-            throws LoadingErrorException {
-        if (!name.matches("[a-zA-z0-9 ]*")) {
+    public static ArrayList<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name) {
+        if (!name.matches("[a-zA-z0-9 -]*")) {
             return new ArrayList<>();
         }
 
