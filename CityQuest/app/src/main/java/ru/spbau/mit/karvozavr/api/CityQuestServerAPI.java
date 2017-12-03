@@ -2,6 +2,7 @@ package ru.spbau.mit.karvozavr.api;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,9 +18,9 @@ public class CityQuestServerAPI {
     public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
         String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
         try (InputStream is = new URL(url).openStream()) {
-            List<AbstractQuestStep> steps = JsonReaderQuestParser.readQuestStepsFromJson(is);
+            ArrayList<AbstractQuestStep> steps = JsonReaderQuestParser.readQuestStepsFromJson(is);
 
-            return new Quest(questInfo, (AbstractQuestStep[]) steps.toArray());
+            return new Quest(questInfo, steps);
         } catch (Exception e) {
             throw new LoadingErrorException();
         }
@@ -32,17 +33,20 @@ public class CityQuestServerAPI {
 
     public static List<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name)
             throws LoadingErrorException {
+        if (!name.matches("[a-zA-z0-9 ]*")) {
+            return new ArrayList<>();
+        }
 
         String url = SERVER_DOMAIN_NAME + "get_views/?from=" + startingFrom
                 + "&len=" + amount
-                + "&contains=" + name;
+                + "&contains=" + name.replace(' ', '+');
 
         try (InputStream is = new URL(url).openStream()) {
             isEnd = numberOfQuests() <= startingFrom + amount;
 
             return JsonReaderQuestParser.readQuestInfosFromJson(is);
         } catch (Exception e) {
-            throw new LoadingErrorException();
+            return new ArrayList<>();
         }
     }
 
@@ -51,7 +55,8 @@ public class CityQuestServerAPI {
         try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
             return scanner.nextInt();
         } catch (Exception e) {
-            throw new LoadingErrorException();
+            //TODO: decide whether we throw exception or return number (0 or MAX_VALUE)
+            return Integer.MAX_VALUE;
         }
     }
 
