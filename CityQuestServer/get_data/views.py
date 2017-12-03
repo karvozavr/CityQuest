@@ -36,7 +36,7 @@ def get_number(request):
 def fill_database(request):
     QuestInfo.objects.all().delete()
 
-    for i in range(1, 21):
+    for i in range(1, 43):
         b = QuestInfo()
         b.name = 'Quest number ' + str(i)
         b.author = 'Me'
@@ -45,19 +45,20 @@ def fill_database(request):
         b.description = 'This is generated quest for testing.'
         b.save()
 
-        for j in range(1, 4 + i % 3):
+        for j in range(1, 3 + i % 5):
             s = QuestStep()
             s.title = 'QuestStep #' + str(j) + ' for quest #' + str(i)
             s.description = 'Just quest step'
             s.goal = 'complete this step'
             if j % 3 == 0:
                 s.step_type = 'geo'
-                s.latitude = 60
-                s.longitude = 30
+                s.description += '. To complete this one, you should be at 501.'
+                s.latitude =  60.00953
+                s.longitude = 30.35279
             else:
                 s.step_type = 'key'
-                s.description += '. Enter the word "password".'
-                s.keywords = "password\n"
+                s.description += '. Enter the word "password" or another secret word combination you know.'
+                s.keywords = "password\nanother secret word\nkitten"
 
             s.quest_host_id = i
             s.step_number = j
@@ -68,7 +69,7 @@ def fill_database(request):
         s.description = 'Final quest step.'
         s.goal = 'Finish the quest.'
         s.quest_host_id = i
-        s.step_number = 4 + i % 3
+        s.step_number = 3 + i % 5
         s.step_type = 'final'
         s.save()
 
