@@ -8,8 +8,8 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class QuestStepDeserializer implements JsonDeserializer<QuestStepParsed> {
 
+public class QuestStepDeserializer implements JsonDeserializer<QuestStepParsed> {
     @Override
     public QuestStepParsed deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
@@ -24,11 +24,13 @@ public class QuestStepDeserializer implements JsonDeserializer<QuestStepParsed> 
         String keywords = jsonQuestInfoFields.get("keywords").getAsString();
 
         JsonElement jsonElementLatitude = jsonQuestInfoFields.get("latitude");
-        Double latitude = jsonElementLatitude.isJsonNull() ? 0.0 : jsonElementLatitude.getAsDouble();
+        Double latitude = jsonElementLatitude.isJsonNull() ?
+                60.00953 :
+                jsonElementLatitude.getAsDouble();
 
         JsonElement jsonElementLongitude = jsonQuestInfoFields.get("longitude");
         Double longitude = jsonElementLongitude.isJsonNull() ?
-                0.0 :
+                30.35279 :
                 jsonElementLongitude.getAsDouble();
 
         return new QuestStepParsed(stepNum, title, description, goal, stepType, keywords, latitude, longitude);

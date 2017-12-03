@@ -10,13 +10,13 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import ru.spbau.mit.karvozavr.api.utils.QuestInfoDeserializer;
 import ru.spbau.mit.karvozavr.api.utils.QuestStepDeserializer;
 import ru.spbau.mit.karvozavr.api.utils.QuestStepParsed;
 import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
+
 
 class JsonReaderQuestParser {
 
@@ -44,7 +44,7 @@ class JsonReaderQuestParser {
         Type collectionType = new TypeToken<ArrayList<QuestStepParsed>>(){}.getType();
 
         ArrayList<QuestStepParsed> parsedSteps = gson.fromJson(reader, collectionType);
-        //it is not guaranteed that objects are returned in the same order as they were in Json
+        //It is not guaranteed that objects are returned in the same order as they were in Json
         Collections.sort(parsedSteps, (s1, s2) -> s1.getStepNum() - s2.getStepNum());
 
         ArrayList<AbstractQuestStep> abstractQuestSteps = new ArrayList<>();

@@ -1,11 +1,10 @@
 package ru.spbau.mit.karvozavr.api.utils;
 
-import android.location.Location;
-
 import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.FinalQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.GeoQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.KeywordQuestStep;
+
 
 public class QuestStepParsed {
     private int stepNum;

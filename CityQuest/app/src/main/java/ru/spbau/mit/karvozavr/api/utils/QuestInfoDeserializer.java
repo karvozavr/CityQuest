@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
+
 public class QuestInfoDeserializer implements JsonDeserializer<QuestInfo> {
     @Override
     public QuestInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

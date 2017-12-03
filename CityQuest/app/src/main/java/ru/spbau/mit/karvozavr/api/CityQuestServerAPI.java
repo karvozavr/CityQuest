@@ -55,7 +55,6 @@ public class CityQuestServerAPI {
         try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
             return scanner.nextInt();
         } catch (Exception e) {
-            //TODO: decide whether we throw exception or return number (0 or MAX_VALUE)
             return Integer.MAX_VALUE;
         }
     }
