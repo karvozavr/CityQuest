@@ -12,7 +12,7 @@ class QuestInfo(models.Model):
     description = models.TextField(max_length=500)
 
     # This fields must NOT be filled.
-    rating = models.FloatField(default=0, blank=True)
+    rating = models.BigIntegerField(default=0, blank=True)     # Sum of all rates. We don't like float.
     people_passed = models.IntegerField(default=0, blank=True)
 
     def __str__(self):
@@ -34,5 +34,5 @@ class QuestStep(models.Model):
     # ATTENTION: quests are numerated from 1, so quest_host must be numerated from 1
     quest_host = models.ForeignKey(QuestInfo, on_delete=models.CASCADE)
 
-    # ATTENTION: quest steps are numerated from 0 TODO: are they?
+    # ATTENTION: quest steps are numerated from 0
     step_number = models.IntegerField(default=0)
