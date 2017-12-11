@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
@@ -67,7 +66,7 @@ public class QuestGalleryActivity extends AppCompatActivity {
             searchView = (SearchView) searchItem.getActionView();
         }
 
-        if (searchView != null) {
+        if (searchView != null && searchManager != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(QuestGalleryActivity.this.getComponentName()));
             searchView.setOnCloseListener(() -> {
                 Toast.makeText(QuestGalleryActivity.this, "Close", Toast.LENGTH_SHORT).show();

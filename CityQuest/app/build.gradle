@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "ru.spbau.mit.karvozavr.cityquest"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -46,5 +46,11 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
 
     // Location manager
-    compile 'com.google.android.gms:play-services-location:11.6.0'
+    compile 'com.google.android.gms:play-services-location:11.6.2'
+
+    // auth
+    compile 'com.google.firebase:firebase-auth:11.6.2'
+    compile 'com.google.android.gms:play-services-auth:11.6.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

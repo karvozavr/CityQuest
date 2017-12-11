@@ -22,8 +22,8 @@
         <activity
             android:name=".ui.QuestStepActivity"
             android:label="@string/title_activity_quest_step"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.QuestInfoActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.QuestInfoActivity" />
     </application>
 
 </manifest>
