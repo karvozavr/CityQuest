@@ -1,9 +1,11 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import java.io.FileInputStream;
@@ -12,11 +14,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
+import ru.spbau.mit.karvozavr.cityquest.ui.QuestGalleryActivity;
 import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
 
 
 public class QuestController {
@@ -24,17 +27,13 @@ public class QuestController {
   public static String currentQuery = "";
   private static final String savedQuestName = "savedQuest.cqq";
   private static final String savedQuestId = "savedQuestId";
-  private static int progress = 0;
-  private static Quest currentQuest = null;
+  private static UserProgress userProgress;
+  public static Quest currentQuest = null;
   private static Activity context = null;
 
   public static void invokeQuestController(Activity activity) {
     context = activity;
   }
-
-    /*boolean getCurrentQuestInfo() {
-        TODO
-    }*/
 
   @NonNull
   public static AbstractQuestStep getCurrentQuestStep() {
@@ -42,24 +41,24 @@ public class QuestController {
       throw new NoSuchElementException();
     }
 
-    return currentQuest.getStep(getCurrentQuestProgress(currentQuest));
+    return currentQuest.getStep(getUserProgress().progress);
   }
 
-  private static int getCurrentQuestProgress(Quest quest) {
-    return progress;
+  public static void setUserProgress(UserProgress receivedProgress) {
+    userProgress = receivedProgress;
+  }
+
+  public static UserProgress getUserProgress() {
+    return userProgress;
   }
 
   public static void proceedToNextStep(Activity context) {
-    ++progress;
-
-    // refresh activity
-    Intent intent = context.getIntent();
-    context.finish();
-    context.startActivity(intent);
+    GoogleServicesActivity activity = (GoogleServicesActivity) context;
+    ++userProgress.progress;
+    activity.updateProgress(currentQuest, userProgress);
   }
 
-  public static Quest getSampleQuest() {
-    // THIS IS TEMPORAL TODO
+  /*public static Quest getSampleQuest() {
 
     AbstractQuestStep step0 = new GeoQuestStep(
         "Общажка - общажечка",
@@ -90,11 +89,10 @@ public class QuestController {
         25);
 
     return new Quest(questInfo, new ArrayList<>(Arrays.asList(step0, step1, step2)));
-  }
+  }*/
 
   public static void startNewQuest(@NonNull QuestInfo questInfo, @NonNull QuestStepActivity context) {
-    // TODO kill the progress
-    progress = 0;
+    // TODO progress
     context.loadTask.execute(questInfo);
   }
 
@@ -138,7 +136,11 @@ public class QuestController {
   }
 
   public static void publishRating(float rating) {
-    // TODO
+    if (!userProgress.finished) {
+      ++userProgress.progress;
+      ((GoogleServicesActivity) context).updateProgress(currentQuest, userProgress);
+      new AsyncPublishRating().execute(Math.round(rating));
+    }
   }
 
   public static ArrayList<QuestInfo> getQuestInfoList(int startingFrom, int amount) {
@@ -151,5 +153,26 @@ public class QuestController {
     }
   }
 
+  private static class AsyncPublishRating extends AsyncTask<Integer, Void, Void> {
 
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      ServiceProvider.getInternetAccess(context);
+    }
+
+    @Override
+    protected Void doInBackground(Integer... args) {
+      CityQuestServerAPI.publishRating(currentQuest.info.id, Math.round(args[0]));
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void v) {
+      super.onPostExecute(v);
+
+      Intent intent = new Intent(context, QuestGalleryActivity.class);
+      context.startActivity(intent);
+    }
+  }
 }

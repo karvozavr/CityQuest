@@ -16,9 +16,9 @@ import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
-import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleSignInActivity;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
 
-public class QuestGalleryActivity extends GoogleSignInActivity {
+public class QuestGalleryActivity extends GoogleServicesActivity {
 
   private RecyclerView galleryRecyclerView;
   private static final String TAG = "Gallery activity";

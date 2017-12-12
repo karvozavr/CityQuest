@@ -19,7 +19,7 @@ public class QuestInfo implements Serializable {
 
     public QuestInfo(int id,
                      String title,
-                     User author,
+                     UserProgress author,
                      Drawable image,
                      float averageDistance,
                      String description,

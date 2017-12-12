@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.drive.DriveClient;
+import com.google.android.gms.drive.DriveResourceClient;
+
 import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
 import ru.spbau.mit.karvozavr.api.LoadingErrorException;
 import ru.spbau.mit.karvozavr.cityquest.R;
@@ -20,12 +23,20 @@ import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 import ru.spbau.mit.karvozavr.cityquest.quest.ServiceProvider;
-import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleSignInActivity;
+import ru.spbau.mit.karvozavr.cityquest.quest.UserProgress;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
 
-public class QuestStepActivity extends GoogleSignInActivity {
+public class QuestStepActivity extends GoogleServicesActivity {
 
   private ProgressDialog dialog;
   public final AsyncTask<QuestInfo, Void, Void> loadTask = new AsyncLoadQuest();
+
+  private boolean questLoaded = false;
+  private boolean userDataReceived = false;
+  private DriveClient driveClient;
+  private DriveResourceClient driveResourceClient;
+
+  private static final int REQUEST_CODE_USER_DATA_RECEIVED = 1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +48,7 @@ public class QuestStepActivity extends GoogleSignInActivity {
   }
 
   private void loadQuest() {
+    questLoaded = false;
     dialog = ProgressDialog.show(this, "Loading", "Please, wait.");
     QuestController.loadCurrentQuest(this);
   }
@@ -47,7 +59,7 @@ public class QuestStepActivity extends GoogleSignInActivity {
       Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
     } else {
       QuestController.onQuestLoaded(quest);
-      drawQuestStep(QuestController.getCurrentQuestStep());
+      signIn();
     }
   }
 
@@ -71,6 +83,28 @@ public class QuestStepActivity extends GoogleSignInActivity {
     if (description.getText().length() + goal.getText().length() > 512) {
       floatingActionButton.setVisibility(View.VISIBLE);
       floatingActionButton.setOnClickListener(view -> currentQuestStep.check(this));
+    }
+  }
+
+  @Override
+  protected void onUserProgressReceived() {
+    super.onUserProgressReceived();
+
+    UserProgress userProgress = QuestController.getUserProgress();
+    if (userProgress.finished && userProgress.progress == -1) {
+      // TODO handle repeat.
+    }
+    drawQuestStep(QuestController.getCurrentQuestStep());
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    switch (requestCode) {
+      case REQUEST_CODE_SIGN_IN:
+        getUserProgress(QuestController.currentQuest);
+        break;
     }
   }
 
@@ -99,19 +133,5 @@ public class QuestStepActivity extends GoogleSignInActivity {
       super.onPostExecute(aVoid);
       onQuestLoaded(quest);
     }
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-
-    switch (requestCode) {
-      case REQUEST_CODE_SIGN_IN:
-        loadFromDisk();
-    }
-  }
-
-  private void loadFromDisk() {
-
   }
 }
