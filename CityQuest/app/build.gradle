@@ -48,9 +48,9 @@ dependencies {
     // Location manager
     compile 'com.google.android.gms:play-services-location:11.6.2'
 
-    // auth
-    compile 'com.google.firebase:firebase-auth:11.6.2'
+    // sign in
     compile 'com.google.android.gms:play-services-auth:11.6.2'
-}
 
-apply plugin: 'com.google.gms.google-services'
+    // Drive
+    implementation 'com.google.android.gms:play-services-drive:11.6.2'
+}
