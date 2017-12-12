@@ -13,13 +13,27 @@ public class CityQuestServerAPI {
     private static boolean isEnd = false;
     private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
 
-    public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
-        String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
+    public static Quest getQuestByQuestID(Integer questId) throws LoadingErrorException {
+        return new Quest(getQuestInfoByQuestID(questId), getStepsByQuestID(questId));
+    }
+
+    private static ArrayList<AbstractQuestStep> getStepsByQuestID(Integer questId)
+            throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questId;
 
         try (InputStream is = new URL(url).openStream()) {
-            ArrayList<AbstractQuestStep> steps = JsonReaderQuestParser.readQuestStepsFromJson(is);
+            return JsonReaderQuestParser.readQuestStepsFromJson(is);
+        } catch (Exception e) {
+            throw new LoadingErrorException("Failed to fetch data.", e);
+        }
+    }
 
-            return new Quest(questInfo, steps);
+    private static QuestInfo getQuestInfoByQuestID(Integer questId)
+            throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_info?id=" + questId;
+
+        try (InputStream is = new URL(url).openStream()) {
+            return JsonReaderQuestParser.readSingleQuestInfoFromJson(is);
         } catch (Exception e) {
             throw new LoadingErrorException("Failed to fetch data.", e);
         }
@@ -30,7 +44,7 @@ public class CityQuestServerAPI {
     }
 
     public static ArrayList<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name) {
-        if (!name.matches("[a-zA-z0-9 -А-Яа-яЁё]*")) {
+        if (!name.matches("[a-zA-Z0-9 -]*")) {
             return new ArrayList<>();
         }
 
