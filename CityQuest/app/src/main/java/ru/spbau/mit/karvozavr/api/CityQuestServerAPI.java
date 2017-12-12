@@ -11,7 +11,7 @@ import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 public class CityQuestServerAPI {
     private static boolean isEnd = false;
-    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/get_data/";
+    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
 
     public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
         String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
@@ -33,7 +33,7 @@ public class CityQuestServerAPI {
             return new ArrayList<>();
         }
 
-        String url = SERVER_DOMAIN_NAME + "get_views/?from=" + startingFrom
+        String url = SERVER_DOMAIN_NAME + "get_infos/?from=" + startingFrom
                 + "&len=" + amount
                 + "&contains=" + name.replace(' ', '+');
 
@@ -44,6 +44,13 @@ public class CityQuestServerAPI {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    public static void publishRating(Integer questId, Integer ratingUpdate) {
+        String url = SERVER_DOMAIN_NAME + "post_rating/?=id" + questId
+                + "&rate=" + ratingUpdate;
+
+
     }
 
     private static int numberOfQuests() throws LoadingErrorException {
