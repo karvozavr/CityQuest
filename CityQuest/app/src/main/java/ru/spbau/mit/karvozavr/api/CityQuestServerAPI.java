@@ -15,6 +15,7 @@ public class CityQuestServerAPI {
 
     public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
         String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
+
         try (InputStream is = new URL(url).openStream()) {
             ArrayList<AbstractQuestStep> steps = JsonReaderQuestParser.readQuestStepsFromJson(is);
 
@@ -29,11 +30,11 @@ public class CityQuestServerAPI {
     }
 
     public static ArrayList<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name) {
-        if (!name.matches("[a-zA-z0-9 -]*")) {
+        if (!name.matches("[a-zA-z0-9 -А-Яа-яЁё]*")) {
             return new ArrayList<>();
         }
 
-        String url = SERVER_DOMAIN_NAME + "get_infos/?from=" + startingFrom
+        String url = SERVER_DOMAIN_NAME + "get_infos?from=" + startingFrom
                 + "&len=" + amount
                 + "&contains=" + name.replace(' ', '+');
 
@@ -46,10 +47,17 @@ public class CityQuestServerAPI {
         }
     }
 
-    public static void publishRating(Integer questId, Integer ratingUpdate) {
-        String url = SERVER_DOMAIN_NAME + "post_rating/?=id" + questId
+    public static boolean publishRating(Integer questId, Integer ratingUpdate) {
+        String request = SERVER_DOMAIN_NAME + "post_rating?id=" + questId
                 + "&rate=" + ratingUpdate;
 
+        try {
+            //URL url = ;
+            (new URL(request)).getContent();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
 
     }
 
