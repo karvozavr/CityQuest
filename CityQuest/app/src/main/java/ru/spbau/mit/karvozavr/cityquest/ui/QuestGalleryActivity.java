@@ -2,12 +2,9 @@ package ru.spbau.mit.karvozavr.cityquest.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -15,23 +12,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleSignInActivity;
 
-public class QuestGalleryActivity extends AppCompatActivity {
+public class QuestGalleryActivity extends GoogleSignInActivity {
 
   private RecyclerView galleryRecyclerView;
-  private GoogleSignInClient mGoogleSignInClient;
-  private static final int REQUEST_CODE_SIGN_IN = 0;
   private static final String TAG = "Gallery activity";
 
   @Override
@@ -45,54 +34,27 @@ public class QuestGalleryActivity extends AppCompatActivity {
   }
 
   /**
-   * Start sign in activity.
-   */
-  private void signIn() {
-    mGoogleSignInClient = buildGoogleSignInClient();
-    startActivityForResult(mGoogleSignInClient.getSignInIntent(), REQUEST_CODE_SIGN_IN);
-  }
-
-  /**
-   * Sign out user and start sign in dialog.
-   */
-  private void changeUser() {
-    mGoogleSignInClient.signOut()
-        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-          @Override
-          public void onComplete(@NonNull Task<Void> task) {
-            signIn();
-          }
-        });
-  }
-
-  /**
-   * Build a Google SignIn client.
-   */
-  private GoogleSignInClient buildGoogleSignInClient() {
-    GoogleSignInOptions signInOptions =
-        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestScopes(Drive.SCOPE_APPFOLDER)
-            .build();
-    return GoogleSignIn.getClient(this, signInOptions);
-  }
-
-  /**
    * Setup layout & load gallery content.
    */
   private void loadGallery() {
     galleryRecyclerView = findViewById(R.id.gallery_recycler_view);
 
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+    RecyclerView.LayoutManager layoutManager =
+        new LinearLayoutManager(this);
     galleryRecyclerView.setLayoutManager(layoutManager);
-
-    RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter();
-
-    galleryRecyclerView.setAdapter(questInfoAdapter);
-    galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
+    RecyclerView.Adapter questInfoAdapter =
+        new QuestInfoAdapter();
+    galleryRecyclerView
+        .setAdapter(questInfoAdapter);
+    galleryRecyclerView
+        .setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
 
     initRefreshLayout();
   }
 
+  /**
+   * Setup RefreshLayout adapter & etc.
+   */
   private void initRefreshLayout() {
     SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
     swipeRefreshLayout.setOnRefreshListener(() -> new Handler().post(() -> {
@@ -155,19 +117,6 @@ public class QuestGalleryActivity extends AppCompatActivity {
         return true;
       default:
         return super.onOptionsItemSelected(item);
-    }
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    switch (requestCode) {
-      case REQUEST_CODE_SIGN_IN:
-        // Called after user is signed in.
-        if (resultCode != RESULT_OK) {
-          signIn();
-        }
-        break;
     }
   }
 }

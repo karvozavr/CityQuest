@@ -26,6 +26,7 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
   public boolean loading = false;
 
   public QuestInfoAdapter() {
+    // load initial steps
     loadNextBatch();
   }
 
