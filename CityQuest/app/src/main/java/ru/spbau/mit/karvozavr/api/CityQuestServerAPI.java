@@ -13,12 +13,27 @@ public class CityQuestServerAPI {
     private static boolean isEnd = false;
     private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
 
-    public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
-        String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
-        try (InputStream is = new URL(url).openStream()) {
-            ArrayList<AbstractQuestStep> steps = JsonReaderQuestParser.readQuestStepsFromJson(is);
+    public static Quest getQuestByQuestID(Integer questId) throws LoadingErrorException {
+        return new Quest(getQuestInfoByQuestID(questId), getStepsByQuestID(questId));
+    }
 
-            return new Quest(questInfo, steps);
+    private static ArrayList<AbstractQuestStep> getStepsByQuestID(Integer questId)
+            throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questId;
+
+        try (InputStream is = new URL(url).openStream()) {
+            return JsonReaderQuestParser.readQuestStepsFromJson(is);
+        } catch (Exception e) {
+            throw new LoadingErrorException("Failed to fetch data.", e);
+        }
+    }
+
+    private static QuestInfo getQuestInfoByQuestID(Integer questId)
+            throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_info?id=" + questId;
+
+        try (InputStream is = new URL(url).openStream()) {
+            return JsonReaderQuestParser.readSingleQuestInfoFromJson(is);
         } catch (Exception e) {
             throw new LoadingErrorException("Failed to fetch data.", e);
         }
@@ -29,11 +44,11 @@ public class CityQuestServerAPI {
     }
 
     public static ArrayList<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name) {
-        if (!name.matches("[a-zA-z0-9 -]*")) {
+        if (!name.matches("[a-zA-Z0-9 -]*")) {
             return new ArrayList<>();
         }
 
-        String url = SERVER_DOMAIN_NAME + "get_infos/?from=" + startingFrom
+        String url = SERVER_DOMAIN_NAME + "get_infos?from=" + startingFrom
                 + "&len=" + amount
                 + "&contains=" + name.replace(' ', '+');
 
@@ -46,10 +61,17 @@ public class CityQuestServerAPI {
         }
     }
 
-    public static void publishRating(Integer questId, Integer ratingUpdate) {
-        String url = SERVER_DOMAIN_NAME + "post_rating/?=id" + questId
+    public static boolean publishRating(Integer questId, Integer ratingUpdate) {
+        String request = SERVER_DOMAIN_NAME + "post_rating?id=" + questId
                 + "&rate=" + ratingUpdate;
 
+        try {
+            //URL url = ;
+            (new URL(request)).getContent();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
 
     }
 

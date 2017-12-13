@@ -26,8 +26,8 @@ public class QuestInfoDeserializer implements JsonDeserializer<QuestInfo> {
         String image = jsonQuestInfoFields.get("image").getAsString();
         float avgDistance = jsonQuestInfoFields.get("avg_distance").getAsFloat();
         String description = jsonQuestInfoFields.get("description").getAsString();
-        float rating = jsonQuestInfoFields.get("rating").getAsFloat();
+        Integer rating = jsonQuestInfoFields.get("rating").getAsInt();
 
-        return new QuestInfo(id, title, null, null, avgDistance, description, rating, peoplePassed);
+        return new QuestInfo(id, title, null, null, avgDistance, description, (float) rating / peoplePassed, peoplePassed);
     }
 }

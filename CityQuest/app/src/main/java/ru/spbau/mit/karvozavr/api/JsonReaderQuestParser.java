@@ -20,9 +20,17 @@ import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 class JsonReaderQuestParser {
 
-    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is)
-            throws IOException {
+    static QuestInfo readSingleQuestInfoFromJson(InputStream is) throws IOException {
+        InputStreamReader reader = new InputStreamReader(is);
 
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(QuestInfo.class, new QuestInfoDeserializer());
+        Gson gson = gsonBuilder.create();
+
+        return gson.fromJson(reader, QuestInfo.class);
+    }
+
+    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is) throws IOException {
         InputStreamReader reader = new InputStreamReader(is);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -44,6 +52,7 @@ class JsonReaderQuestParser {
         Type collectionType = new TypeToken<ArrayList<QuestStepParsed>>(){}.getType();
 
         ArrayList<QuestStepParsed> parsedSteps = gson.fromJson(reader, collectionType);
+
         //It is not guaranteed that objects are returned in the same order as they were in Json
         Collections.sort(parsedSteps, (s1, s2) -> s1.getStepNum() - s2.getStepNum());
 
