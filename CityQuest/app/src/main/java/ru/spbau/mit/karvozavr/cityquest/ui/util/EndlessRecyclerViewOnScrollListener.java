@@ -4,7 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
-import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.adapters.QuestInfoAdapter;
 
 public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingListener {
 
@@ -27,7 +27,7 @@ public class EndlessRecyclerViewOnScrollListener extends RecyclerView.OnFlingLis
             int currentPosition = layoutManager.findFirstVisibleItemPosition();
             if (velocityY > 0) {
                 QuestInfoAdapter adapter = (QuestInfoAdapter) recyclerView.getAdapter();
-                if (!adapter.loading && !CityQuestServerAPI.isEndReached() && (adapter.nextToLoad - currentPosition) <= visibleThresholdToLoadNew) {
+                if (!adapter.loading && (adapter.nextToLoad - currentPosition) <= visibleThresholdToLoadNew) {
                     adapter.loadNextBatch();
                 }
             }

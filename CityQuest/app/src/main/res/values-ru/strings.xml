@@ -30,4 +30,7 @@
     <string name="search_title">Search</string>
     <string name="login_as_another_user">Войти, как другой пользователь</string>
     <string name="continue_current_quest">Продолжить текущий квест</string>
+    <string name="repeat_this_quest">Вы уже прошли этот квест. Хотите повторить?</string>
+    <string name="positive_answer">Да</string>
+    <string name="negative_answer">Нет</string>
 </resources>
