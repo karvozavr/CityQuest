@@ -1,4 +1,4 @@
-package ru.spbau.mit.karvozavr.cityquest.ui.adapters;
+package ru.spbau.mit.karvozavr.cityquest.ui.util.adapters;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,7 +22,7 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
 
   private ArrayList<QuestInfo> quests = new ArrayList<>();
   public int nextToLoad = 0;
-  public final int batchSize = 15;
+  private static final int batchSize = 15;
   public boolean loading = false;
 
   public QuestInfoAdapter() {

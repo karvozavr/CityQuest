@@ -1,5 +1,6 @@
 package ru.spbau.mit.karvozavr.cityquest.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -92,7 +93,24 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
     UserProgress userProgress = QuestController.getUserProgress();
     if (userProgress.finished && userProgress.progress == -1) {
-      // TODO handle repeat.
+
+      // If user already passed this quest, suggest him on more time.
+      final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(QuestStepActivity.this);
+
+      dialogBuilder.setMessage(R.string.repeat_this_quest);
+
+      dialogBuilder.setPositiveButton(R.string.positive_answer,
+          (dialog, which) -> QuestController.proceedToNextStep(QuestStepActivity.this));
+
+      dialogBuilder.setNegativeButton(R.string.negative_answer,
+          (dialog, which) -> {
+            Intent intent = new Intent(QuestStepActivity.this, QuestGalleryActivity.class);
+            QuestStepActivity.this.startActivity(intent);
+          });
+
+      dialogBuilder.setCancelable(false);
+
+      dialogBuilder.show();
     }
     drawQuestStep(QuestController.getCurrentQuestStep());
   }
@@ -121,7 +139,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
     @Override
     protected Void doInBackground(QuestInfo... args) {
       try {
-        quest = CityQuestServerAPI.getQuestByQuestInfo(args[0]);
+        quest = CityQuestServerAPI.getQuestByQuestID(args[0].id);
       } catch (LoadingErrorException e) {
         e.printStackTrace();
       }

@@ -1,7 +1,6 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -137,10 +136,13 @@ public class QuestController {
 
   public static void publishRating(float rating) {
     if (!userProgress.finished) {
-      ++userProgress.progress;
-      ((GoogleServicesActivity) context).updateProgress(currentQuest, userProgress);
+      // If user passes this quest first time.
       new AsyncPublishRating().execute(Math.round(rating));
     }
+
+    // Update progress.
+    ++userProgress.progress;
+    ((GoogleServicesActivity) context).updateProgress(currentQuest, userProgress);
   }
 
   public static ArrayList<QuestInfo> getQuestInfoList(int startingFrom, int amount) {
@@ -163,6 +165,7 @@ public class QuestController {
 
     @Override
     protected Void doInBackground(Integer... args) {
+      // Update rating on server.
       CityQuestServerAPI.publishRating(currentQuest.info.id, Math.round(args[0]));
       return null;
     }
@@ -171,6 +174,7 @@ public class QuestController {
     protected void onPostExecute(Void v) {
       super.onPostExecute(v);
 
+      // Return to main menu.
       Intent intent = new Intent(context, QuestGalleryActivity.class);
       context.startActivity(intent);
     }

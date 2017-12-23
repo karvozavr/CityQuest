@@ -28,4 +28,7 @@
     <string name="search_title">Search</string>
     <string name="login_as_another_user">Login as another user</string>
     <string name="continue_current_quest">Continue current quest</string>
+    <string name="repeat_this_quest">You already passed this quest, do you want to try one more time?</string>
+    <string name="positive_answer">Yes</string>
+    <string name="negative_answer">No</string>
 </resources>

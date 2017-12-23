@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
-import ru.spbau.mit.karvozavr.cityquest.ui.adapters.QuestInfoAdapter;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
 
