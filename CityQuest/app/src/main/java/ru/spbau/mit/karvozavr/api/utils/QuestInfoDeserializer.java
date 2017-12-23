@@ -28,6 +28,6 @@ public class QuestInfoDeserializer implements JsonDeserializer<QuestInfo> {
         String description = jsonQuestInfoFields.get("description").getAsString();
         Integer rating = jsonQuestInfoFields.get("rating").getAsInt();
 
-        return new QuestInfo(id, title, null, null, avgDistance, description, (float) rating / peoplePassed, peoplePassed);
+        return new QuestInfo(id, title, author, null, avgDistance, description, (float)rating / peoplePassed, peoplePassed);
     }
 }

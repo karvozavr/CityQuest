@@ -1,7 +1,9 @@
 package ru.spbau.mit.karvozavr.api;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +12,6 @@ import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 public class CityQuestServerAPI {
-    private static boolean isEnd = false;
     private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
 
     public static Quest getQuestByQuestID(Integer questId) throws LoadingErrorException {
@@ -44,17 +45,18 @@ public class CityQuestServerAPI {
     }
 
     public static ArrayList<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name) {
-        if (!name.matches("[a-zA-Z0-9 -]*")) {
+        String url = SERVER_DOMAIN_NAME + "get_infos?from=" + startingFrom
+                + "&len=" + amount
+                + "&contains=";
+
+        try {
+            url += URLEncoder.encode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e){
+            // This should NEVER happen.
             return new ArrayList<>();
         }
 
-        String url = SERVER_DOMAIN_NAME + "get_infos?from=" + startingFrom
-                + "&len=" + amount
-                + "&contains=" + name.replace(' ', '+');
-
         try (InputStream is = new URL(url).openStream()) {
-            isEnd = numberOfQuests() <= startingFrom + amount;
-
             return JsonReaderQuestParser.readQuestInfosFromJson(is);
         } catch (Exception e) {
             return new ArrayList<>();
@@ -65,26 +67,21 @@ public class CityQuestServerAPI {
         String request = SERVER_DOMAIN_NAME + "post_rating?id=" + questId
                 + "&rate=" + ratingUpdate;
 
-        try {
-            //URL url = ;
-            (new URL(request)).getContent();
-            return true;
+        try (InputStream is = new URL(request).openStream(); Scanner scanner = new Scanner(is)) {
+            String s = scanner.nextLine();
+            return s.equals("done");
         } catch (Exception e) {
             return false;
         }
-
     }
 
-    private static int numberOfQuests() throws LoadingErrorException {
+    /*private static int numberOfQuests() throws LoadingErrorException {
         String url = SERVER_DOMAIN_NAME + "get_number";
+
         try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
             return scanner.nextInt();
         } catch (Exception e) {
             return Integer.MAX_VALUE;
         }
-    }
-
-    public static boolean isEndReached() {
-        return isEnd;
-    }
+    }*/
 }
