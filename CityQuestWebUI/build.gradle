@@ -24,7 +24,7 @@ dependencies {
 }
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/web/CityQuestWebUI.js"
+    kotlinOptions.outputFile = "${projectDir}/web/questeditor.js"
 }
 
 task assembleWeb(type: Sync) {
