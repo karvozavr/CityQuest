@@ -41,8 +41,7 @@ class JsonReaderQuestParser {
 	    return gson.fromJson(reader, collectionType);
     }
 
-    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is)
-            throws IOException {
+    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is) throws IOException {
         InputStreamReader reader = new InputStreamReader(is);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
