@@ -3,7 +3,7 @@ from django.db import models
 
 class QuestInfo(models.Model):
     name = models.TextField(max_length=100)
-    # TODO: how to store image and user?
+    # TODO: how to store image?
     author = models.TextField(max_length=100)
     # TODO: if we will keep image like this, make strict rule to not upload image bigger than 256 kb
     image = models.TextField(max_length=262144)

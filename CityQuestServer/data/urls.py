@@ -8,8 +8,5 @@ urlpatterns = [
     url(r'get_info.*?$', views.get_info, name='get_info'),
     url(r'get_steps.*?$', views.get_steps, name='get_steps'),
     url(r'get_number$', views.get_number, name='get_number'),
-    url(r'post_rating$', views.post_rating, name='post_rating'),
-
-    # Utility function. NEVER call it.
-    url(r'fill$', views.fill_database, name='fill_database'),
+    url(r'post_rating.*?$', views.post_rating, name='post_rating'),
 ]
