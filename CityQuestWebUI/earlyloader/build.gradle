@@ -1,4 +1,4 @@
-group 'ru.spbau.cityquest'
+group 'cityquest.webui'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -15,6 +15,7 @@ buildscript {
 apply plugin: 'kotlin2js'
 apply plugin: 'idea'
 
+
 repositories {
     mavenCentral()
 }
@@ -24,7 +25,7 @@ dependencies {
 }
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/web/CityQuestWebUI.js"
+    kotlinOptions.outputFile = "${projectDir}/../web/EarlyLoader.js"
 }
 
 task assembleWeb(type: Sync) {
@@ -39,7 +40,7 @@ task assembleWeb(type: Sync) {
         })
     }
     from compileKotlin2Js.destinationDir
-    into "${projectDir}/web/libs"
+    into "${projectDir}/../web/libs"
 
     dependsOn classes
 }

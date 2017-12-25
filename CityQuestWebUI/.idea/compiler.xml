@@ -4,6 +4,8 @@
     <bytecodeTargetLevel target="1.8">
       <module name="CityQuestWebUI_main" target="1.8" />
       <module name="CityQuestWebUI_test" target="1.8" />
+      <module name="earlyloader_main" target="1.8" />
+      <module name="earlyloader_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
