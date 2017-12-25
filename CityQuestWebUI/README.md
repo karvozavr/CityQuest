@@ -1,5 +1,5 @@
 Note that Google Maps API Key for CityQuestWebUI is not present in the repository.
-To get the things working you must add file `src/main/kotlin/ru/spbau/cityquest/webui/questeditor/GoogleMapsAPIKey.kt`
+To get the things working you must add file `earlyloader/src/main/kotlin/ru/spbau/cityquest/webui/earlyloader/GoogleMapsAPIKey.kt`
 with the following content:
 
 ```kotlin

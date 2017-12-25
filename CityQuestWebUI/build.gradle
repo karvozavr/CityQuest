@@ -24,10 +24,10 @@ dependencies {
 }
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/web/CityQuestWebUI.js"
+    kotlinOptions.outputFile = "${projectDir}/web/CityQuestWebUI/CityQuestWebUI.js"
 }
 
-task assembleWeb(type: Sync) {
+task assembleWeb(type: Copy) {
     configurations.compile.each { File file ->
         from(zipTree(file.absolutePath), {
             includeEmptyDirs = false
@@ -39,7 +39,7 @@ task assembleWeb(type: Sync) {
         })
     }
     from compileKotlin2Js.destinationDir
-    into "${projectDir}/web/libs"
+    into "${projectDir}/web/CityQuestWebUI/libs"
 
     dependsOn classes
 }

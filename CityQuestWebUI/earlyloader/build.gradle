@@ -25,7 +25,7 @@ dependencies {
 }
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/../web/EarlyLoader.js"
+    kotlinOptions.outputFile = "${projectDir}/../web/EarlyLoader/earlyloader.js"
 }
 
 task assembleWeb(type: Sync) {
@@ -40,7 +40,7 @@ task assembleWeb(type: Sync) {
         })
     }
     from compileKotlin2Js.destinationDir
-    into "${projectDir}/../web/libs"
+    into "${projectDir}/../web/EarlyLoader/libs"
 
     dependsOn classes
 }
