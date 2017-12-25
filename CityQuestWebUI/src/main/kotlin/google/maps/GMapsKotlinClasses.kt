@@ -8,7 +8,9 @@ class LatLng(val lat: Double, val lng: Double) {
 }
 
 class MapOptions(val center: LatLng, val zoom: Byte) {
-    fun toJson() = json("center" to center.toJson(), "zoom" to zoom)
+    var clickableIcons : Boolean = true
+
+    fun toJson() = json("center" to center.toJson(), "zoom" to zoom, "clickableIcons" to clickableIcons)
 }
 
 class KtGoogleMap(element: Element?, options: MapOptions) : JsGoogleMap(element, options.toJson())

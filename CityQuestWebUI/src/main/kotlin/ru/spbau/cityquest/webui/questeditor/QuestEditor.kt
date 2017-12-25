@@ -1,5 +1,9 @@
 package ru.spbau.cityquest.webui.questeditor
 
+import google.maps.KtGoogleMap
+import google.maps.MapOptions
+import kotlin.browser.document
+
 const val defaultTitle : String = "Lorem ipsum dolor sit amet"
 const val defaultDesc : String = "All embrace me\n" +
         "It's my time to rule at last\n" +
@@ -23,11 +27,13 @@ const val defaultDesc : String = "All embrace me\n" +
         "See Carolus rise\n"
 
 
-class QuestEditor {
+class QuestEditor(mapOptions: MapOptions) {
     data class CurrentEdit(val editIndex: Int) {
         fun isNothing() : Boolean = editIndex == -2
         fun isNew() : Boolean = editIndex == -1
     }
+
+    val map : KtGoogleMap = KtGoogleMap(document.getElementById("map"), mapOptions)
 
     val questPointsList : ArrayList<QuestPoint> = ArrayList()
 
