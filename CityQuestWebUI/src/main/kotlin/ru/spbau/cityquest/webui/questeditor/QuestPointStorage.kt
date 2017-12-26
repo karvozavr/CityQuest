@@ -101,7 +101,11 @@ class QuestPointStorage(questEditor: QuestEditor) {
             val posFrom = pointsList.indexOfFirst { it.id == currentDragPoint!!.id }
             pointsList.removeAt(posFrom)
             val posTo = pointsList.indexOfFirst { it.id == point.id }
-            pointsList.add(posTo, currentDragPoint!!)
+            if (posTo < posFrom) {
+                pointsList.add(posTo, currentDragPoint!!)
+            } else {
+                pointsList.add(posTo + 1, currentDragPoint!!)
+            }
             resetLabels()
         }
     }
