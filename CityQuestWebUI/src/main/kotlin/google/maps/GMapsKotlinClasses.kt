@@ -14,3 +14,5 @@ class MapOptions(val center: LatLng, val zoom: Byte) {
 }
 
 class KtGoogleMap(element: Element?, options: MapOptions) : JsGoogleMap(element, options.toJson())
+
+class KtMarker(position: LatLng, jsGoogleMap: JsGoogleMap) : JsMarker(json("position" to position, "map" to jsGoogleMap))

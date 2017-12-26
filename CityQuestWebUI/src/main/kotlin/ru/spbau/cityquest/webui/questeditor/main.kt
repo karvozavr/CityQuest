@@ -3,6 +3,13 @@ package ru.spbau.cityquest.webui.questeditor
 import google.maps.LatLng
 import google.maps.MapOptions
 
+var editor : QuestEditor? = null
+
+@JsName("getEditor")
+fun getEditor() : QuestEditor {
+    return editor!!
+}
+
 fun main(args: Array<String>) {
     println("CityQuest Web UI in Kotlin is at your service!")
 
@@ -11,5 +18,5 @@ fun main(args: Array<String>) {
     val mapOptions = MapOptions(initPoint, initZoom)
     mapOptions.clickableIcons = false
 
-    val editor = QuestEditor(mapOptions)
+    editor = QuestEditor(mapOptions)
 }

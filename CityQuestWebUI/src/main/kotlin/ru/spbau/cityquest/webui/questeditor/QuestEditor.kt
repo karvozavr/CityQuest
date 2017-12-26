@@ -1,7 +1,10 @@
 package ru.spbau.cityquest.webui.questeditor
 
 import google.maps.KtGoogleMap
+import google.maps.KtMarker
 import google.maps.MapOptions
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import kotlin.browser.document
 
 const val defaultTitle : String = "Lorem ipsum dolor sit amet"
@@ -28,23 +31,81 @@ const val defaultDesc : String = "All embrace me\n" +
 
 
 class QuestEditor(mapOptions: MapOptions) {
+    class DocumentNodes {
+        val map = document.getElementById("map") as HTMLElement?
+        val editGPSPointTitleEditInput = document.getElementById("edit-gps-point-title-edit-input") as HTMLElement?
+        val editGPSPointDescEditInput = document.getElementById("edit-gps-point-desc-edit-input")  as HTMLElement?
+        val saveChanges = document.getElementById("save-changes") as HTMLElement?
+        val willAppear = document.getElementById("will-appear") as HTMLElement?
+        val stateViewer = document.getElementById("state") as HTMLElement?
+        val editGPSPoint = document.getElementById("edit-gps-point") as HTMLElement?
+    }
+
+    val documentNodes : DocumentNodes = DocumentNodes()
+
     data class CurrentEdit(val editIndex: Int) {
         fun isNothing() : Boolean = editIndex == -2
         fun isNew() : Boolean = editIndex == -1
     }
 
-    val map : KtGoogleMap = KtGoogleMap(document.getElementById("map"), mapOptions)
+    val map : KtGoogleMap = KtGoogleMap(documentNodes.map, mapOptions)
 
-    val questPointsList : ArrayList<QuestPoint> = ArrayList()
+    fun onClickListener(event : Event) {
+        val questPoint = GPSQuestPoint(questPoints.nextId, getCurrentEditTitle(), getCurrentEditDesc(), js("event.latLng"))
+        questPoint.marker = KtMarker(questPoint.latLng, map)
+        questPoint.marker?.set("label", "${questPoints.size + 1}")
+        questPoints.addPoint(questPoint)
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
+    }
+
+    var mapOnClickListener : Any? = null
+
+    val questPoints = QuestPointStorage()
 
     val editNothing : CurrentEdit = CurrentEdit(-2)
     val editNew : CurrentEdit = CurrentEdit(-1)
 
     var editorState : QuestEditorStateManager = QuestEditorStateManager(this)
 
-    var currentEdit : CurrentEdit = editNothing
-        set(value) = TODO("Implement the currentEdit setter")
+    init {
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
+    }
 
-    fun getCurrentEditTitle() : String = TODO("Implement the editor interface")
-    fun getCurrentEditDesc() : String = TODO("Implement the editor interface")
+    var currentEdit : CurrentEdit = editNothing
+        set(value) {
+            field = value
+            if (value.isNothing()) {
+                documentNodes.editGPSPointTitleEditInput?.innerHTML = ""
+                documentNodes.editGPSPointDescEditInput?.innerHTML = ""
+            } else if (value.isNew()) {
+                val titleVal = document.createAttribute("value")
+                titleVal.value = defaultTitle
+                documentNodes.editGPSPointTitleEditInput?.attributes?.setNamedItem(titleVal)
+                documentNodes.editGPSPointDescEditInput?.innerHTML = defaultDesc
+                documentNodes.saveChanges?.style?.visibility = "hidden"
+            } else {
+                documentNodes.saveChanges?.style?.visibility = "visible"
+                TODO("Implement the current edit setter.")
+            }
+        }
+
+    fun getCurrentEditTitle() : String = documentNodes.editGPSPointTitleEditInput?.attributes?.getNamedItem("value")?.value ?: ""
+
+    fun getCurrentEditDesc() : String = documentNodes.editGPSPointDescEditInput?.innerHTML ?: ""
+
+    @JsName("newQuestPoint")
+    fun newQuestPoint() {
+        currentEdit = editNew
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.EDIT_QUEST_POINT)
+    }
+
+    @JsName("cancelNewPoint")
+    fun cancelNewPoint() {
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
+    }
+
+    @JsName("placeMarker")
+    fun placeMarker() {
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.PLACE_MARKER)
+    }
 }
