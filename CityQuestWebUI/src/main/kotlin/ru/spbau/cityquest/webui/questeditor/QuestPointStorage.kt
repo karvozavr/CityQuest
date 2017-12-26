@@ -5,19 +5,20 @@ import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.js.*
 import org.w3c.dom.HTMLLIElement
-import org.w3c.dom.Node
 import kotlin.browser.document
 
-class QuestPointStorage {
+
+class QuestPointStorage(questEditor: QuestEditor) {
     var nextId : Int = 0
         get() = field++
         private set
 
-    private val pointsList : MutableList<QuestPoint> = ArrayList<QuestPoint>()
+    private val pointsList : MutableList<QuestPoint> = ArrayList()
     private val draggableList : DraggableList = DraggableList()
-    private var currentDragPoint : Node? = null
+    private var currentDragPoint : QuestPoint? = null
+    private val editor = questEditor
 
-    fun createListItem(point: QuestPoint, editor: QuestEditor) : HTMLLIElement {
+    fun createListItem(point: QuestPoint) : HTMLLIElement {
         var ret : HTMLLIElement? = null
         val linesDiv = document.create.div("qpi-lines")
         val editButton = document.create.button(classes = "qpi-edit-button") {
@@ -32,13 +33,13 @@ class QuestPointStorage {
                 editor.documentNodes.questPointsList?.removeChild(ret!!)
             }
         }
-        val elem = document.create.div("quests-point-item") {
+        val elem = document.create.div("quest-points-item") {
             div("qpi-pic")
             div("qpi-title") {
-                +point.title
+                +point.title.substring(0, 30)
             }
             div("qpi-desc") {
-                +point.desc
+                +point.desc.substring(0, 50)
             }
             onClickFunction = {
                 if (linesDiv.style.visibility == "hidden") {
@@ -56,11 +57,9 @@ class QuestPointStorage {
         elem.appendChild(editButton)
         elem.appendChild(removeButton)
         ret = document.create.li {
-            draggable = Draggable.htmlTrue
-
             onDragStartFunction = { e ->
                 draggableList.handleDragStart(e, ret!!)
-                currentDragPoint = ret
+                currentDragPoint = point
             }
 
             onDragOverFunction = { e ->
@@ -76,16 +75,52 @@ class QuestPointStorage {
                 handleDrop(point)
             }
         }
+        ret.setAttribute("draggable", "true")
         ret.appendChild(elem)
         return ret
     }
 
-    fun removeQuestPoint(point: QuestPoint) : Unit = TODO("Implement the quest point storage")
+    private fun resetLabels() {
+        pointsList.forEachIndexed { i, p ->
+            if (p is GPSQuestPoint) {
+                println("resetLabels setting for: ${p.id}, ${i + 1}")
+                p.marker!!.set("label", "${i + 1}")
+            }
+        }
+    }
 
-    fun handleDrop(point: QuestPoint) : Unit = TODO("Implement the quest point storage")
+    private fun printList() {
+        pointsList.forEach { p ->
+            print("${p.id} ")
+        }
+        println()
+    }
+
+    fun handleDrop(point: QuestPoint) {
+        if (currentDragPoint!!.id != point.id) {
+            val posFrom = pointsList.indexOfFirst { it.id == currentDragPoint!!.id }
+            pointsList.removeAt(posFrom)
+            val posTo = pointsList.indexOfFirst { it.id == point.id }
+            pointsList.add(posTo, currentDragPoint!!)
+            resetLabels()
+        }
+    }
+
+    fun getQuestPointById(id: Int) = pointsList.first { it.id == id }
 
     fun addPoint(point: QuestPoint) {
         pointsList.add(point)
+        editor.documentNodes.willAppear?.style?.visibility = "hidden"
+        editor.documentNodes.questPointsList?.appendChild(createListItem(point))
+    }
+
+    fun removeQuestPoint(point: QuestPoint) {
+        val i = pointsList.indexOfFirst { it.id == point.id }
+        if (pointsList[i] is GPSQuestPoint) {
+            (pointsList[i] as GPSQuestPoint).marker = null
+        }
+        pointsList.removeAt(i)
+        resetLabels()
     }
 
     val size : Int

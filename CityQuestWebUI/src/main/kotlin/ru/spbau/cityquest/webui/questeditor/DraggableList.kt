@@ -19,7 +19,7 @@ class DraggableList {
     fun handleDrop(e: Event, elem: Node) {
         e.stopPropagation()
 
-        if (dragSource != elem && dragSource != null) {
+        if (dragSource != elem) {
             elem.parentNode?.removeChild(dragSource!!)
             elem.parentNode?.insertBefore(dragSource!!, elem)
         }

@@ -18,7 +18,7 @@ class QuestEditorStateManager(editor: QuestEditor) {
             }
             override fun stateOff(stateManager: QuestEditorStateManager) {
                 stateManager.questEditor.documentNodes.editGPSPoint?.style?.visibility = "hidden"
-                stateManager.questEditor.documentNodes.saveChanges?.style?.visibility = "hidden"
+                //stateManager.questEditor.documentNodes.saveChanges?.style?.visibility = "hidden"
             }
         },
         PLACE_MARKER {

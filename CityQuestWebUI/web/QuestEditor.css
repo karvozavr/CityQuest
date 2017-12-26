@@ -115,32 +115,8 @@
     border: 1px solid red;
 }
 
-.qpi-edit-button {
-    background-color: #00bfa5;
-    height: 40px;
-    width: 40px;
-    position: absolute;
-    top: 5px;
-    right: 60px;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12pt;
-    -webkit-transition-duration: 0.4s;
-    transition-duration: 0.4s;
-    visibility: hidden;
-}
-
-.qpi-edit-button:hover {
-    color: black;
-    background-color: white;
-    border: 1px solid #00bfa5;
-}
-
 .qpi-title {
+    color: #00bfa5;
     position: absolute;
     left: 50px;
     top: 0;

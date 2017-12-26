@@ -49,6 +49,9 @@ class QuestEditor(mapOptions: MapOptions) {
         fun isNew() : Boolean = editIndex == -1
     }
 
+    val editNothing : CurrentEdit = CurrentEdit(-2)
+    val editNew : CurrentEdit = CurrentEdit(-1)
+
     val map : KtGoogleMap = KtGoogleMap(documentNodes.map, mapOptions)
 
     fun onClickListener(event : Event) {
@@ -61,10 +64,7 @@ class QuestEditor(mapOptions: MapOptions) {
 
     var mapOnClickListener : Any? = null
 
-    val questPoints = QuestPointStorage()
-
-    val editNothing : CurrentEdit = CurrentEdit(-2)
-    val editNew : CurrentEdit = CurrentEdit(-1)
+    val questPoints = QuestPointStorage(this)
 
     var editorState : QuestEditorStateManager = QuestEditorStateManager(this)
 
@@ -86,7 +86,11 @@ class QuestEditor(mapOptions: MapOptions) {
                 documentNodes.saveChanges?.style?.visibility = "hidden"
             } else {
                 documentNodes.saveChanges?.style?.visibility = "visible"
-                TODO("Implement the current edit setter.")
+                val point = questPoints.getQuestPointById(value.editIndex)
+                val titleVal = document.createAttribute("value")
+                titleVal.value = point.title
+                documentNodes.editGPSPointTitleEditInput?.attributes?.setNamedItem(titleVal)
+                documentNodes.editGPSPointDescEditInput?.innerHTML = point.desc
             }
         }
 
@@ -108,5 +112,10 @@ class QuestEditor(mapOptions: MapOptions) {
     @JsName("placeMarker")
     fun placeMarker() {
         editorState.switchState(QuestEditorStateManager.QuestEditorState.PLACE_MARKER)
+    }
+
+    @JsName("saveChanges")
+    fun saveChanges() {
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
     }
 }
