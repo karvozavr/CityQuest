@@ -39,6 +39,7 @@ class QuestEditor(mapOptions: MapOptions) {
         val willAppear = document.getElementById("will-appear") as HTMLElement?
         val stateViewer = document.getElementById("state") as HTMLElement?
         val editGPSPoint = document.getElementById("edit-gps-point") as HTMLElement?
+        val questPointsList = document.getElementById("quest-points-list") as HTMLElement?
     }
 
     val documentNodes : DocumentNodes = DocumentNodes()
