@@ -123,3 +123,12 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+# CityQuestWebUI build files
+CityQuestWebUI/web/**/*.js
+CityQuestWebUI/web/**/*.js.map
+CityQuestWebUI/web/**/libs/*
+CityQuestWebUI/web/**/*.kjsm
+
+# CityQuestWebUI google maps API key
+CityQuestWebUI/src/main/kotlin/ru/spbau/cityquest/webui/questeditor/GoogleMapsAPIKey.kt
