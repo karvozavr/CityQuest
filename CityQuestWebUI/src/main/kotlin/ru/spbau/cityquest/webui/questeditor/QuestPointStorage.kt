@@ -10,8 +10,9 @@ import kotlin.browser.document
 
 class QuestPointStorage(questEditor: QuestEditor) {
     var nextId : Int = 0
-        get() = field++
         private set
+
+    fun getNextId() = nextId++
 
     private val pointsList : MutableList<QuestPoint> = ArrayList()
     private val draggableList : DraggableList = DraggableList()
@@ -83,7 +84,6 @@ class QuestPointStorage(questEditor: QuestEditor) {
     private fun resetLabels() {
         pointsList.forEachIndexed { i, p ->
             if (p is GPSQuestPoint) {
-                println("resetLabels setting for: ${p.id}, ${i + 1}")
                 p.marker!!.set("label", "${i + 1}")
             }
         }

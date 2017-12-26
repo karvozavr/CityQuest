@@ -4,6 +4,7 @@ import google.maps.KtGoogleMap
 import google.maps.KtMarker
 import google.maps.MapOptions
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 
@@ -33,7 +34,7 @@ const val defaultDesc : String = "All embrace me\n" +
 class QuestEditor(mapOptions: MapOptions) {
     class DocumentNodes {
         val map = document.getElementById("map") as HTMLElement?
-        val editGPSPointTitleEditInput = document.getElementById("edit-gps-point-title-edit-input") as HTMLElement?
+        val editGPSPointTitleEditInput = document.getElementById("edit-gps-point-title-edit-input") as HTMLInputElement?
         val editGPSPointDescEditInput = document.getElementById("edit-gps-point-desc-edit-input")  as HTMLElement?
         val saveChanges = document.getElementById("save-changes") as HTMLElement?
         val willAppear = document.getElementById("will-appear") as HTMLElement?
@@ -55,7 +56,7 @@ class QuestEditor(mapOptions: MapOptions) {
     val map : KtGoogleMap = KtGoogleMap(documentNodes.map, mapOptions)
 
     fun onClickListener(event : Event) {
-        val questPoint = GPSQuestPoint(questPoints.nextId, getCurrentEditTitle(), getCurrentEditDesc(), js("event.latLng"))
+        val questPoint = GPSQuestPoint(questPoints.getNextId(), getCurrentEditTitle(), getCurrentEditDesc(), js("event.latLng"))
         questPoint.marker = KtMarker(questPoint.latLng, map)
         questPoint.marker?.set("label", "${questPoints.size + 1}")
         questPoints.addPoint(questPoint)
@@ -80,7 +81,7 @@ class QuestEditor(mapOptions: MapOptions) {
                 documentNodes.editGPSPointDescEditInput?.innerHTML = ""
             } else if (value.isNew()) {
                 val titleVal = document.createAttribute("value")
-                titleVal.value = defaultTitle
+                titleVal.value = defaultTitle + " ${questPoints.nextId + 1}"
                 documentNodes.editGPSPointTitleEditInput?.attributes?.setNamedItem(titleVal)
                 documentNodes.editGPSPointDescEditInput?.innerHTML = defaultDesc
                 documentNodes.saveChanges?.style?.visibility = "hidden"
@@ -94,7 +95,7 @@ class QuestEditor(mapOptions: MapOptions) {
             }
         }
 
-    fun getCurrentEditTitle() : String = documentNodes.editGPSPointTitleEditInput?.attributes?.getNamedItem("value")?.value ?: ""
+    fun getCurrentEditTitle() : String = documentNodes.editGPSPointTitleEditInput?.value ?: ""
 
     fun getCurrentEditDesc() : String = documentNodes.editGPSPointDescEditInput?.innerHTML ?: ""
 
