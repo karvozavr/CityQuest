@@ -33,7 +33,7 @@ class DraggableList {
                 elem.parentNode?.insertBefore(dragSource!!, elem)
             } else {
                 elem.parentNode?.insertBefore(dragSource!!,
-                        (elem.parentElement!! as HTMLUListElement).children[i + 1])
+                        (elem.parentElement!! as HTMLUListElement).children[i])
             }
         }
     }
