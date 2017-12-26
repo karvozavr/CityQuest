@@ -68,6 +68,9 @@ fabric.properties
 *.tar.gz
 *.rar
 
+# Permit gradle-wrapper.jar, though
+!**/gradle-wrapper.jar
+
 # Built application files
 *.apk
 *.ap_
