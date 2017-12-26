@@ -24,5 +24,8 @@ public abstract class AbstractQuestStep implements Serializable {
         this.actionLabel = actionLabel;
     }
 
+    /**
+     * Checks if the step pass condition satisfied.
+     */
     public abstract void check(Activity context);
 }

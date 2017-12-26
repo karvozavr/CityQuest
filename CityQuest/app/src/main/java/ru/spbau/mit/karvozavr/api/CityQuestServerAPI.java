@@ -1,86 +1,61 @@
 package ru.spbau.mit.karvozavr.api;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
+import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
-import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
-
 public class CityQuestServerAPI {
-    public static boolean isEnd = false;
-    private static final String SERVER_DOMAIN_NAME = "https://ru.wikipedia.org";
+    private static boolean isEnd = false;
+    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/get_data/";
 
-    public static Quest getQuestByID(int id) throws LoadingErrorException {
-        return QuestController.getSampleQuest();
-
-        /*String url = SERVER_DOMAIN_NAME + "";  //
+    public static Quest getQuestByQuestInfo(QuestInfo questInfo) throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questInfo.id;
         try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
+            ArrayList<AbstractQuestStep> steps = JsonReaderQuestParser.readQuestStepsFromJson(is);
 
-            return JsonReaderQuestParser.readQuestFromJson(jsonReader);
+            return new Quest(questInfo, steps);
         } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
+            throw new LoadingErrorException("Failed to fetch data.", e);
+        }
     }
 
-    public static QuestInfo getQuestInfoById(int questId) throws LoadingErrorException {
-        return QuestController.getSampleQuest().info;
-
-        /*String url = SERVER_DOMAIN_NAME + "";
-        try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
-            return JsonReaderQuestParser.readQuestInfoFromJson(jsonReader);
-        } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
-    }
-
-    public static List<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount)
-            throws LoadingErrorException {
+    public static ArrayList<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount) {
         return getQuestInfosFromToByName(startingFrom, amount, "");
     }
 
-    public static List<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name)
-            throws LoadingErrorException {
+    public static ArrayList<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name) {
+        if (!name.matches("[a-zA-z0-9 -]*")) {
+            return new ArrayList<>();
+        }
 
-        ArrayList<QuestInfo> list = new ArrayList<>();
-        int border = startingFrom + amount >= numberOfQuests() ? amount : numberOfQuests();
-        if (border == 42)
+        String url = SERVER_DOMAIN_NAME + "get_views/?from=" + startingFrom
+                + "&len=" + amount
+                + "&contains=" + name.replace(' ', '+');
 
-        for (int i = 0; i < border; i++)
-            list.add(QuestController.getSampleQuest().info);
-
-        return list;
-
-        /*String url = SERVER_DOMAIN_NAME + "";
         try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
             isEnd = numberOfQuests() <= startingFrom + amount;
 
-            return JsonReaderQuestParser.readQuestInfosFromJson(jsonReader);
+            return JsonReaderQuestParser.readQuestInfosFromJson(is);
         } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
+            return new ArrayList<>();
+        }
     }
 
     private static int numberOfQuests() throws LoadingErrorException {
-        return 42;
-
-        /*String url = SERVER_DOMAIN_NAME + "";
-        try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
-            jsonReader.beginObject();
-            int result = jsonReader.nextInt();
-            jsonReader.endObject();
-
-            return result;
+        String url = SERVER_DOMAIN_NAME + "get_number";
+        try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
+            return scanner.nextInt();
         } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
+            return Integer.MAX_VALUE;
+        }
+    }
+
+    public static boolean isEndReached() {
+        return isEnd;
     }
 }
