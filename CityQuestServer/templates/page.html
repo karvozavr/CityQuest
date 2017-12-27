@@ -58,13 +58,20 @@
             </div>
         </div>
     </div>
-    <script>
+
+    <form name="save_quest" action="{% url 'save_quest' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" id="json" name="json" value="">
+    </form>
+
+    <script type="text/javascript">
         function cancelNewPoint() {
             CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().cancelNewPoint();
         }
 
         function saveChanges() {
             // CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveChanges();
+
             document.save_quest.submit();
         }
 
@@ -76,11 +83,6 @@
             CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().placeMarker();
         }
     </script>
-
-    <form name="save_quest" action="{% url 'save_quest' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="json" value="">
-    </form>
 
 </body>
 </html>
