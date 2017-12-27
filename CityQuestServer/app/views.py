@@ -15,4 +15,4 @@ def save(request):
     return HttpResponse(json)
 
     # It is not clear if I should do it
-    return redirect('index')
+    # return redirect('index')

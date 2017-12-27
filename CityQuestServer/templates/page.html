@@ -70,9 +70,9 @@
         }
 
         function saveChanges() {
-            // CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveChanges();
-
+            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveChanges();
             document.save_quest.submit();
+            document.getElementById("json").value = "";
         }
 
         function newQuestPoint() {
