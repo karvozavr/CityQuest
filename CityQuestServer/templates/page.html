@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>Quest Editor &mdash; CityQuest</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'QuestEditor.css' %}">
+
+    <script type="text/javascript" src="{% static 'EarlyLoader/libs/kotlin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'EarlyLoader/earlyloader.js' %}"></script>
+    <script type="text/javascript" src="{% static 'CityQuestWebUI/libs/kotlinx-html-js.js' %}"></script>
+
+    <script>
+        var CityQuestWebUIPath = {{ STATIC_URL }};
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="map-layout">
+            <div id="edit-gps-point" class="nicebox dialog">
+                <div class="title-edit">
+                    <input id="edit-gps-point-title-edit-input" class="title-edit-input" type="text">
+                </div>
+                <div class="desc-edit">
+                    <textarea id="edit-gps-point-desc-edit-input" class="desc-edit-input"></textarea>
+                </div>
+                <div class="submit-buttons">
+                    <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
+                    <button class="button submit-button" onclick="placeMarker()">Setup the position</button>
+                    <button class="button submit-button" onclick="saveChanges()" id="save-changes">Save changes</button>
+                </div>
+            </div>
+            <div id="debug-window" class="nicebox">
+                <p id="state">Mode: VIEW</p>
+                <p id="debug-info"></p>
+            </div>
+            <div id="map"></div>
+        </div>
+        <div id="controls" class="nicebox">
+            <div id="user-info" class="control-area">
+                <h2>User info</h2>
+            </div>
+            <div id="quest-points" class="control-area">
+                <ul id="quest-points-list">
+                    <li style="height: 0">
+                        <div id="will-appear">
+                            Quest points will appear here...
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="control-buttons" class="control-area">
+                <button class="button control-button" onclick="newQuestPoint()">Add GPS quest point</button>
+                <button class="button control-button">Add text question</button>
+                <button class="button control-button" onclick="saveChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function cancelNewPoint() {
+            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().cancelNewPoint();
+        }
+
+        function saveChanges() {
+            // CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveChanges();
+            document.save_quest.submit();
+        }
+
+        function newQuestPoint() {
+            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().newQuestPoint();
+        }
+
+        function placeMarker() {
+            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().placeMarker();
+        }
+    </script>
+
+    <form name="save_quest" action="{% url 'save_quest' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="json" value="">
+    </form>
+
+</body>
+</html>
