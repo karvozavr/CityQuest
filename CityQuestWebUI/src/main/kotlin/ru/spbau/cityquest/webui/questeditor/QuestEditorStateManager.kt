@@ -12,13 +12,21 @@ class QuestEditorStateManager(editor: QuestEditor) {
             }
             override fun stateOff(stateManager: QuestEditorStateManager) { }
         },
-        EDIT_QUEST_POINT {
+        EDIT_GPS_QUEST_POINT {
             override fun stateOn(stateManager: QuestEditorStateManager) {
                 stateManager.questEditor.documentNodes.editGPSPoint?.style?.visibility = "visible"
             }
             override fun stateOff(stateManager: QuestEditorStateManager) {
                 stateManager.questEditor.documentNodes.editGPSPoint?.style?.visibility = "hidden"
                 //stateManager.questEditor.documentNodes.saveChanges?.style?.visibility = "hidden"
+            }
+        },
+        EDIT_TEXT_QUEST_POINT {
+            override fun stateOn(stateManager: QuestEditorStateManager) {
+                stateManager.questEditor.documentNodes.editTextPoint?.style?.visibility = "visible"
+            }
+            override fun stateOff(stateManager: QuestEditorStateManager) {
+                stateManager.questEditor.documentNodes.editTextPoint?.style?.visibility = "hidden"
             }
         },
         PLACE_MARKER {

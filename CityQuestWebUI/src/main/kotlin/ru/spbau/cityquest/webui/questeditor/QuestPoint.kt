@@ -42,4 +42,10 @@ class GPSQuestPoint(id: Int, title: String, desc: String, val latLng: LatLng) : 
         }
 }
 
+class TextQuestPoint(id: Int, title: String, desc: String, val keywords: String) : QuestPoint(id, title, desc) {
+    override fun getType(): String {
+        return "key"
+    }
 
+    override fun getKeywords(): String = keywords
+}
