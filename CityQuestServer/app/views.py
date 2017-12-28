@@ -14,10 +14,13 @@ def index(request):
 
 
 def save(request):
-    #try:
+    # try:
         json_data = request.POST.get('json')
 
         deserialized = json.loads(json_data)
+
+        if len(deserialized["steps"]) == 0:
+            raise Exception
 
         q = QuestInfo()
         q.name = deserialized["name"]
@@ -45,10 +48,7 @@ def save(request):
             s.quest_host_id = q.id
             s.save()
 
-
-
     # It is not clear if I should do it
-    # return HttpResponse(deserialized.items())
         #return redirect('index')
     #except Exception:
         return redirect('index')
