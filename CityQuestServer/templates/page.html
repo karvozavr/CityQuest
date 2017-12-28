@@ -56,7 +56,7 @@
         </div>
         <div id="controls" class="nicebox">
             <div id="user-info" class="control-area">
-                <h2>User info</h2>
+                <img src="{% static 'logo.jpg' %}" class="logo"/>
             </div>
             <div id="quest-points" class="control-area">
                 <ul id="quest-points-list">
@@ -114,6 +114,18 @@
         function descOnChange(value, elem) {
             elem.innerHTML = value;
             elem.value = value;
+        }
+
+        function ptToJSON(title, desc, type, goal, keyword, lat, lng) {
+            return {
+                "title" : title,
+                "description": desc,
+                "type": type,
+                "goal": goal,
+                "keyword": keyword,
+                "lat": (lat === null ? null : lat()),
+                "lng": (lng === null ? null : lng())
+            }
         }
     </script>
 
