@@ -147,6 +147,7 @@
 }
 
 #debug-window {
+    visibility: hidden;
     position: absolute;
     top: 0;
     left: 120px;

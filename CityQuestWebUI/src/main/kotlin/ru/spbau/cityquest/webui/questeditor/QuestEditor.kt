@@ -110,6 +110,7 @@ class QuestEditor(mapOptions: MapOptions) {
                 val titleVal = defaultTitle + " ${questPoints.nextId + 1}"
                 documentNodes.editGPSPointTitleEditInput!!.attributes.setNamedItem(createValElement(titleVal))
                 documentNodes.editTextPointTitleEditInput!!.attributes.setNamedItem(createValElement(titleVal))
+                println(titleVal)
                 documentNodes.editFinalPointTitleEditInput!!.attributes.setNamedItem(createValElement(titleVal))
                 documentNodes.editGPSPointGoalEditInput!!.attributes.setNamedItem(createValElement(defaultGoal))
                 documentNodes.editTextPointAnsEditInput!!.attributes.setNamedItem(createValElement(defaultAns))
@@ -209,6 +210,7 @@ class QuestEditor(mapOptions: MapOptions) {
 
     @JsName("finalPoint")
     fun finalPoint() {
+        currentEdit = editNew
         editorState.switchState(QuestEditorStateManager.QuestEditorState.EDIT_FINAL_QUEST_POINT)
     }
 
