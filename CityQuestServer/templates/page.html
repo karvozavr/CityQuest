@@ -115,6 +115,18 @@
             elem.innerHTML = value;
             elem.value = value;
         }
+
+        function ptToJSON(title, desc, type, goal, keyword, lat, lng) {
+            return {
+                "title" : title,
+                "description": desc,
+                "type": type,
+                "goal": goal,
+                "keyword": keyword,
+                "lat": (lat === null ? null : lat()),
+                "lng": (lng === null ? null : lng())
+            }
+        }
     </script>
 
 </body>

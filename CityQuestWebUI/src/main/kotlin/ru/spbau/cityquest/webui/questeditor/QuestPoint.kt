@@ -5,6 +5,7 @@ import google.maps.LatLng
 import kotlin.js.Json
 import kotlin.js.json
 
+
 abstract class QuestPoint(val id: Int, var title: String, var desc: String) {
     open fun getLatLng() : LatLng? = null
 
@@ -15,16 +16,7 @@ abstract class QuestPoint(val id: Int, var title: String, var desc: String) {
     abstract fun getType() : String
 
     fun toJson(idx: Int) : Json {
-        return json(
-                "title" to title,
-                "description" to desc,
-                "goal" to getGoal(),
-                "step_type" to getType(),
-                "latitude" to getLatLng()?.lat,
-                "longitude" to getLatLng()?.lng,
-                "keywords" to getKeywords(),
-                "step_number" to idx + 1
-        )
+        return ptToJSON(title, desc, getType(), getGoal(), getKeywords(), getLatLng()?.lat, getLatLng()?.lng)
     }
 }
 
