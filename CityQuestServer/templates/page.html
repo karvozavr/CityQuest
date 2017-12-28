@@ -54,7 +54,7 @@
             <div id="control-buttons" class="control-area">
                 <button class="button control-button" onclick="newQuestPoint()">Add GPS quest point</button>
                 <button class="button control-button">Add text question</button>
-                <button class="button control-button" onclick="saveChanges()">Save changes</button>
+                <button class="button control-button" onclick="submitChanges()">Save changes</button>
             </div>
         </div>
     </div>
@@ -71,8 +71,6 @@
 
         function saveChanges() {
             CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveChanges();
-            document.save_quest.submit();
-            document.getElementById("json").value = "";
         }
 
         function newQuestPoint() {
@@ -81,6 +79,12 @@
 
         function placeMarker() {
             CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().placeMarker();
+        }
+        
+        function submitChanges() {
+            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().submitChanges();
+            document.save_quest.submit();
+            document.getElementById("json").value = "";
         }
     </script>
 

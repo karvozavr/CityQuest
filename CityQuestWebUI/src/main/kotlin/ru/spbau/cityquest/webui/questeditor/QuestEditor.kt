@@ -7,6 +7,9 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
+import kotlin.js.json
+
+external fun alert(message: String)
 
 const val defaultTitle : String = "Lorem ipsum dolor sit amet"
 const val defaultDesc : String = "All embrace me\n" +
@@ -41,6 +44,7 @@ class QuestEditor(mapOptions: MapOptions) {
         val stateViewer = document.getElementById("state") as HTMLElement?
         val editGPSPoint = document.getElementById("edit-gps-point") as HTMLElement?
         val questPointsList = document.getElementById("quest-points-list") as HTMLElement?
+        val jsonInput = document.getElementById("json") as HTMLInputElement?
     }
 
     val documentNodes : DocumentNodes = DocumentNodes()
@@ -118,5 +122,19 @@ class QuestEditor(mapOptions: MapOptions) {
     @JsName("saveChanges")
     fun saveChanges() {
         editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
+    }
+
+    @JsName("submitChanges")
+    fun submitChanges() {
+        documentNodes.jsonInput!!.value = getJsonDesc()
+    }
+
+    private fun getJsonDesc() : String {
+        val questPointsJSONS = questPoints.getPointsJSONs()
+        return JSON.stringify(json(
+                "name" to "Untitled :(",
+                "description" to "Undescribed :(",
+                "steps" to questPointsJSONS
+        ))
     }
 }
