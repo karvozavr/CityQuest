@@ -6,21 +6,19 @@ import kotlin.js.Json
 import kotlin.js.json
 
 
-abstract class QuestPoint(val id: Int, var title: String, var desc: String) {
+abstract class QuestPoint(val id: Int, var title: String, val goal: String, var desc: String) {
     open fun getLatLng() : LatLng? = null
 
     open fun getKeywords() : String = ""
 
-    open fun getGoal() : String = "???"
-
     abstract fun getType() : String
 
     fun toJson(idx: Int) : Json {
-        return ptToJSON(title, desc, getType(), getGoal(), getKeywords(), getLatLng()?.lat, getLatLng()?.lng)
+        return ptToJSON(title, desc, getType(), goal, getKeywords(), getLatLng()?.lat, getLatLng()?.lng)
     }
 }
 
-class GPSQuestPoint(id: Int, title: String, desc: String, val latLng: LatLng) : QuestPoint(id, title, desc) {
+class GPSQuestPoint(id: Int, title: String, goal: String, desc: String, val latLng: LatLng) : QuestPoint(id, title, goal, desc) {
     override fun getType(): String {
         return "geo"
     }
@@ -34,7 +32,7 @@ class GPSQuestPoint(id: Int, title: String, desc: String, val latLng: LatLng) : 
         }
 }
 
-class TextQuestPoint(id: Int, title: String, desc: String, val keywords: String) : QuestPoint(id, title, desc) {
+class TextQuestPoint(id: Int, title: String, goal: String, desc: String, val keywords: String) : QuestPoint(id, title, goal, desc) {
     override fun getType(): String {
         return "key"
     }
