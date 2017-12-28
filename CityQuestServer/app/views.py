@@ -19,7 +19,8 @@ def save(request):
 
         deserialized = json.loads(json_data)
 
-        if len(deserialized["steps"]) == 0:
+        n = len(deserialized["steps"])
+        if n == 0:
             raise Exception
 
         q = QuestInfo()
@@ -31,22 +32,25 @@ def save(request):
 
         q.save()
 
+        i = 0
         for step in deserialized["steps"]:
             s = QuestStep()
             s.title = step["title"]
-            s.step_number = step["step_number"]
-            s.step_type = step["step_type"]
+            s.step_number = i
+            s.step_type = step["type"]
             s.description = step["description"]
             s.goal = step["goal"]
             if s.step_type == 'geo':
-                s.latitude = step["latitude"]
-                s.longitude = step["longitude"]
+                s.latitude = step["lat"]
+                s.longitude = step["lng"]
                 s.keywords = ""
             elif s.step_type == 'key':
-                s.keywords = step["keywords"]
+                s.keywords = step["keyword"]
 
             s.quest_host_id = q.id
             s.save()
+
+            i += 1
 
     # It is not clear if I should do it
         #return redirect('index')
