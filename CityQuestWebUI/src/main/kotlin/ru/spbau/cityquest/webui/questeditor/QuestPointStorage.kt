@@ -6,6 +6,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.*
 import org.w3c.dom.HTMLLIElement
 import kotlin.browser.document
+import kotlin.js.Json
 
 
 class QuestPointStorage(questEditor: QuestEditor) {
@@ -129,4 +130,10 @@ class QuestPointStorage(questEditor: QuestEditor) {
 
     val size : Int
         get() = pointsList.size
+
+    fun getPointsJSONs() : List<Json> {
+        val questPoints = ArrayList<Json>()
+        pointsList.withIndex().mapTo(questPoints) { (i, pt) -> pt.toJson(i) }
+        return questPoints
+    }
 }
