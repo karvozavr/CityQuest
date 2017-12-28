@@ -26,7 +26,7 @@ class QuestPointStorage(questEditor: QuestEditor) {
         val editButton = document.create.button(classes = "qpi-edit-button") {
             onClickFunction = {
                 editor.currentEdit = QuestEditor.CurrentEdit(point.id)
-                editor.editorState.switchState(QuestEditorStateManager.QuestEditorState.EDIT_QUEST_POINT)
+                editor.editorState.switchState(QuestEditorStateManager.QuestEditorState.EDIT_GPS_QUEST_POINT)
             }
         }
         val removeButton = document.create.button(classes = "qpi-remove-button") {
