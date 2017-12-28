@@ -10,6 +10,8 @@ fun getEditor() : QuestEditor {
     return editor!!
 }
 
+external fun descOnChange(value: String, elem: Any)
+
 fun main(args: Array<String>) {
     println("CityQuest Web UI in Kotlin is at your service!")
 

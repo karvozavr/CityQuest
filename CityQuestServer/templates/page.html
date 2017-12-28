@@ -24,7 +24,7 @@
                     <input id="edit-gps-point-title-edit-input" class="title-edit-input" type="text">
                 </div>
                 <div class="desc-edit">
-                    <textarea id="edit-gps-point-desc-edit-input" class="desc-edit-input"></textarea>
+                    <textarea id="edit-gps-point-desc-edit-input" class="desc-edit-input" onchange="descOnChange(this.value, this)"></textarea>
                 </div>
                 <div class="submit-buttons">
                     <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
@@ -36,11 +36,12 @@
                 <div class="title-edit">
                     <input id="edit-text-point-title-edit-input" class="title-edit-input" type="text">
                 </div>
-                <div class="desc-edit">
-                    <textarea id="edit-text-point-desc-edit-input" class="desc-edit-input"></textarea>
-                </div>
                 <div class="ans-edit">
-                    <input id="edit-text-point-ans-edit-input" class="answer-edit-input" type="text">
+                    <label class="kwlabel" for="edit-text-point-ans-edit-input">Keyword:</label>
+                    <span class="kwans"><input id="edit-text-point-ans-edit-input" class="answer-edit-input" type="text"></span>
+                </div>
+                <div class="desc-edit" id="desc-for-text">
+                    <textarea id="edit-text-point-desc-edit-input" class="desc-edit-input" onchange="descOnChange(this.value, this)"></textarea>
                 </div>
                 <div class="submit-buttons">
                     <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
@@ -110,6 +111,10 @@
             CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveTextChanges();
         }
 
+        function descOnChange(value, elem) {
+            elem.innerHTML = value;
+            elem.value = value;
+        }
     </script>
 
 </body>
