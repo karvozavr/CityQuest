@@ -38,10 +38,10 @@ class QuestPointStorage(questEditor: QuestEditor) {
         val elem = document.create.div("quest-points-item") {
             div("qpi-pic")
             div("qpi-title") {
-                +point.title.substring(0, 30)
+                +point.title.substring(0, 20)
             }
             div("qpi-desc") {
-                +point.desc.substring(0, 50)
+                +point.desc.substring(0, 38)
             }
             onClickFunction = {
                 if (linesDiv.style.visibility == "hidden") {

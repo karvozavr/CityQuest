@@ -29,6 +29,15 @@ class QuestEditorStateManager(editor: QuestEditor) {
                 stateManager.questEditor.documentNodes.editTextPoint?.style?.visibility = "hidden"
             }
         },
+        EDIT_FINAL_QUEST_POINT {
+            override fun stateOn(stateManager: QuestEditorStateManager) {
+                stateManager.questEditor.documentNodes.editFinalPoint?.style?.visibility = "visible"
+            }
+
+            override fun stateOff(stateManager: QuestEditorStateManager) {
+                stateManager.questEditor.documentNodes.editFinalPoint?.style?.visibility = "hidden"
+            }
+        },
         PLACE_MARKER {
             override fun stateOn(stateManager: QuestEditorStateManager) {
                 val editor = stateManager.questEditor

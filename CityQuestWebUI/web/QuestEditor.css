@@ -246,6 +246,10 @@
     height: 66%;
 }
 
+#desc-for-final {
+    height: 82%;
+}
+
 .ans-edit {
     padding: 5px 5px;
     position: relative;
