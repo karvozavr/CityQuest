@@ -20,7 +20,7 @@ fun createGoogleMapsLoader() {
 @JsName("createQuestEditorLoader")
 fun createQuestEditorLoader() {
     var loaderScript = document.createElement("script")
-    loaderScript.setAttribute("src", "CityQuestWebUI/CityQuestWebUI.js")
+    loaderScript.setAttribute("src", "static/CityQuestWebUI/CityQuestWebUI.js")
     document.head?.appendChild(loaderScript);
 }
 
