@@ -3,8 +3,11 @@ package ru.spbau.cityquest.webui.questeditor
 import google.maps.KtGoogleMap
 import google.maps.KtMarker
 import google.maps.MapOptions
+import kotlinx.html.dom.create
+import org.w3c.dom.Attr
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.js.json
@@ -32,15 +35,16 @@ const val defaultDesc : String = "All embrace me\n" +
         "Make them bow to my will\n" +
         "To the skies\n" +
         "See Carolus rise\n"
+const val defaultAns : String = "42"
 
 
 class QuestEditor(mapOptions: MapOptions) {
     class DocumentNodes {
         val map = document.getElementById("map") as HTMLElement?
         val editGPSPointTitleEditInput = document.getElementById("edit-gps-point-title-edit-input") as HTMLInputElement?
-        val editGPSPointDescEditInput = document.getElementById("edit-gps-point-desc-edit-input")  as HTMLElement?
+        val editGPSPointDescEditInput = document.getElementById("edit-gps-point-desc-edit-input")  as HTMLTextAreaElement?
         val editTextPointTitleEditInput = document.getElementById("edit-text-point-title-edit-input") as HTMLInputElement?
-        val editTextPointDescEditInput = document.getElementById("edit-text-point-desc-edit-input")  as HTMLElement?
+        val editTextPointDescEditInput = document.getElementById("edit-text-point-desc-edit-input")  as HTMLTextAreaElement?
         val editTextPointAnsEditInput = document.getElementById("edit-text-point-ans-edit-input")  as HTMLInputElement?
         val saveChanges = document.getElementById("save-changes") as HTMLElement?
         val willAppear = document.getElementById("will-appear") as HTMLElement?
@@ -81,6 +85,12 @@ class QuestEditor(mapOptions: MapOptions) {
         editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
     }
 
+    private fun createValElement(value: String) : Attr {
+        val svalue = document.createAttribute("value")
+        svalue.value = value
+        return svalue
+    }
+
     var currentEdit : CurrentEdit = editNothing
         set(value) {
             field = value
@@ -88,10 +98,12 @@ class QuestEditor(mapOptions: MapOptions) {
                 documentNodes.editGPSPointTitleEditInput?.innerHTML = ""
                 documentNodes.editGPSPointDescEditInput?.innerHTML = ""
             } else if (value.isNew()) {
-                val titleVal = document.createAttribute("value")
-                titleVal.value = defaultTitle + " ${questPoints.nextId + 1}"
-                documentNodes.editGPSPointTitleEditInput?.attributes?.setNamedItem(titleVal)
-                documentNodes.editGPSPointDescEditInput?.innerHTML = defaultDesc
+                val titleVal = defaultTitle + " ${questPoints.nextId + 1}"
+                documentNodes.editGPSPointTitleEditInput!!.attributes.setNamedItem(createValElement(titleVal))
+                documentNodes.editTextPointTitleEditInput!!.attributes.setNamedItem(createValElement(titleVal))
+                documentNodes.editTextPointAnsEditInput!!.attributes.setNamedItem(createValElement(defaultAns))
+                descOnChange(defaultDesc, documentNodes.editGPSPointDescEditInput!!)
+                descOnChange(defaultDesc, documentNodes.editTextPointDescEditInput!!)
                 documentNodes.saveChanges?.style?.visibility = "hidden"
             } else {
                 documentNodes.saveChanges?.style?.visibility = "visible"
@@ -104,16 +116,19 @@ class QuestEditor(mapOptions: MapOptions) {
         }
 
     fun getCurrentEditTitle() : String {
-        return if (editorState.currentState == QuestEditorStateManager.QuestEditorState.EDIT_GPS_QUEST_POINT)
+        return if (editorState.currentState == QuestEditorStateManager.QuestEditorState.EDIT_GPS_QUEST_POINT
+                       || editorState.currentState == QuestEditorStateManager.QuestEditorState.PLACE_MARKER)
             documentNodes.editGPSPointTitleEditInput!!.value
         else
             documentNodes.editTextPointTitleEditInput!!.value
     }
 
     fun getCurrentEditDesc() : String {
-        return if (editorState.currentState == QuestEditorStateManager.QuestEditorState.EDIT_GPS_QUEST_POINT)
+        return if (editorState.currentState == QuestEditorStateManager.QuestEditorState.EDIT_GPS_QUEST_POINT
+                || editorState.currentState == QuestEditorStateManager.QuestEditorState.PLACE_MARKER) {
+            println(documentNodes.editGPSPointDescEditInput!!.innerHTML)
             documentNodes.editGPSPointDescEditInput!!.innerHTML
-        else
+        } else
             documentNodes.editTextPointDescEditInput!!.innerHTML
     }
 
@@ -159,6 +174,7 @@ class QuestEditor(mapOptions: MapOptions) {
                 getCurrentEditDesc(),
                 getCurrentEditAns()
         ))
+        editorState.switchState(QuestEditorStateManager.QuestEditorState.VIEW)
     }
 
     private fun getJsonDesc() : String {

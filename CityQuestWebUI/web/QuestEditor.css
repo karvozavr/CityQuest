@@ -222,7 +222,7 @@
 }
 
 .title-edit {
-    padding: 25px 5px;
+    padding: 5px 5px;
     position: relative;
     height: 8%;
     width: 100%;
@@ -242,12 +242,12 @@
     box-sizing: border-box;
 }
 
-#edit-text-point.desc-edit {
+#desc-for-text {
     height: 74%
 }
 
 .ans-edit {
-    padding: 25px 5px;
+    padding: 5px 5px;
     position: relative;
     height: 8%;
     width: 100%;
@@ -268,6 +268,7 @@
     width: 100%;
     border: none;
     border-bottom: 1px solid #00bfa5;
+    vertical-align: bottom;
 }
 
 .desc-edit-input {
@@ -283,6 +284,23 @@
     width: 100%;
     border: none;
     border-bottom: 1px solid #00bfa5;
+}
+
+.kwlabel {
+    float: left;
+    font-size: 20px;
+    font-family: Arial;
+    vertical-align: bottom;
+    height: 100%;
+    margin-right: 5px;
+}
+
+.kwans {
+    overflow: hidden;
+    display: block;
+}
+.kwans input {
+    width: 100%;
 }
 
 html, body {
