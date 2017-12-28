@@ -56,6 +56,18 @@
                     <button class="button submit-button" onclick="saveTextChanges()" id="text-save-changes">Save changes</button>
                 </div>
             </div>
+            <div id="edit-final-point" class="nicebox dialog">
+                <div class="title-edit">
+                    <input id="edit-final-point-title-edit-input" class="title-edit-input" type="text">
+                </div>
+                <div class="desc-edit" id="desc-for-final">
+                    <textarea id="edit-final-point-desc-edit-input" class="desc-edit-input" onchange="descOnChange(this.value, this)"></textarea>
+                </div>
+                <div class="submit-buttons">
+                    <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
+                    <button class="button submit-button" onclick="submitChanges()">Submit Quest</button>
+                </div>
+            </div>
             <div id="debug-window" class="nicebox">
                 <p id="state">Mode: VIEW</p>
                 <p id="debug-info"></p>
@@ -78,7 +90,7 @@
             <div id="control-buttons" class="control-area">
                 <button class="button control-button" onclick="newQuestPoint()">Add GPS quest point</button>
                 <button class="button control-button" onclick="newTextPoint()">Add text question</button>
-                <button class="button control-button" onclick="submitChanges()">Save changes</button>
+                <button class="button control-button" onclick="finalPoint()">Proceed to the final point</button>
             </div>
         </div>
     </div>
@@ -113,6 +125,10 @@
             CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().submitChanges();
             document.save_quest.submit();
             // document.getElementById("json").value = "";
+        }
+
+        function finalPoint() {
+            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().finalPoint();
         }
 
         function saveTextChanges() {

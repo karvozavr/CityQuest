@@ -147,6 +147,7 @@
 }
 
 #debug-window {
+    visibility: hidden;
     position: absolute;
     top: 0;
     left: 120px;
@@ -244,6 +245,10 @@
 
 #desc-for-text {
     height: 66%;
+}
+
+#desc-for-final {
+    height: 82%;
 }
 
 .ans-edit {

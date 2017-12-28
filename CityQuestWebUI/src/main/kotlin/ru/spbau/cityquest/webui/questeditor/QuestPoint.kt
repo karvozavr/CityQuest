@@ -39,3 +39,9 @@ class TextQuestPoint(id: Int, title: String, goal: String, desc: String, val key
 
     override fun getKeywords(): String = keywords
 }
+
+class FinalQuestPoint(id: Int, title: String, desc: String) : QuestPoint(id, title, "", desc) {
+    override fun getType(): String {
+        return "final"
+    }
+}
