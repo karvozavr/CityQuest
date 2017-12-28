@@ -234,7 +234,7 @@
 .desc-edit {
     padding: 10px 10px 10px 5px;
     position: relative;
-    height: 82%;
+    height: 74%;
     width: 100%;
     margin: 1% 0;
     -webkit-box-sizing: border-box;
@@ -243,7 +243,7 @@
 }
 
 #desc-for-text {
-    height: 74%
+    height: 66%;
 }
 
 .ans-edit {
@@ -292,7 +292,7 @@
     font-family: Arial;
     vertical-align: bottom;
     height: 100%;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .kwans {
