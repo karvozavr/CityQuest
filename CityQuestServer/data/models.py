@@ -3,8 +3,8 @@ from django.db import models
 
 class QuestInfo(models.Model):
     name = models.TextField(max_length=100)
-    # TODO: how to store image?
     author = models.TextField(max_length=100)
+    # TODO: how to store image? And should we store it?
     # TODO: if we will keep image like this, make strict rule to not upload image bigger than 256 kb
     image = models.TextField(max_length=262144)
 
@@ -22,7 +22,7 @@ class QuestInfo(models.Model):
 class QuestStep(models.Model):
     title = models.TextField(max_length=100)
     description = models.TextField(max_length=500)
-    goal = models.TextField(max_length=128)
+    goal = models.TextField(max_length=150)
     step_type = models.CharField(max_length=8)
 
     latitude = models.FloatField(blank=True, null=True)
