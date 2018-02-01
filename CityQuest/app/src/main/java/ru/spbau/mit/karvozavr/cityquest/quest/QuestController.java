@@ -23,39 +23,39 @@ import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
 
 public class QuestController {
 
-  public static String currentQuery = "";
-  private static final String savedQuestName = "savedQuest.cqq";
-  private static final String savedQuestId = "savedQuestId";
-  private static UserProgress userProgress;
-  public static Quest currentQuest = null;
-  private static Activity context = null;
+    public static String currentQuery = "";
+    private static final String savedQuestName = "savedQuest.cqq";
+    private static final String savedQuestId = "savedQuestId";
+    private static UserProgress userProgress;
+    public static Quest currentQuest = null;
+    private static Activity context = null;
 
-  public static void invokeQuestController(Activity activity) {
-    context = activity;
-  }
-
-  @NonNull
-  public static AbstractQuestStep getCurrentQuestStep() {
-    if (currentQuest == null) {
-      throw new NoSuchElementException();
+    public static void invokeQuestController(Activity activity) {
+        context = activity;
     }
 
-    return currentQuest.getStep(getUserProgress().progress);
-  }
+    @NonNull
+    public static AbstractQuestStep getCurrentQuestStep() {
+        if (currentQuest == null) {
+            throw new NoSuchElementException();
+        }
 
-  public static void setUserProgress(UserProgress receivedProgress) {
-    userProgress = receivedProgress;
-  }
+        return currentQuest.getStep(getUserProgress().progress);
+    }
 
-  public static UserProgress getUserProgress() {
-    return userProgress;
-  }
+    public static void setUserProgress(UserProgress receivedProgress) {
+        userProgress = receivedProgress;
+    }
 
-  public static void proceedToNextStep(Activity context) {
-    GoogleServicesActivity activity = (GoogleServicesActivity) context;
-    ++userProgress.progress;
-    activity.updateProgress(currentQuest, userProgress);
-  }
+    public static UserProgress getUserProgress() {
+        return userProgress;
+    }
+
+    public static void proceedToNextStep(Activity context) {
+        GoogleServicesActivity activity = (GoogleServicesActivity) context;
+        ++userProgress.progress;
+        activity.updateProgress(currentQuest, userProgress);
+    }
 
   /*public static Quest getSampleQuest() {
 
@@ -90,93 +90,93 @@ public class QuestController {
     return new Quest(questInfo, new ArrayList<>(Arrays.asList(step0, step1, step2)));
   }*/
 
-  public static void startNewQuest(@NonNull QuestInfo questInfo, @NonNull QuestStepActivity context) {
-    // TODO progress
-    context.loadTask.execute(questInfo);
-  }
-
-  public static void onQuestLoaded(@NonNull Quest quest) {
-    saveQuestLocally(quest);
-  }
-
-  private static void saveQuestLocally(@NonNull Quest quest) {
-    currentQuest = quest;
-
-    try (FileOutputStream fos = context.openFileOutput(savedQuestName, Context.MODE_PRIVATE);
-         ObjectOutputStream os = new ObjectOutputStream(fos)) {
-      os.writeObject(currentQuest);
-    } catch (IOException e) {
-      e.printStackTrace();
+    public static void startNewQuest(@NonNull QuestInfo questInfo, @NonNull QuestStepActivity context) {
+        // TODO progress
+        context.loadTask.execute(questInfo);
     }
 
-    SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
-    sharedPreferences.edit().putInt(savedQuestId, quest.info.id).apply();
-  }
-
-  public static void loadCurrentQuest(@NonNull QuestStepActivity context) {
-    SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
-    QuestInfo questInfo = (QuestInfo) context.getIntent().getSerializableExtra("quest_info");
-
-    if (currentQuest != null && currentQuest.info.id == questInfo.id) {
-      context.onQuestLoaded(currentQuest);
-      return;
+    public static void onQuestLoaded(@NonNull Quest quest) {
+        saveQuestLocally(quest);
     }
 
-    if (sharedPreferences.getInt(savedQuestId, -1) != questInfo.id) {
-      startNewQuest(questInfo, context);
-    } else {
-      try (FileInputStream inputStream = context.openFileInput(savedQuestName);
-           ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
-        context.onQuestLoaded((Quest) objectInputStream.readObject());
-      } catch (Exception e) {
-        startNewQuest(questInfo, context);
-      }
-    }
-  }
+    private static void saveQuestLocally(@NonNull Quest quest) {
+        currentQuest = quest;
 
-  public static void publishRating(float rating) {
-    if (!userProgress.finished) {
-      // If user passes this quest first time.
-      new AsyncPublishRating().execute(Math.round(rating));
+        try (FileOutputStream fos = context.openFileOutput(savedQuestName, Context.MODE_PRIVATE);
+             ObjectOutputStream os = new ObjectOutputStream(fos)) {
+            os.writeObject(currentQuest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(savedQuestId, quest.info.id).apply();
     }
 
-    // Update progress.
-    ++userProgress.progress;
-    ((GoogleServicesActivity) context).updateProgress(currentQuest, userProgress);
-  }
+    public static void loadCurrentQuest(@NonNull QuestStepActivity context) {
+        SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
+        QuestInfo questInfo = (QuestInfo) context.getIntent().getSerializableExtra("quest_info");
 
-  public static ArrayList<QuestInfo> getQuestInfoList(int startingFrom, int amount) {
-    ServiceProvider.getInternetAccess(context);
+        if (currentQuest != null && currentQuest.info.id == questInfo.id) {
+            context.onQuestLoaded(currentQuest);
+            return;
+        }
 
-    if (currentQuery.equals("")) {
-      return CityQuestServerAPI.getQuestInfosFromTo(startingFrom, amount);
-    } else {
-      return CityQuestServerAPI.getQuestInfosFromToByName(startingFrom, amount, currentQuery);
-    }
-  }
-
-  private static class AsyncPublishRating extends AsyncTask<Integer, Void, Void> {
-
-    @Override
-    protected void onPreExecute() {
-      super.onPreExecute();
-      ServiceProvider.getInternetAccess(context);
+        if (sharedPreferences.getInt(savedQuestId, -1) != questInfo.id) {
+            startNewQuest(questInfo, context);
+        } else {
+            try (FileInputStream inputStream = context.openFileInput(savedQuestName);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+                context.onQuestLoaded((Quest) objectInputStream.readObject());
+            } catch (Exception e) {
+                startNewQuest(questInfo, context);
+            }
+        }
     }
 
-    @Override
-    protected Void doInBackground(Integer... args) {
-      // Update rating on server.
-      CityQuestServerAPI.publishRating(currentQuest.info.id, Math.round(args[0]));
-      return null;
+    public static void publishRating(float rating) {
+        if (!userProgress.finished) {
+            // If user passes this quest first time.
+            new AsyncPublishRating().execute(Math.round(rating));
+        }
+
+        // Update progress.
+        ++userProgress.progress;
+        ((GoogleServicesActivity) context).updateProgress(currentQuest, userProgress);
     }
 
-    @Override
-    protected void onPostExecute(Void v) {
-      super.onPostExecute(v);
+    public static ArrayList<QuestInfo> getQuestInfoList(int startingFrom, int amount) {
+        ServiceProvider.getInternetAccess(context);
 
-      // Return to main menu.
-      Intent intent = new Intent(context, QuestGalleryActivity.class);
-      context.startActivity(intent);
+        if (currentQuery.equals("")) {
+            return CityQuestServerAPI.getQuestInfosFromTo(startingFrom, amount);
+        } else {
+            return CityQuestServerAPI.getQuestInfosFromToByName(startingFrom, amount, currentQuery);
+        }
     }
-  }
+
+    private static class AsyncPublishRating extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ServiceProvider.getInternetAccess(context);
+        }
+
+        @Override
+        protected Void doInBackground(Integer... args) {
+            // Update rating on server.
+            CityQuestServerAPI.publishRating(currentQuest.info.id, Math.round(args[0]));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+
+            // Return to main menu.
+            Intent intent = new Intent(context, QuestGalleryActivity.class);
+            context.startActivity(intent);
+        }
+    }
 }

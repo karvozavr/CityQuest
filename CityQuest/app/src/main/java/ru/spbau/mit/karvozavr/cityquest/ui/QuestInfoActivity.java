@@ -32,7 +32,7 @@ public class QuestInfoActivity extends AppCompatActivity {
     void renderContent() {
         if (questInfo != null) {
             TextView name = findViewById(R.id.quest_title);
-            TextView avgDistance =findViewById(R.id.quest_avg_distance);
+            TextView avgDistance = findViewById(R.id.quest_avg_distance);
             TextView description = findViewById(R.id.quest_short_description);
             AppCompatRatingBar ratingBar = findViewById(R.id.quest_rating_bar);
 
