@@ -2,9 +2,10 @@ package ru.spbau.mit.karvozavr.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -20,37 +21,21 @@ import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 class JsonReaderQuestParser {
 
-    static QuestInfo readSingleQuestInfoFromJson(InputStream is) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(QuestInfo.class, new QuestInfoDeserializer());
-        Gson gson = gsonBuilder.create();
-
-        return gson.fromJson(reader, QuestInfo.class);
+    static QuestInfo readSingleQuestInfoFromJson(InputStream is) {
+        return (QuestInfo) getObjectFromJson(QuestInfo.class, new QuestInfoDeserializer(),
+                QuestInfo.class, is);
     }
 
-    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(QuestInfo.class, new QuestInfoDeserializer());
-        Gson gson = gsonBuilder.create();
-
+    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is) {
         Type collectionType = new TypeToken<ArrayList<QuestInfo>>(){}.getType();
-	    return gson.fromJson(reader, collectionType);
+        return (ArrayList<QuestInfo>) getObjectFromJson(QuestInfo.class,
+                new QuestInfoDeserializer(), collectionType, is);
     }
 
-    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(QuestStepParsed.class, new QuestStepDeserializer());
-        Gson gson = gsonBuilder.serializeNulls().create();
-
+    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is) {
         Type collectionType = new TypeToken<ArrayList<QuestStepParsed>>(){}.getType();
-
-        ArrayList<QuestStepParsed> parsedSteps = gson.fromJson(reader, collectionType);
+        ArrayList<QuestStepParsed> parsedSteps = (ArrayList<QuestStepParsed>) getObjectFromJson(
+                        QuestStepParsed.class, new QuestStepDeserializer(), collectionType, is);
 
         //It is not guaranteed that objects are returned in the same order as they were in Json
         Collections.sort(parsedSteps, (s1, s2) -> s1.getStepNum() - s2.getStepNum());
@@ -61,6 +46,15 @@ class JsonReaderQuestParser {
         }
 
         return abstractQuestSteps;
+    }
+
+    private static Object getObjectFromJson(Class<?> c, JsonDeserializer<?> deserializer,
+                                            Type objectType, InputStream is) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(c, deserializer);
+        Gson gson = gsonBuilder.serializeNulls().create();
+
+        return gson.fromJson(new BufferedReader(new InputStreamReader(is)), objectType);
     }
 
 }
