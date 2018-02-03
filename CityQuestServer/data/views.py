@@ -24,7 +24,6 @@ def get_info(request):
 
 
 def get_steps(request):
-    # ATTENTION: quest_ids are numerated from 1, not from 0
     quest_id = request.GET.get('id')
 
     s = serializers.serialize("json", QuestStep.objects
@@ -32,12 +31,6 @@ def get_steps(request):
                               .order_by('step_number'))
 
     return JsonResponse(loads(s), safe=False)
-
-
-def get_number(request):
-    n = QuestInfo.objects.count()
-
-    return JsonResponse(loads(str(n)), safe=False)
 
 
 def post_rating(request):
