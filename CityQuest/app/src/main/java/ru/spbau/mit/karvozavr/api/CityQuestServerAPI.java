@@ -14,8 +14,8 @@ import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 public class CityQuestServerAPI {
-    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
-    //http://vasalf.net:1791
+    // Previous server: http://subject.pythonanywhere.com/data/
+    private static final String SERVER_DOMAIN_NAME = "http://vasalf.net:1791/data/";
 
     private static final String TAG = "CityQuestServerAPI";
 
@@ -71,10 +71,9 @@ public class CityQuestServerAPI {
     }
 
     public static boolean publishRating(Integer questId, Integer ratingUpdate) {
-        String request = SERVER_DOMAIN_NAME + "post_rating?id=" + questId
-                + "&rate=" + ratingUpdate;
+        String url = SERVER_DOMAIN_NAME + "post_rating?id=" + questId + "&rate=" + ratingUpdate;
 
-        try (InputStream is = new URL(request).openStream(); Scanner scanner = new Scanner(is)) {
+        try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
             String s = scanner.nextLine();
             return s.equals("done");
         } catch (Exception e) {
