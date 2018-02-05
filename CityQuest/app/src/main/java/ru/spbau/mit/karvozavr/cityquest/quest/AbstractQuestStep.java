@@ -11,6 +11,7 @@ public abstract class AbstractQuestStep implements Serializable {
     public final String title;
     public final String description;
     public final String goal;
+    public int stepNum;
 
     /**
      * This is text that would be shown on action button in QuestActivity
