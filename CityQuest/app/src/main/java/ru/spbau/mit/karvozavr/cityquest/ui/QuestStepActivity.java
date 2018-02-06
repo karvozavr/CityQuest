@@ -129,6 +129,14 @@ public class QuestStepActivity extends GoogleServicesActivity {
         }
     }
 
+    @Override
+    public void onLoginSucceed() {
+        super.onLoginSucceed();
+
+        // Obtain user progress;
+        getUserProgress(QuestController.currentQuest);
+    }
+
     private class AsyncLoadQuest extends AsyncTask<QuestInfo, Void, Void> {
 
         Quest quest;

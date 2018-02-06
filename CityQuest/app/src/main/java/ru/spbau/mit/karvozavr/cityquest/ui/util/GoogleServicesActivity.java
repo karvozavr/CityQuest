@@ -3,6 +3,7 @@ package ru.spbau.mit.karvozavr.cityquest.ui.util;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -166,6 +167,20 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
             e -> updateProgress(quest, newProgress));
   }
 
+  // Login success callback.
+  public void onLoginSucceed() {
+      // Build a drive resource client
+      driveResourceClient =
+              Drive.getDriveResourceClient(this, GoogleSignIn.getLastSignedInAccount(this));
+  }
+
+  // Login failure callback.
+  public void onLoginFailed() {
+      // Ask user to sign in again
+      Toast.makeText(this, "Login failed. Please, sign in again.", Toast.LENGTH_LONG).show();
+      signIn();
+  }
+
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -173,11 +188,9 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
       case REQUEST_CODE_SIGN_IN:
         // Called after user is signed in.
         if (resultCode == RESULT_OK) {
-          // Build a drive resource client
-          driveResourceClient =
-              Drive.getDriveResourceClient(this, GoogleSignIn.getLastSignedInAccount(this));
+          onLoginSucceed();
         } else {
-          signIn();
+          onLoginFailed();
         }
         break;
     }
