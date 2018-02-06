@@ -48,4 +48,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
     // Drive
     implementation 'com.google.android.gms:play-services-drive:11.8.0'
+    // Picasso - image downloading library
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
