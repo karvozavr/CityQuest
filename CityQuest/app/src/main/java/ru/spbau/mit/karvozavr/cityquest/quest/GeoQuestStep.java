@@ -62,7 +62,7 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
             }
 
             progressDialog.dismiss();
-        }, 1000);
+        }, 100);
     }
 
     /**

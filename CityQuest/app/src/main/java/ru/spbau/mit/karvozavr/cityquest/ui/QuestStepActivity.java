@@ -31,11 +31,9 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
     private ProgressDialog dialog;
     public final AsyncTask<QuestInfo, Void, Void> loadTask = new AsyncLoadQuest();
+    View questStepView;
 
     private boolean questLoaded = false;
-    private boolean userDataReceived = false;
-    private DriveClient driveClient;
-    private DriveResourceClient driveResourceClient;
 
     private static final int REQUEST_CODE_USER_DATA_RECEIVED = 1;
 
@@ -51,11 +49,12 @@ public class QuestStepActivity extends GoogleServicesActivity {
     private void loadQuest() {
         questLoaded = false;
         dialog = ProgressDialog.show(this, "Loading", "Please, wait.");
+        questStepView = findViewById(R.id.quest_step_layout);
+        questStepView.setVisibility(View.INVISIBLE);
         QuestController.loadCurrentQuest(this);
     }
 
     public void onQuestLoaded(Quest quest) {
-        dialog.dismiss();
         if (quest == null) {
             Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
         } else {
@@ -90,6 +89,10 @@ public class QuestStepActivity extends GoogleServicesActivity {
     @Override
     protected void onUserProgressReceived() {
         super.onUserProgressReceived();
+
+        // Now activity is visible for user
+        questStepView.setVisibility(View.VISIBLE);
+        dialog.dismiss();
 
         UserProgress userProgress = QuestController.getUserProgress();
         if (userProgress.finished && userProgress.progress == -1) {
