@@ -31,4 +31,6 @@
     <string name="repeat_this_quest">You already passed this quest, do you want to try one more time?</string>
     <string name="positive_answer">Yes</string>
     <string name="negative_answer">No</string>
+    <string name="nothing_found">Nothing found.</string>
+    <string name="failed_load">Failed to load, check your connection.</string>
 </resources>

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
+import ru.spbau.mit.karvozavr.cityquest.ui.QuestGalleryActivity;
 import ru.spbau.mit.karvozavr.cityquest.ui.QuestInfoActivity;
 import ru.spbau.mit.karvozavr.cityquest.ui.QuestStepActivity;
 
@@ -27,9 +28,11 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
     public int nextToLoad = 0;
     private static final int batchSize = 15;
     public boolean loading = false;
+    private QuestGalleryActivity context;
 
-    public QuestInfoAdapter() {
+    public QuestInfoAdapter(QuestGalleryActivity context) {
         // load initial steps
+        this.context = context;
         loadNextBatch();
     }
 
@@ -44,7 +47,6 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
      */
     @Override
     public void onBindViewHolder(QuestInfoAdapter.QuestInfoViewHolder holder, int position) {
-
         QuestInfo questInfo = quests.get(position);
 
         if (questInfo != null) {
@@ -88,7 +90,8 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
 
     public void loadNextBatch() {
         loading = true;
-        new QuestInfoAdapter.AsyncLoadNextBatch().execute();
+        context.onLoadStarted();
+        new AsyncLoadNextBatch().execute();
     }
 
     private void onNextBatchLoaded(ArrayList<QuestInfo> infos) {
@@ -98,6 +101,7 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
             notifyDataSetChanged();
         }
 
+        context.onLoadFinished(!quests.isEmpty());
         loading = false;
     }
 

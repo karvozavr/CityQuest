@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,16 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
     public void onQuestLoaded(Quest quest) {
         if (quest == null) {
-            Toast.makeText(this, "Failed to load quest.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.failed_load, Toast.LENGTH_LONG).show();
+            loadingProgressDialog.dismiss();
+            AlertDialog.Builder loadFailedDialogBuilder = new AlertDialog.Builder(this);
+            loadFailedDialogBuilder.setNeutralButton("OK", (dialogInterface, i) -> {
+                Intent intent = new Intent(QuestStepActivity.this, QuestGalleryActivity.class);
+                startActivity(intent);
+            });
+            loadFailedDialogBuilder.setCancelable(false);
+            loadFailedDialogBuilder.setMessage(R.string.failed_load);
+            loadFailedDialogBuilder.create().show();
         } else {
             QuestController.onQuestLoaded(quest);
             signIn();

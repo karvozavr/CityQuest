@@ -33,4 +33,6 @@
     <string name="repeat_this_quest">Вы уже прошли этот квест. Хотите повторить?</string>
     <string name="positive_answer">Да</string>
     <string name="negative_answer">Нет</string>
+    <string name="nothing_found">Ничего не найдено.</string>
+    <string name="failed_load">Не удалось загрузить, проверьте подключение.</string>
 </resources>

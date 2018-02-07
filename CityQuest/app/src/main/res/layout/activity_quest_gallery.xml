@@ -20,6 +20,15 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
+        <TextView
+            android:id="@+id/load_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:text="" />
+
     </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

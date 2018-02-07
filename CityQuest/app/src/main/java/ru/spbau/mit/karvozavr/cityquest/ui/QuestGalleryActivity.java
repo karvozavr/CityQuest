@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +24,15 @@ import ru.spbau.mit.karvozavr.cityquest.ui.util.adapters.QuestInfoAdapter;
 public class QuestGalleryActivity extends GoogleServicesActivity {
 
     private RecyclerView galleryRecyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_gallery);
+
         QuestController.invokeQuestController(QuestGalleryActivity.this);
+        swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
 
         signIn();
         loadGallery();
@@ -42,7 +46,7 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         galleryRecyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter();
+        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter(this);
         galleryRecyclerView.setAdapter(questInfoAdapter);
         galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
 
@@ -53,12 +57,28 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
      * Setup RefreshLayout adapter & etc.
      */
     private void initRefreshLayout() {
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.gallery_swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> new Handler().post(() -> {
-            galleryRecyclerView.setAdapter(new QuestInfoAdapter());
-            Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-            swipeRefreshLayout.setRefreshing(false);
+            galleryRecyclerView.setAdapter(new QuestInfoAdapter(QuestGalleryActivity.this));
         }));
+    }
+
+    public void onLoadStarted() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    public void onLoadFinished(boolean success) {
+        swipeRefreshLayout.setRefreshing(false);
+        TextView errorText = findViewById(R.id.load_error_message);
+        if (success) {
+            errorText.setVisibility(View.INVISIBLE);
+            Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+        } else {
+            errorText.setVisibility(View.VISIBLE);
+            if (QuestController.currentQuery.equals(""))
+                errorText.setText(R.string.failed_load);
+            else
+                errorText.setText(R.string.nothing_found);
+        }
     }
 
     @Override
