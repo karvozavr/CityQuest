@@ -2,6 +2,7 @@ package ru.spbau.mit.karvozavr.cityquest.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
@@ -104,6 +106,19 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
         return true;
     }
 
+    /**
+     * Load saved quest, if it's present.
+     */
+    private void loadCurrentQuest() {
+        if (QuestController.hasCurrentQuest()) {
+            Intent intent = new Intent(this, QuestStepActivity.class);
+            intent.putExtra("quest_info", QuestController.currentQuest.info);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "No saved quests.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -111,6 +126,7 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
                 changeUser();
                 return true;
             case R.id.continue_current_quest:
+                loadCurrentQuest();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

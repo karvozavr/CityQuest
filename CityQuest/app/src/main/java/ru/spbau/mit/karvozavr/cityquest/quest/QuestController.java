@@ -91,7 +91,6 @@ public class QuestController {
   }*/
 
     public static void startNewQuest(@NonNull QuestInfo questInfo, @NonNull QuestStepActivity context) {
-        // TODO progress
         context.loadTask.execute(questInfo);
     }
 
@@ -111,6 +110,13 @@ public class QuestController {
 
         SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
         sharedPreferences.edit().putInt(savedQuestId, quest.info.id).apply();
+    }
+
+    /**
+     * Check if there is saved quest.
+     */
+    public static boolean hasCurrentQuest() {
+        return currentQuest != null;
     }
 
     public static void loadCurrentQuest(@NonNull QuestStepActivity context) {

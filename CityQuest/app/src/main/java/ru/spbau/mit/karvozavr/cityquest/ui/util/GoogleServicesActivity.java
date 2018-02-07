@@ -58,7 +58,7 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
     }
 
     /**
-     * Build a Google SignIn client.
+     * Build Google SignIn client.
      */
     protected GoogleSignInClient buildGoogleSignInClient() {
         GoogleSignInOptions signInOptions =
@@ -73,6 +73,9 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
         return account.getId();
     }
 
+    /**
+     * Get user progress on given quest from cloud.
+     */
     protected void getUserProgress(Quest quest) {
         ServiceProvider.getInternetAccess(this);
         final String fileName = Integer.toString(quest.info.id) + ".cqp";
@@ -125,6 +128,9 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Update user progress and save it to cloud.
+     */
     public void updateProgress(Quest quest, UserProgress newProgress) {
         ServiceProvider.getInternetAccess(this);
 
@@ -157,10 +163,11 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
             .addOnSuccessListener(this,
                 driveFile -> {
                     Intent intent;
-                    // If we have just finished quest
                     if (newProgress.progress == quest.numberOfSteps()) {
+                        // If we have just finished quest, go to main menu
                         intent = new Intent(GoogleServicesActivity.this, QuestGalleryActivity.class);
                     } else {
+                        // Update activity to load next step
                         intent = getIntent();
                     }
                     finish();
@@ -170,14 +177,18 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
                 e -> updateProgress(quest, newProgress));
     }
 
-    // Login success callback.
+    /**
+     * Login success callback.
+     */
     public void onLoginSucceed() {
         // Build a drive resource client
         driveResourceClient =
             Drive.getDriveResourceClient(this, GoogleSignIn.getLastSignedInAccount(this));
     }
 
-    // Login failure callback.
+    /**
+     * Login failure callback.
+     */
     public void onLoginFailed() {
         // Ask user to sign in again
         Toast.makeText(this, "Login failed. Please, sign in again.", Toast.LENGTH_LONG).show();
