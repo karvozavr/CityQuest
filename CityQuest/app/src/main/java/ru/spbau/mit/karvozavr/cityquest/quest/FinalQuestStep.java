@@ -31,7 +31,6 @@ public class FinalQuestStep extends AbstractQuestStep {
 
         button.setOnClickListener((view) -> {
             QuestController.publishRating(ratingBar.getRating());
-
             checkDialog.cancel();
         });
 

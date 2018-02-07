@@ -33,6 +33,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
     private ProgressDialog loadingProgressDialog;
     public final AsyncTask<QuestInfo, Void, Void> loadTask = new AsyncLoadQuest();
     View questStepView;
+    boolean isFinishingNow = false;
 
     private static final int REQUEST_CODE_USER_DATA_RECEIVED = 1;
 
@@ -92,8 +93,6 @@ public class QuestStepActivity extends GoogleServicesActivity {
     protected void onUserProgressReceived() {
         super.onUserProgressReceived();
 
-        // Now activity is visible for user
-        questStepView.setVisibility(View.VISIBLE);
         loadingProgressDialog.dismiss();
 
         UserProgress userProgress = QuestController.getUserProgress();
@@ -116,7 +115,11 @@ public class QuestStepActivity extends GoogleServicesActivity {
             dialogBuilder.setCancelable(false);
             dialogBuilder.show();
         }
+
         drawQuestStep(QuestController.getCurrentQuestStep());
+
+        // Now activity is visible for user
+        questStepView.setVisibility(View.VISIBLE);
     }
 
     @Override
