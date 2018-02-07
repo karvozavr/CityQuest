@@ -8,7 +8,7 @@ public class QuestInfo implements Serializable {
     public final int id;
     public String name;
     public final String author;
-    public final Object image;
+    public final String image;
     public final float averageDistance;
     public final String description;
     public final String shortDescription;
@@ -20,7 +20,7 @@ public class QuestInfo implements Serializable {
     public QuestInfo(int id,
                      String title,
                      String author,
-                     Drawable image,
+                     String image,
                      float averageDistance,
                      String description,
                      float rating,
