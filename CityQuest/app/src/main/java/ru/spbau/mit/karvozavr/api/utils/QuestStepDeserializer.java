@@ -8,31 +8,49 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
+import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
+import ru.spbau.mit.karvozavr.cityquest.quest.FinalQuestStep;
+import ru.spbau.mit.karvozavr.cityquest.quest.GeoQuestStep;
+import ru.spbau.mit.karvozavr.cityquest.quest.KeywordQuestStep;
 
-public class QuestStepDeserializer implements JsonDeserializer<QuestStepParsed> {
+
+public class QuestStepDeserializer implements JsonDeserializer<AbstractQuestStep> {
     @Override
-    public QuestStepParsed deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public AbstractQuestStep deserialize(JsonElement json,
+                                         Type typeOfT,
+                                         JsonDeserializationContext context)
+            throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();
         JsonObject jsonQuestInfoFields = jsonObject.getAsJsonObject("fields");
 
         int stepNum = jsonQuestInfoFields.get("step_number").getAsInt();
+        String stepType = jsonQuestInfoFields.get("step_type").getAsString();
         String title = jsonQuestInfoFields.get("title").getAsString();
         String description = jsonQuestInfoFields.get("description").getAsString();
-        String stepType = jsonQuestInfoFields.get("step_type").getAsString();
         String goal = jsonQuestInfoFields.get("goal").getAsString();
-        String keywords = jsonQuestInfoFields.get("keywords").getAsString();
 
-        JsonElement jsonElementLatitude = jsonQuestInfoFields.get("latitude");
-        Double latitude = jsonElementLatitude.isJsonNull() ?
-                60.00953 :
-                jsonElementLatitude.getAsDouble();
+        AbstractQuestStep step;
 
-        JsonElement jsonElementLongitude = jsonQuestInfoFields.get("longitude");
-        Double longitude = jsonElementLongitude.isJsonNull() ?
-                30.35279 :
-                jsonElementLongitude.getAsDouble();
+        switch (stepType) {
+            case "key" :
+                String keywords = jsonQuestInfoFields.get("keywords").getAsString();
+                step = new KeywordQuestStep(title, description, goal, keywords.split("\n"));
+                break;
+            case "geo" :
+                Double latitude = jsonQuestInfoFields.get("latitude").getAsDouble();
+                Double longitude = jsonQuestInfoFields.get("longitude").getAsDouble();
+                step = new GeoQuestStep(title, description, goal, latitude, longitude);
+                break;
+            case "final" :
+                step = new FinalQuestStep(title, description);
+                break;
+            default:
+                throw new JsonParseException("Wrong type of QuestStep: " + stepType);
+        }
 
-        return new QuestStepParsed(stepNum, title, description, goal, stepType, keywords, latitude, longitude);
+        step.stepNum = stepNum;
+
+        return step;
     }
 }

@@ -2,9 +2,10 @@ package ru.spbau.mit.karvozavr.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -13,54 +14,49 @@ import java.util.Collections;
 
 import ru.spbau.mit.karvozavr.api.utils.QuestInfoDeserializer;
 import ru.spbau.mit.karvozavr.api.utils.QuestStepDeserializer;
-import ru.spbau.mit.karvozavr.api.utils.QuestStepParsed;
 import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 
 class JsonReaderQuestParser {
 
-    static QuestInfo readSingleQuestInfoFromJson(InputStream is) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(QuestInfo.class, new QuestInfoDeserializer());
-        Gson gson = gsonBuilder.create();
-
-        return gson.fromJson(reader, QuestInfo.class);
+    static QuestInfo readSingleQuestInfoFromJson(InputStream is) {
+        return (QuestInfo) jsonStreamToObject(is,
+                QuestInfo.class,
+                new QuestInfoDeserializer(),
+                QuestInfo.class);
     }
 
-    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(QuestInfo.class, new QuestInfoDeserializer());
-        Gson gson = gsonBuilder.create();
-
+    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is) {
         Type collectionType = new TypeToken<ArrayList<QuestInfo>>(){}.getType();
-	    return gson.fromJson(reader, collectionType);
+        return (ArrayList<QuestInfo>) jsonStreamToObject(is,
+                QuestInfo.class,
+                new QuestInfoDeserializer(), 
+                collectionType);
     }
 
-    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
+    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is) {
+        Type collectionType = new TypeToken<ArrayList<AbstractQuestStep>>(){}.getType();
+        ArrayList<AbstractQuestStep> steps = (ArrayList<AbstractQuestStep>) jsonStreamToObject(is,
+                AbstractQuestStep.class, 
+                new QuestStepDeserializer(), 
+                collectionType);
 
+        // It is not guaranteed that objects are returned in the same order as they were in Json
+        Collections.sort(steps, (s1, s2) -> s1.stepNum - s2.stepNum);
+
+        return steps;
+    }
+
+    private static Object jsonStreamToObject(InputStream is,
+                                             Class<?> c,
+                                             JsonDeserializer<?> deserializer,
+                                             Type objectType) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(QuestStepParsed.class, new QuestStepDeserializer());
+        gsonBuilder.registerTypeAdapter(c, deserializer);
         Gson gson = gsonBuilder.serializeNulls().create();
 
-        Type collectionType = new TypeToken<ArrayList<QuestStepParsed>>(){}.getType();
-
-        ArrayList<QuestStepParsed> parsedSteps = gson.fromJson(reader, collectionType);
-
-        //It is not guaranteed that objects are returned in the same order as they were in Json
-        Collections.sort(parsedSteps, (s1, s2) -> s1.getStepNum() - s2.getStepNum());
-
-        ArrayList<AbstractQuestStep> abstractQuestSteps = new ArrayList<>();
-        for (QuestStepParsed step : parsedSteps) {
-            abstractQuestSteps.add(step.getQuestStep());
-        }
-
-        return abstractQuestSteps;
+        return gson.fromJson(new BufferedReader(new InputStreamReader(is)), objectType);
     }
 
 }
