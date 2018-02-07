@@ -3,13 +3,10 @@ package ru.spbau.mit.karvozavr.cityquest.ui;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,10 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.drive.DriveClient;
-import com.google.android.gms.drive.DriveResourceClient;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import ru.spbau.mit.karvozavr.api.CityQuestServerAPI;
 import ru.spbau.mit.karvozavr.api.LoadingErrorException;
@@ -36,11 +30,9 @@ import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
 
 public class QuestStepActivity extends GoogleServicesActivity {
 
-    private ProgressDialog dialog;
+    private ProgressDialog loadingProgressDialog;
     public final AsyncTask<QuestInfo, Void, Void> loadTask = new AsyncLoadQuest();
     View questStepView;
-
-    private boolean questLoaded = false;
 
     private static final int REQUEST_CODE_USER_DATA_RECEIVED = 1;
 
@@ -54,8 +46,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
     }
 
     private void loadQuest() {
-        questLoaded = false;
-        dialog = ProgressDialog.show(this, "Loading", "Please, wait.");
+        loadingProgressDialog = ProgressDialog.show(this, "Loading", "Please, wait.");
         questStepView = findViewById(R.id.quest_step_layout);
         questStepView.setVisibility(View.INVISIBLE);
         QuestController.loadCurrentQuest(this);
@@ -71,14 +62,13 @@ public class QuestStepActivity extends GoogleServicesActivity {
     }
 
     private void drawQuestStep(@NonNull AbstractQuestStep currentQuestStep) {
-        setTitle(currentQuestStep.title);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(currentQuestStep.title);
 
         ImageView toolbarImage = findViewById(R.id.toolbar_image);
-        // FIXME change URL to real questInfo.image
         Picasso.with(this)
-            .load("http://web.onetel.net.uk/~simonnihal/texcom/lena512_dxtc.jpg")
+            .load(QuestController.currentQuest.info.image)
             .into(toolbarImage);
 
         TextView description = findViewById(R.id.step_desc);
@@ -88,12 +78,11 @@ public class QuestStepActivity extends GoogleServicesActivity {
         goal.setText(currentQuestStep.goal);
 
         Button checkButton = findViewById(R.id.check_button);
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
-
         checkButton.setText(getResources().getIdentifier(currentQuestStep.actionLabel, "string", getPackageName()));
         checkButton.setOnClickListener(view -> currentQuestStep.check(this));
 
-        /*if (description.getText().length() + goal.getText().length() > 512) {
+        /* FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+        if (description.getText().length() + goal.getText().length() > 512) {
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setOnClickListener(view -> currentQuestStep.check(this));
         }*/
@@ -105,7 +94,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
         // Now activity is visible for user
         questStepView.setVisibility(View.VISIBLE);
-        dialog.dismiss();
+        loadingProgressDialog.dismiss();
 
         UserProgress userProgress = QuestController.getUserProgress();
         if (userProgress.finished && userProgress.progress == -1) {
@@ -116,13 +105,13 @@ public class QuestStepActivity extends GoogleServicesActivity {
             dialogBuilder.setMessage(R.string.repeat_this_quest);
 
             dialogBuilder.setPositiveButton(R.string.positive_answer,
-                    (dialog, which) -> QuestController.proceedToNextStep(QuestStepActivity.this));
+                (dialog, which) -> QuestController.proceedToNextStep(QuestStepActivity.this));
 
             dialogBuilder.setNegativeButton(R.string.negative_answer,
-                    (dialog, which) -> {
-                        Intent intent = new Intent(QuestStepActivity.this, QuestGalleryActivity.class);
-                        QuestStepActivity.this.startActivity(intent);
-                    });
+                (dialog, which) -> {
+                    Intent intent = new Intent(QuestStepActivity.this, QuestGalleryActivity.class);
+                    QuestStepActivity.this.startActivity(intent);
+                });
 
             dialogBuilder.setCancelable(false);
             dialogBuilder.show();
@@ -140,7 +129,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
     private class AsyncLoadQuest extends AsyncTask<QuestInfo, Void, Void> {
 
-        Quest quest;
+        private Quest quest;
 
         @Override
         protected void onPreExecute() {

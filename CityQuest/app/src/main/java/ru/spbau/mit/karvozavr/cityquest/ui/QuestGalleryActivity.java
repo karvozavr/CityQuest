@@ -14,14 +14,13 @@ import android.widget.Toast;
 
 import ru.spbau.mit.karvozavr.cityquest.R;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
-import ru.spbau.mit.karvozavr.cityquest.ui.util.adapters.QuestInfoAdapter;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.EndlessRecyclerViewOnScrollListener;
 import ru.spbau.mit.karvozavr.cityquest.ui.util.GoogleServicesActivity;
+import ru.spbau.mit.karvozavr.cityquest.ui.util.adapters.QuestInfoAdapter;
 
 public class QuestGalleryActivity extends GoogleServicesActivity {
 
     private RecyclerView galleryRecyclerView;
-    private static final String TAG = "Gallery activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +38,11 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
     private void loadGallery() {
         galleryRecyclerView = findViewById(R.id.gallery_recycler_view);
 
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         galleryRecyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter questInfoAdapter =
-                new QuestInfoAdapter();
-        galleryRecyclerView
-                .setAdapter(questInfoAdapter);
-        galleryRecyclerView
-                .setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
+        RecyclerView.Adapter questInfoAdapter = new QuestInfoAdapter();
+        galleryRecyclerView.setAdapter(questInfoAdapter);
+        galleryRecyclerView.setOnFlingListener(new EndlessRecyclerViewOnScrollListener(galleryRecyclerView));
 
         initRefreshLayout();
     }
@@ -114,6 +109,8 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
         switch (item.getItemId()) {
             case R.id.login_as_another_user:
                 changeUser();
+                return true;
+            case R.id.continue_current_quest:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

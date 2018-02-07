@@ -30,7 +30,8 @@ public class CityQuestServerAPI {
             url += "&contains=" + URLEncoder.encode(name, "UTF-8");
         } catch (UnsupportedEncodingException e){
             // This should NEVER happen.
-            return new ArrayList<>();
+            Log.e(TAG, "FATAL ERROR: All your encoding belong to us. Java has been broken. Entire world has collapsed");
+            throw new RuntimeException(e);
         }
 
         try (InputStream is = new URL(url).openStream()) {

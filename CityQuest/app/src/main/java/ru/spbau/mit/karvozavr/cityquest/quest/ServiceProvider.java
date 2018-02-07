@@ -36,7 +36,7 @@ public class ServiceProvider {
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 
         // Enable GPS provider
-        boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
+        boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (!enabled) {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
