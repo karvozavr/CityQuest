@@ -14,8 +14,7 @@ import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 public class CityQuestServerAPI {
-    // Previous server: http://subject.pythonanywhere.com/data/
-    private static final String SERVER_DOMAIN_NAME = "http://vasalf.net:1791/data/";
+    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
 
     private static final String TAG = "CityQuestServerAPI";
 
@@ -82,13 +81,4 @@ public class CityQuestServerAPI {
         }
     }
 
-    /*private static int numberOfQuests() throws LoadingErrorException {
-        String url = SERVER_DOMAIN_NAME + "get_number";
-
-        try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
-            return scanner.nextInt();
-        } catch (Exception e) {
-            return Integer.MAX_VALUE;
-        }
-    }*/
 }

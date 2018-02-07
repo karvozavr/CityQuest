@@ -42,7 +42,7 @@ class JsonReaderQuestParser {
                 new QuestStepDeserializer(), 
                 collectionType);
 
-        //It is not guaranteed that objects are returned in the same order as they were in Json
+        // It is not guaranteed that objects are returned in the same order as they were in Json
         Collections.sort(steps, (s1, s2) -> s1.stepNum - s2.stepNum);
 
         return steps;
