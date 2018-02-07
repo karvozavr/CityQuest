@@ -48,16 +48,26 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
         QuestInfo questInfo = quests.get(position);
 
         if (questInfo != null) {
-            TextView name = holder.questInfoView.findViewById(R.id.quest_title);
-            TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
-            TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
-            TextView usersPassed = holder.questInfoView.findViewById(R.id.quest_passed);
-            AppCompatRatingBar ratingBar = holder.questInfoView.findViewById(R.id.quest_rating_bar);
+            ImageView questImage = holder.questInfoView.findViewById(R.id.quest_image);
+            Picasso
+                .with(holder.questInfoView.getContext())
+                .load(questInfo.image)
+                .error(R.mipmap.saint_petersburg)
+                .into(questImage);
 
+            AppCompatRatingBar ratingBar = holder.questInfoView.findViewById(R.id.quest_rating_bar);
             ratingBar.setRating(questInfo.rating);
+
+            TextView name = holder.questInfoView.findViewById(R.id.quest_title);
             name.setText(questInfo.name);
+
+            TextView avgDistance = holder.questInfoView.findViewById(R.id.quest_avg_distance);
             avgDistance.setText(String.format("%s %s", Float.toString(questInfo.averageDistance), "km"));
+
+            TextView usersPassed = holder.questInfoView.findViewById(R.id.quest_passed);
             usersPassed.setText(String.format("%s %s", Integer.toString(questInfo.usersPassed), "passed"));
+
+            TextView description = holder.questInfoView.findViewById(R.id.quest_short_description);
             description.setText(questInfo.shortDescription);
 
             Button questStartButton = holder.questInfoView.findViewById(R.id.quest_start_button);
@@ -73,12 +83,6 @@ public class QuestInfoAdapter extends RecyclerView.Adapter<QuestInfoAdapter.Ques
                 intent.putExtra("quest_info", questInfo);
                 holder.questInfoView.getContext().startActivity(intent);
             });
-
-            // FIXME change URL to real questInfo.image
-            ImageView questImage = holder.questInfoView.findViewById(R.id.quest_image);
-            Picasso.with(holder.questInfoView.getContext())
-                .load("http://web.onetel.net.uk/~simonnihal/texcom/lena512_dxtc.jpg")
-                .into(questImage);
         }
     }
 

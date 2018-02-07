@@ -58,8 +58,10 @@ public class QuestInfoActivity extends AppCompatActivity {
 
             // FIXME change URL to real questInfo.image
             ImageView questImage = findViewById(R.id.quest_image);
-            Picasso.with(this)
-                .load("http://web.onetel.net.uk/~simonnihal/texcom/lena512_dxtc.jpg")
+            Picasso
+                .with(this)
+                .load(questInfo.image)
+                .error(R.mipmap.saint_petersburg)
                 .into(questImage);
         }
     }
