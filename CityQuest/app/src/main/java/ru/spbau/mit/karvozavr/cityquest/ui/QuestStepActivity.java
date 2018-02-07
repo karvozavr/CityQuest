@@ -63,7 +63,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
     public void onQuestLoaded(Quest quest) {
         if (quest == null) {
-            Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Failed to load quest.", Toast.LENGTH_LONG).show();
         } else {
             QuestController.onQuestLoaded(quest);
             signIn();
@@ -93,10 +93,10 @@ public class QuestStepActivity extends GoogleServicesActivity {
         checkButton.setText(getResources().getIdentifier(currentQuestStep.actionLabel, "string", getPackageName()));
         checkButton.setOnClickListener(view -> currentQuestStep.check(this));
 
-        if (description.getText().length() + goal.getText().length() > 512) {
+        /*if (description.getText().length() + goal.getText().length() > 512) {
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setOnClickListener(view -> currentQuestStep.check(this));
-        }
+        }*/
     }
 
     @Override
@@ -125,21 +125,9 @@ public class QuestStepActivity extends GoogleServicesActivity {
                     });
 
             dialogBuilder.setCancelable(false);
-
             dialogBuilder.show();
         }
         drawQuestStep(QuestController.getCurrentQuestStep());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case REQUEST_CODE_SIGN_IN:
-                getUserProgress(QuestController.currentQuest);
-                break;
-        }
     }
 
     @Override
