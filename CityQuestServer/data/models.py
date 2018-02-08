@@ -21,6 +21,7 @@ class QuestInfo(models.Model):
 class QuestStep(models.Model):
     title = models.TextField(max_length=100)
     description = models.TextField(max_length=750)
+    image = models.TextField(max_length=500, default="")
     goal = models.TextField(max_length=150)
     step_type = models.CharField(max_length=8)
 
