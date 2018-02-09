@@ -19,7 +19,7 @@ public class QuestStepDeserializer implements JsonDeserializer<AbstractQuestStep
     public AbstractQuestStep deserialize(JsonElement json,
                                          Type typeOfT,
                                          JsonDeserializationContext context)
-            throws JsonParseException {
+        throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();
         JsonObject jsonQuestInfoFields = jsonObject.getAsJsonObject("fields");
@@ -32,18 +32,22 @@ public class QuestStepDeserializer implements JsonDeserializer<AbstractQuestStep
 
         AbstractQuestStep step;
 
+
+        // FIXME crutch for compilation
+        final String imageUrl = "https://upload.wikimedia.org/wikipedia/en/2/24/Lenna.png";
+
         switch (stepType) {
-            case "key" :
+            case "key":
                 String keywords = jsonQuestInfoFields.get("keywords").getAsString();
-                step = new KeywordQuestStep(title, description, goal, keywords.split("\n"));
+                step = new KeywordQuestStep(title, description, goal, keywords.split("\n"), imageUrl);
                 break;
-            case "geo" :
+            case "geo":
                 Double latitude = jsonQuestInfoFields.get("latitude").getAsDouble();
                 Double longitude = jsonQuestInfoFields.get("longitude").getAsDouble();
-                step = new GeoQuestStep(title, description, goal, latitude, longitude);
+                step = new GeoQuestStep(title, description, goal, latitude, longitude, imageUrl);
                 break;
-            case "final" :
-                step = new FinalQuestStep(title, description);
+            case "final":
+                step = new FinalQuestStep(title, description, imageUrl);
                 break;
             default:
                 throw new JsonParseException("Wrong type of QuestStep: " + stepType);

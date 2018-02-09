@@ -10,8 +10,10 @@ import ru.spbau.mit.karvozavr.cityquest.R;
 
 public class FinalQuestStep extends AbstractQuestStep {
 
-    public FinalQuestStep(String title, String description) {
-        super(title, description, null, "final_quest_step_label");
+    public FinalQuestStep(String title,
+                          String description,
+                          String image) {
+        super(title, description, null,  "final_quest_step_label", image);
     }
 
     @Override

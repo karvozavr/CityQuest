@@ -25,8 +25,9 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
                         String description,
                         String goal,
                         double targetLatitude,
-                        double targetLongitude) {
-        super(title, description, goal, "geo_quest_step_label");
+                        double targetLongitude,
+                        String image) {
+        super(title, description, goal, "geo_quest_step_label", image);
         targetLocationLatitude = targetLatitude;
         targetLocationLongitude = targetLongitude;
     }

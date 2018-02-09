@@ -34,7 +34,6 @@ public class QuestStepActivity extends GoogleServicesActivity {
     private ProgressDialog loadingProgressDialog;
     public final AsyncTask<QuestInfo, Void, Void> loadTask = new AsyncLoadQuest();
     View questStepView;
-    boolean isFinishingNow = false;
 
     private static final int REQUEST_CODE_USER_DATA_RECEIVED = 1;
 
@@ -79,7 +78,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
         ImageView toolbarImage = findViewById(R.id.toolbar_image);
         Picasso.with(this)
-            .load(QuestController.currentQuest.info.image)
+            .load(currentQuestStep.image)
             .into(toolbarImage);
 
         TextView description = findViewById(R.id.step_desc);

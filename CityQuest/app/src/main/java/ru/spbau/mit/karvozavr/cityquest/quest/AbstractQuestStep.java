@@ -11,6 +11,7 @@ public abstract class AbstractQuestStep implements Serializable {
     public final String title;
     public final String description;
     public final String goal;
+    public final String image;
     public int stepNum;
 
     /**
@@ -18,10 +19,15 @@ public abstract class AbstractQuestStep implements Serializable {
      */
     public final String actionLabel;
 
-    public AbstractQuestStep(String title, String description, String goal, String actionLabel) {
+    public AbstractQuestStep(String title,
+                             String description,
+                             String goal,
+                             String actionLabel,
+                             String image) {
         this.title = title;
         this.description = description;
         this.goal = goal;
+        this.image = image;
         this.actionLabel = actionLabel;
     }
 
