@@ -55,7 +55,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
 
     public void onQuestLoaded(Quest quest) {
         if (quest == null) {
-            Toast.makeText(this, R.string.failed_load, Toast.LENGTH_LONG).show();
+            // Toast.makeText(this, R.string.failed_load, Toast.LENGTH_LONG).show();
             loadingProgressDialog.dismiss();
             AlertDialog.Builder loadFailedDialogBuilder = new AlertDialog.Builder(this);
             loadFailedDialogBuilder.setNeutralButton("OK", (dialogInterface, i) -> {
@@ -76,12 +76,6 @@ public class QuestStepActivity extends GoogleServicesActivity {
         setSupportActionBar(toolbar);
         setTitle(currentQuestStep.title);
 
-        ImageView toolbarImage = findViewById(R.id.toolbar_image);
-        Picasso.with(this)
-            .load(currentQuestStep.image)
-            .error(R.mipmap.saint_petersburg)
-            .into(toolbarImage);
-
         TextView description = findViewById(R.id.step_desc);
         description.setText(currentQuestStep.description);
 
@@ -91,6 +85,14 @@ public class QuestStepActivity extends GoogleServicesActivity {
         Button checkButton = findViewById(R.id.check_button);
         checkButton.setText(getResources().getIdentifier(currentQuestStep.actionLabel, "string", getPackageName()));
         checkButton.setOnClickListener(view -> currentQuestStep.check(this));
+
+        ImageView toolbarImage = findViewById(R.id.toolbar_image);
+        Picasso
+            .with(this)
+            .load(currentQuestStep.image)
+            .error(R.mipmap.saint_petersburg)
+            .into(toolbarImage);
+
 
         /* FloatingActionButton floatingActionButton = findViewById(R.id.fab);
         if (description.getText().length() + goal.getText().length() > 512) {

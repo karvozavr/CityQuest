@@ -35,4 +35,5 @@
     <string name="negative_answer">Нет</string>
     <string name="nothing_found">Ничего не найдено.</string>
     <string name="failed_load">Не удалось загрузить, проверьте подключение.</string>
+    <string name="login_failed_message">Не удалось войти. Попробуйте еще раз.</string>
 </resources>

@@ -33,4 +33,5 @@
     <string name="negative_answer">No</string>
     <string name="nothing_found">Nothing found.</string>
     <string name="failed_load">Failed to load, check your connection.</string>
+    <string name="login_failed_message">Login failed. Please, try to sign in again.</string>
 </resources>
