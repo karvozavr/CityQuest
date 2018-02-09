@@ -79,6 +79,7 @@ public class QuestStepActivity extends GoogleServicesActivity {
         ImageView toolbarImage = findViewById(R.id.toolbar_image);
         Picasso.with(this)
             .load(currentQuestStep.image)
+            .error(R.mipmap.saint_petersburg)
             .into(toolbarImage);
 
         TextView description = findViewById(R.id.step_desc);
