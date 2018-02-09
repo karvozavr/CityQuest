@@ -22,32 +22,41 @@ public class QuestStepDeserializer implements JsonDeserializer<AbstractQuestStep
         throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();
-        JsonObject jsonQuestInfoFields = jsonObject.getAsJsonObject("fields");
+        JsonObject jsonQuestStepFields = jsonObject.getAsJsonObject("fields");
 
-        int stepNum = jsonQuestInfoFields.get("step_number").getAsInt();
-        String stepType = jsonQuestInfoFields.get("step_type").getAsString();
-        String title = jsonQuestInfoFields.get("title").getAsString();
-        String description = jsonQuestInfoFields.get("description").getAsString();
-        String goal = jsonQuestInfoFields.get("goal").getAsString();
+        int stepNum = jsonQuestStepFields.get("step_number").getAsInt();
+        String stepType = jsonQuestStepFields.get("step_type").getAsString();
+        String title = jsonQuestStepFields.get("title").getAsString();
+        String description = jsonQuestStepFields.get("description").getAsString();
+        String goal = jsonQuestStepFields.get("goal").getAsString();
+
+        // FIXME: in case of trouble, delete on release
+        final String troubleImageUrl = "https://upload.wikimedia.org/wikipedia/en/2/24/Lenna.png";
+        String image;
+        if (jsonQuestStepFields.has("image")) {
+            image = jsonQuestStepFields.get("image").getAsString();
+        } else {
+            image = troubleImageUrl;
+        }
+
+        if (image == null || image.equals(""))
+            image = "empty_link";
+
 
         AbstractQuestStep step;
 
-
-        // FIXME crutch for compilation
-        final String imageUrl = "https://upload.wikimedia.org/wikipedia/en/2/24/Lenna.png";
-
         switch (stepType) {
             case "key":
-                String keywords = jsonQuestInfoFields.get("keywords").getAsString();
-                step = new KeywordQuestStep(title, description, goal, keywords.split("\n"), imageUrl);
+                String keywords = jsonQuestStepFields.get("keywords").getAsString();
+                step = new KeywordQuestStep(title, description, goal, keywords.split("\n"), image);
                 break;
             case "geo":
-                Double latitude = jsonQuestInfoFields.get("latitude").getAsDouble();
-                Double longitude = jsonQuestInfoFields.get("longitude").getAsDouble();
-                step = new GeoQuestStep(title, description, goal, latitude, longitude, imageUrl);
+                Double latitude = jsonQuestStepFields.get("latitude").getAsDouble();
+                Double longitude = jsonQuestStepFields.get("longitude").getAsDouble();
+                step = new GeoQuestStep(title, description, goal, latitude, longitude, image);
                 break;
             case "final":
-                step = new FinalQuestStep(title, description, imageUrl);
+                step = new FinalQuestStep(title, description, image);
                 break;
             default:
                 throw new JsonParseException("Wrong type of QuestStep: " + stepType);
