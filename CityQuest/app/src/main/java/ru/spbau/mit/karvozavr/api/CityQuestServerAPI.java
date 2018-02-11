@@ -14,7 +14,7 @@ import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
 public class CityQuestServerAPI {
-    private static final String SERVER_DOMAIN_NAME = "http://subject.pythonanywhere.com/data/";
+    private static final String SERVER_DOMAIN_NAME = "http://vasalf.net:1791/data/";
 
     private static final String TAG = "CityQuestServerAPI";
 
