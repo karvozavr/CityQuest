@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -192,14 +191,13 @@ public abstract class GoogleServicesActivity extends AppCompatActivity {
      * Login failure callback.
      */
     public void onLoginFailed() {
-        // Toast.makeText(this, "Login failed. Please, sign in again.", Toast.LENGTH_LONG).show();
-
         AlertDialog.Builder loginFailedDialogBuilder = new AlertDialog.Builder(this);
         loginFailedDialogBuilder.setNeutralButton("OK", (dialog, which) -> {
             dialog.dismiss();
             // Ask user to sign in again
             signIn();
         });
+        loginFailedDialogBuilder.setCancelable(false);
         loginFailedDialogBuilder.setMessage(R.string.login_failed_message);
         loginFailedDialogBuilder.show();
     }

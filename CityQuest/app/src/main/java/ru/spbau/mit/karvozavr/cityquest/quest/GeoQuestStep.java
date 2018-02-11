@@ -38,7 +38,7 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
 
         new Handler().postDelayed(() -> {
             LocationManager locationManager =
-                    (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
             if (ServiceProvider.getLocationAccess(context)) {
                 Location location = getLastKnownLocation(locationManager);

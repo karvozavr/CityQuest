@@ -1,7 +1,5 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
-import android.graphics.drawable.Drawable;
-
 import java.io.Serializable;
 
 public class QuestInfo implements Serializable {
