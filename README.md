@@ -1,2 +1,2 @@
 # CityQuest
-`under construction`
+`Смотреть Wiki`
