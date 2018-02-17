@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>Quest Editor &mdash; CityQuest</title>
+
+    <link rel="stylesheet" type="text/css" href="quest_editor.css">
+
+    <script type="text/javascript" src="earlyloader/libs/kotlin.js"></script>
+    <script type="text/javascript" src="earlyloader/earlyloader.js"></script>
+    <script type="text/javascript" src="CityQuestWebUI/libs/kotlinx-html-js.js"></script>
+</head>
+<body>
+    <div class="area" id="map-area">
+        <div id="map"> </div>
+    </div>
+    <div class="area" id="control-area">
+        <div class="area" id="logo-area">
+            <img src="logo.jpg" id="logo">
+        </div>
+        <div class="area" id="step-list-area">
+            <h3 align="center">Your steps will appear there</h3>
+        </div>
+        <div class="area" id="control-button-area">
+            <button class="control-button" id="new-gps-step-button">New GPS Step</button>
+            <button class="control-button" id="new-question-step-button">New Question Step</button>
+            <button class="control-button" id="final-step-button">Add Final Step</button>
+        </div>
+    </div>
+</body>
+</html>

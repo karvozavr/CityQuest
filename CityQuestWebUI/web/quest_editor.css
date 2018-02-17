@@ -1,0 +1,72 @@
+/*
+    Areas
+ */
+
+.area {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+#map-area {
+    position: absolute;
+    height: 100%;
+    top:0;
+    left: 0;
+    width: 75%;
+}
+
+#control-area {
+    position: absolute;
+    height: 100%;
+    top:0;
+    right: 0;
+    width: 25%;
+}
+
+#logo-area {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 21%;
+    background-color: #00bfa5;
+    text-align: center;
+}
+
+#step-list-area {
+    position: absolute;
+    width: 95%;
+    top: 21%;
+    height: 58%;
+    padding: 0 5px;
+}
+
+#control-button-area {
+    position: absolute;
+    width: 100%;
+    top: 79%;
+    height: 21%;
+}
+
+/*
+    Various element styles
+ */
+
+#map {
+    height: 100%;
+}
+
+#logo {
+    height: 100%;
+}
+
+.control-button {
+    position: static;
+    width: 96%;
+    height: 25%;
+    background-color: #00bfa5;
+    color: white;
+    border: none;
+    padding: 0 0;
+    margin: 5px;
+}
