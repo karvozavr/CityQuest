@@ -99,9 +99,17 @@
     padding: 1.5% 25px;
 }
 
+.goal-edit-area {
+    position: absolute;
+    height: 8%;
+    width: 99.5%;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
 .desc-edit-area {
     position: absolute;
-    height: 76%;
+    height: 68%;
     width: 99.5%;
     left: 0;
     padding: 1.5% 25px;
@@ -120,30 +128,42 @@
     visibility: hidden;
 }
 
-#gps-step-desc-edit-area {
+#gps-step-goal-edit-area {
     top: 8%;
-    height: 84%;
+}
+
+#gps-step-desc-edit-area {
+    top: 16%;
+    height: 76%;
 }
 
 #question-step-editor {
     visibility: hidden;
 }
 
-#question-step-answer-edit-area {
+#question-step-goal-edit-area {
     top: 8%;
 }
 
-#question-step-desc-edit-area {
+#question-step-answer-edit-area {
     top: 16%;
+}
+
+#question-step-desc-edit-area {
+    top: 24%;
 }
 
 #final-step-editor {
     visibility: hidden;
 }
 
-#final-step-desc-edit-area {
+#final-step-goal-edit-area {
     top: 8%;
-    height: 84%;
+}
+
+#final-step-desc-edit-area {
+    top: 16%;
+    height: 76%;
 }
 
 /*
@@ -152,6 +172,14 @@
  
  .title-edit {
     font-size: 16pt;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+    top: 0;
+ }
+ 
+ .goal-edit {
+    font-size: 14pt;
     width: 100%;
     border: none;
     border-bottom: 1px solid #00bfa5;

@@ -19,6 +19,9 @@
 			<div class="title-edit-area" id="gps-step-title-edit-area">
 				<input type="input" class="title-edit" id="gps-step-title-edit" placeholder="Enter the step title...">
 			</div>
+			<div class="goal-edit-area" id="gps-step-goal-edit-area">
+				<input type="input" class="goal-edit" id="gps-step-goal-edit" placeholder="Enter the step goal...">
+			</div>
 			<div class="desc-edit-area" id="gps-step-desc-edit-area">
 				<textarea class="desc-edit" id="gps-step-desc-edit" placeholder="Enter the step description..."></textarea>
 			</div>
@@ -30,6 +33,9 @@
         <div id="question-step-editor" class="editor-window">
 			<div class="title-edit-area" id="question-step-title-edit-area">
 				<input type="input" class="title-edit" id="question-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="goal-edit-area" id="question-step-goal-edit-area">
+				<input type="input" class="goal-edit" id="question-step-goal-edit" placeholder="Enter the step goal...">
 			</div>
 			<div class="answer-edit-area" id="question-step-answer-edit-area">
 				Answer: <input type="input" class="answer-edit" id="question-step-answer-edit">
@@ -45,6 +51,9 @@
         <div id="final-step-editor" class="editor-window">
 			<div class="title-edit-area" id="final-step-title-edit-area">
 				<input type="input" class="title-edit" id="final-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="goal-edit-area" id="final-step-goal-edit-area">
+				<input type="input" class="goal-edit" id="final-step-goal-edit" placeholder="Enter the step goal...">
 			</div>
 			<div class="desc-edit-area" id="final-step-desc-edit-area">
 				<textarea class="desc-edit" id="final-step-desc-edit" placeholder="Enter the step description..."></textarea>
@@ -130,7 +139,7 @@
 			return {
 				"title": title,
 				"description": desc,
-				"step_type": type,
+				"type": type,
 				"goal" : goal,
 				"keyword" : keyword,
 				"lat" : (lat == null ? null : lat()),

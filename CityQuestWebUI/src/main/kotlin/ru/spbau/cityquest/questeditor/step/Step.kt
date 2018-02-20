@@ -7,7 +7,7 @@ import kotlin.js.Json
 
 external fun pointToJson(title : String, desc : String, type : String, goal : String, keyword : String, lat : Double?, lng : Double?) : Json
 
-abstract class Step(var stepTitle : String, var stepDesc : String)  {
+abstract class Step(var stepTitle : String, var stepGoal : String, var stepDesc : String)  {
     companion object {
         var nextId : Int = 0
             get() = field++
@@ -23,7 +23,7 @@ abstract class Step(var stepTitle : String, var stepDesc : String)  {
     abstract fun toJson() : Json
 }
 
-class GPSStep(title : String, desc : String, var position : LatLng) : Step(title, desc) {
+class GPSStep(title : String, goal : String, desc : String, var position : LatLng) : Step(title, goal, desc) {
     class NoMarkerStoredException : Exception("Attempt to get removed/not created marker")
 
     interface MarkerStorage {
@@ -65,28 +65,28 @@ class GPSStep(title : String, desc : String, var position : LatLng) : Step(title
     }
 
     override fun toJson() : Json {
-        return pointToJson(stepTitle, stepDesc, "geo", "", "", position.lat, position.lng)
+        return pointToJson(stepTitle, stepDesc, "geo", stepGoal, "", position.lat, position.lng)
     }
 }
 
-class QuestionStep(title : String, desc : String, var answer : String) : Step(title, desc) {
+class QuestionStep(title : String, goal : String, desc : String, var answer : String) : Step(title, goal, desc) {
     override fun getPictureClass() : String {
         return "step-list-question-pic"
     }
 
     override fun toJson() : Json {
-        return pointToJson(stepTitle, stepDesc, "key", "", answer, null, null)
+        return pointToJson(stepTitle, stepDesc, "key", stepGoal, answer, null, null)
     }
 }
 
 class FinalStepPictureClassException : Exception("Attempt to get picture class from final step")
 
-class FinalStep(title : String, desc : String) : Step(title, desc) {
+class FinalStep(title : String, goal : String, desc : String) : Step(title, goal, desc) {
     override fun getPictureClass() : String {
         throw FinalStepPictureClassException()
     }
 
     override fun toJson() : Json {
-        return pointToJson(stepTitle, stepDesc, "final", "", "", null, null)
+        return pointToJson(stepTitle, stepDesc, "final", stepGoal, "", null, null)
     }
 }

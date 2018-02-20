@@ -45,18 +45,21 @@ class NewStepStorage<out T : Step>(val currentStep : T) : CurrentStepStorage<T> 
 
 class GPSStepEditor(ofWindow : HTMLDivElement,
                     private val titleEdit : HTMLInputElement,
+                    private val goalEdit : HTMLInputElement,
                     private val descEdit : HTMLTextAreaElement) : StepEditor(ofWindow) {
     private var currentStep : CurrentStepStorage<GPSStep> = EmptyStepStorage<GPSStep>()
 
     override fun open() {
         titleEdit.value = ""
+        goalEdit.value = ""
         descEdit.value = ""
-        currentStep = NewStepStorage<GPSStep>(GPSStep("", "", LatLng(0.0, 0.0)))
+        currentStep = NewStepStorage<GPSStep>(GPSStep("", "", "", LatLng(0.0, 0.0)))
         editor.view.openStepEditorWindow(this)
     }
     
     override fun save() {
         currentStep.getCurrentStep().stepTitle = titleEdit.value
+        currentStep.getCurrentStep().stepGoal = goalEdit.value
         currentStep.getCurrentStep().stepDesc = descEdit.value
         currentStep.saveCurrentStep()
         currentStep = EmptyStepStorage<GPSStep>()
@@ -86,19 +89,23 @@ class GPSStepEditor(ofWindow : HTMLDivElement,
 
 class QuestionStepEditor(ofWindow : HTMLDivElement,
                          val titleEdit : HTMLInputElement,
+                         val goalEdit : HTMLInputElement,
                          val answerEdit : HTMLInputElement,
                          val descEdit : HTMLTextAreaElement) : StepEditor(ofWindow) {
     private var currentStep : CurrentStepStorage<QuestionStep> = EmptyStepStorage<QuestionStep>()
 
     override fun open() {
         titleEdit.value = ""
+        goalEdit.value = ""
+        answerEdit.value = ""
         descEdit.value = ""
-        currentStep = NewStepStorage<QuestionStep>(QuestionStep("", "", ""))
+        currentStep = NewStepStorage<QuestionStep>(QuestionStep("", "", "", ""))
         editor.view.openStepEditorWindow(this)
     }
     
     override fun save() {
         currentStep.getCurrentStep().stepTitle = titleEdit.value
+        currentStep.getCurrentStep().stepGoal = goalEdit.value
         currentStep.getCurrentStep().stepDesc = descEdit.value
         currentStep.getCurrentStep().answer = answerEdit.value
         currentStep.saveCurrentStep()
@@ -116,16 +123,18 @@ class QuestionStepEditor(ofWindow : HTMLDivElement,
 
 class FinalStepEditor(ofWindow : HTMLDivElement,
                       val titleEdit : HTMLInputElement,
+                      val goalEdit : HTMLInputElement,
                       val descEdit : HTMLTextAreaElement) : StepEditor(ofWindow) {
     private var currentStep : CurrentStepStorage<FinalStep> = EmptyStepStorage<FinalStep>()
                           
     override fun open() {
-        currentStep = NewStepStorage<FinalStep>(FinalStep("", ""))
+        currentStep = NewStepStorage<FinalStep>(FinalStep("", "", ""))
         editor.view.openStepEditorWindow(this)
     }
     
     override fun save() {
         currentStep.getCurrentStep().stepTitle = titleEdit.value
+        currentStep.getCurrentStep().stepGoal = goalEdit.value
         currentStep.getCurrentStep().stepDesc = descEdit.value
         editor.storage.addStep(currentStep.getCurrentStep())
         currentStep = EmptyStepStorage<FinalStep>()
