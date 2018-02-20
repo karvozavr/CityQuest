@@ -22,7 +22,8 @@ def save(request):
     q = QuestInfo()
     q.name = deserialized["name"]
     q.author = deserialized["author"]
-    q.image = '0'
+    if "image" in deserialized:
+        q.image = deserialized["image"]
     q.avg_distance = deserialized["avg_distance"]
     q.description = deserialized["description"]
     q.save()
