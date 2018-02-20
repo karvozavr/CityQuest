@@ -41,6 +41,18 @@
 				<button class="submit-button" id="question-step-add-step" onclick="addQuestionStep()">Add step</button>
 			</div>
         </div>
+        <div id="final-step-editor" class="editor-window">
+			<div class="title-edit-area" id="final-step-title-edit-area">
+				<input type="input" class="title-edit" id="final-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="desc-edit-area" id="final-step-desc-edit-area">
+				<textarea class="desc-edit" id="final-step-desc-edit" placeholder="Enter the step description..."></textarea>
+			</div>
+			<div class="submit-button-area" id="final-step-submit-button-area">
+				<button class="submit-button" id="final-step-cancel" onclick="cancelFinalStep()">Cancel</button>
+				<button class="submit-button" id="final-step-place-marker" onclick="submitQuest()">Submit the quest!</button>
+			</div>
+        </div>
     </div>
     <div class="area" id="control-area">
         <div class="area" id="logo-area">
@@ -55,9 +67,15 @@
         <div class="area" id="control-button-area">
             <button class="control-button" id="new-gps-step-button" onclick="newGPSStep()">New GPS Step</button>
             <button class="control-button" id="new-question-step-button" onclick="newQuestionStep()">New Question Step</button>
-            <button class="control-button" id="final-step-button">Add Final Step</button>
+            <button class="control-button" id="final-step-button" onclick="editFinalStep()">Edit Final Step</button>
         </div>
     </div>
+    
+    <form name="save_quest" action="{% url 'save_quest' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" id="json" name="json" value="">
+    </form>
+    
     <script>
 		var editor;
 		function initEditor() {
@@ -90,6 +108,33 @@
 			initEditor();
 			editor.questionEditor.cancel();
 			editor.questionEditor.close();
+		}
+		function editFinalStep() {
+			initEditor();
+			editor.finalStepEditor.open();
+		}
+		function submitQuest() {
+			initEditor();
+			editor.finalStepEditor.save();
+			editor.finalStepEditor.close();
+			editor.submitQuest();
+			document.save_quest.submit();
+		}
+		function cancelFinalStep() {
+			initEditor();
+			editor.finalStepEditor.cancel();
+			editor.finalStepEditor.close();
+		}
+		function pointToJson(title, desc, type, goal, keyword, lat, lng) {
+			return {
+				"title": title,
+				"description": desc,
+				"type": type,
+				"goal" : goal,
+				"keyword" : keyword,
+				"lat" : (lat == null ? null : lat()),
+				"lng" : (lng == null ? null : lng())
+			}
 		}
     </script>
 </body>

@@ -114,9 +114,28 @@ class QuestionStepEditor(ofWindow : HTMLDivElement,
     }
 }
 
-class FinalStepEditor(ofWindow : HTMLDivElement) : StepEditor(ofWindow) {
-    override fun open() = TODO("Implement the FinalStepEditor")
-    override fun save() = TODO("Implement the FinalStepEditor")
-    override fun close() = TODO("Implement the FinalStepEditor")
-    override fun cancel() = TODO("Implement the FinalStepEditor")
+class FinalStepEditor(ofWindow : HTMLDivElement,
+                      val titleEdit : HTMLInputElement,
+                      val descEdit : HTMLTextAreaElement) : StepEditor(ofWindow) {
+    private var currentStep : CurrentStepStorage<FinalStep> = EmptyStepStorage<FinalStep>()
+                          
+    override fun open() {
+        currentStep = NewStepStorage<FinalStep>(FinalStep("", ""))
+        editor.view.openStepEditorWindow(this)
+    }
+    
+    override fun save() {
+        currentStep.getCurrentStep().stepTitle = titleEdit.value
+        currentStep.getCurrentStep().stepDesc = descEdit.value
+        editor.storage.addStep(currentStep.getCurrentStep())
+        currentStep = EmptyStepStorage<FinalStep>()
+    }
+    
+    override fun close() {
+        editor.view.closeStepEditorWindow(this)
+    }
+    
+    override fun cancel() {
+        currentStep = EmptyStepStorage<FinalStep>()
+    }
 }

@@ -12,10 +12,13 @@ object editor {
 
     @JsName("gpsEditor")
     val gpsEditor : GPSStepEditor = view.createGPSStepEditor()
+    @JsName("questionEditor")
     val questionEditor : QuestionStepEditor = view.createQuestionStepEditor()
-    /*
-    val finalStepEditor : FinalStepEditor = TODO("Implement the Editor")
-    */
+    @JsName("finalStepEditor")
+    val finalStepEditor : FinalStepEditor = view.createFinalStepEditor()
 
-    fun saveQuest() : Nothing = TODO("Implement the Editor")
+    @JsName("submitQuest")
+    fun submitQuest() {
+        
+    }
 }

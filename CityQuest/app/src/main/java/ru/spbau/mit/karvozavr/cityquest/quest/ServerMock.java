@@ -16,7 +16,7 @@ public class ServerMock {
         if (from > amount)
             return result;
         for (int i = from; i < min(to, amount); i++) {
-            QuestInfo info = QuestController.getSampleQuest().info;
+            QuestInfo info = null;
             info.name += Integer.valueOf(i + 1).toString();
             result.add(info);
         }

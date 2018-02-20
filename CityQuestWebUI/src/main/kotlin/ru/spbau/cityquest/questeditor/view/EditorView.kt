@@ -19,6 +19,9 @@ class EditorView {
         val questionStepTitleEdit = (document.getElementById("question-step-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("question-step-title-edit")
         val questionStepAnswerEdit = (document.getElementById("question-step-answer-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("question-step-answer-edit")
         val questionStepDescEdit = (document.getElementById("question-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("question-step-desc-edit")
+        val finalStepEditorWindow = (document.getElementById("final-step-editor") as HTMLDivElement?) ?: throw ElementNotFoundException("final-step-editor")
+        val finalStepTitleEdit = (document.getElementById("final-step-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("final-step-title-edit")
+        val finalStepDescEdit = (document.getElementById("final-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("final-step-desc-edit")
         val stepListUl = (document.getElementById("step-list-ul") as HTMLUListElement?) ?: throw ElementNotFoundException("step-list-ul")
         val willAppearParagraph = (document.getElementById("will-appear") as HTMLParagraphElement?) ?: throw ElementNotFoundException("will-appear")
 
@@ -35,6 +38,10 @@ class EditorView {
 
     fun createQuestionStepEditor() : QuestionStepEditor {
         return QuestionStepEditor(questionEditorWindow, questionStepTitleEdit, questionStepAnswerEdit, questionStepDescEdit)
+    }
+
+    fun createFinalStepEditor() : FinalStepEditor {
+        return FinalStepEditor(finalStepEditorWindow, finalStepTitleEdit, finalStepDescEdit)
     }
     
     val draggableList = DraggableList(stepListUl, willAppearParagraph)

@@ -137,6 +137,15 @@
     top: 16%;
 }
 
+#final-step-editor {
+    visibility: hidden;
+}
+
+#final-step-desc-edit-area {
+    top: 8%;
+    height: 84%;
+}
+
 /*
     Window elements
  */
