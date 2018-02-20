@@ -25,7 +25,9 @@ class StepStorage {
         updateIndices()
     }
 
-    fun toJson() : Json = TODO("Implement the step storage")
+    fun toJsonList() : List<Json> {
+        return storage.map { it.toJson() }
+    }
 
     fun updateIndices() {
         for (i in 0 until storage.size) {

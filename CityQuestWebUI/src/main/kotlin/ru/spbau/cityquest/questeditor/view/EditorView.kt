@@ -24,6 +24,7 @@ class EditorView {
         val finalStepDescEdit = (document.getElementById("final-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("final-step-desc-edit")
         val stepListUl = (document.getElementById("step-list-ul") as HTMLUListElement?) ?: throw ElementNotFoundException("step-list-ul")
         val willAppearParagraph = (document.getElementById("will-appear") as HTMLParagraphElement?) ?: throw ElementNotFoundException("will-appear")
+        val jsonInput = (document.getElementById("json") as HTMLInputElement?) ?: throw ElementNotFoundException("json")
 
         val mapOptions = google.maps.MapOptions(LatLng(59.9342802, 30.3350986), 12)
         init {
@@ -42,6 +43,10 @@ class EditorView {
 
     fun createFinalStepEditor() : FinalStepEditor {
         return FinalStepEditor(finalStepEditorWindow, finalStepTitleEdit, finalStepDescEdit)
+    }
+
+    fun setResultingJson(res : String) {
+        jsonInput.value = res
     }
     
     val draggableList = DraggableList(stepListUl, willAppearParagraph)

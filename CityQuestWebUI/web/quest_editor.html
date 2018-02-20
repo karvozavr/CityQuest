@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,11 @@
     <meta name="viewport" content="initial-scale=1.0">
     <title>Quest Editor &mdash; CityQuest</title>
 
-    <link rel="stylesheet" type="text/css" href="quest_editor.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'quest_editor.css' %}">
 
-    <script type="text/javascript" src="earlyloader/libs/kotlin.js"></script>
-    <script type="text/javascript" src="earlyloader/earlyloader.js"></script>
-    <script type="text/javascript" src="CityQuestWebUI/libs/kotlinx-html-js.js"></script>
+    <script type="text/javascript" src="{% static 'earlyloader/libs/kotlin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'earlyloader/earlyloader.js' %}"></script>
+    <script type="text/javascript" src="{% static 'CityQuestWebUI/libs/kotlinx-html-js.js' %}"></script>
 </head>
 <body>
     <div class="area" id="map-area">
@@ -56,7 +57,7 @@
     </div>
     <div class="area" id="control-area">
         <div class="area" id="logo-area">
-            <img src="logo.jpg" id="logo">
+            <img src="{% static 'logo.jpg' %}" id="logo">
         </div>
         <div class="area" id="step-list-area">
             <p id="will-appear">Your steps will appear there...</p>
@@ -129,7 +130,7 @@
 			return {
 				"title": title,
 				"description": desc,
-				"type": type,
+				"step_type": type,
 				"goal" : goal,
 				"keyword" : keyword,
 				"lat" : (lat == null ? null : lat()),

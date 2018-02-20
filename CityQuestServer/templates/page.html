@@ -6,151 +6,137 @@
     <meta name="viewport" content="initial-scale=1.0">
     <title>Quest Editor &mdash; CityQuest</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'QuestEditor.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'quest_editor.css' %}">
 
-    <script type="text/javascript" src="{% static 'EarlyLoader/libs/kotlin.js' %}"></script>
-    <script type="text/javascript" src="{% static 'EarlyLoader/earlyloader.js' %}"></script>
+    <script type="text/javascript" src="{% static 'earlyloader/libs/kotlin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'earlyloader/earlyloader.js' %}"></script>
     <script type="text/javascript" src="{% static 'CityQuestWebUI/libs/kotlinx-html-js.js' %}"></script>
-
-    <script>
-        var CityQuestWebUIPath = "{% static 'CityQuestWebUI/CityQuestWebUI.js' %}";
-    </script>
 </head>
 <body>
-    <div id="wrapper">
-        <div id="map-layout">
-            <div id="edit-gps-point" class="nicebox dialog">
-                <div class="title-edit">
-                    <input id="edit-gps-point-title-edit-input" class="title-edit-input" type="text">
-                </div>
-                <div class="title-edit">
-                    <label class="kwlabel" for="edit-gps-point-goal-edit-input">Goal:</label>
-                    <span class="kwans"><input id="edit-gps-point-goal-edit-input" class="answer-edit-input" type="text"></span>
-                </div>
-                <div class="desc-edit">
-                    <textarea id="edit-gps-point-desc-edit-input" class="desc-edit-input" onchange="descOnChange(this.value, this)"></textarea>
-                </div>
-                <div class="submit-buttons">
-                    <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
-                    <button class="button submit-button" onclick="placeMarker()">Setup the position</button>
-                    <button class="button submit-button" onclick="saveChanges()" id="save-changes">Save changes</button>
-                </div>
-            </div>
-            <div id="edit-text-point" class="nicebox dialog">
-                <div class="title-edit">
-                    <input id="edit-text-point-title-edit-input" class="title-edit-input" type="text">
-                </div>
-                <div class="title-edit">
-                    <label class="kwlabel" for="edit-text-point-goal-edit-input">Goal:</label>
-                    <span class="kwans"><input id="edit-text-point-goal-edit-input" class="answer-edit-input" type="text"></span>
-                </div>
-                <div class="ans-edit">
-                    <label class="kwlabel" for="edit-text-point-ans-edit-input">Keyword:</label>
-                    <span class="kwans"><input id="edit-text-point-ans-edit-input" class="answer-edit-input" type="text"></span>
-                </div>
-                <div class="desc-edit" id="desc-for-text">
-                    <textarea id="edit-text-point-desc-edit-input" class="desc-edit-input" onchange="descOnChange(this.value, this)"></textarea>
-                </div>
-                <div class="submit-buttons">
-                    <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
-                    <button class="button submit-button" onclick="saveTextChanges()" id="text-save-changes">Save changes</button>
-                </div>
-            </div>
-            <div id="edit-final-point" class="nicebox dialog">
-                <div class="title-edit">
-                    <input id="edit-final-point-title-edit-input" class="title-edit-input" type="text">
-                </div>
-                <div class="desc-edit" id="desc-for-final">
-                    <textarea id="edit-final-point-desc-edit-input" class="desc-edit-input" onchange="descOnChange(this.value, this)"></textarea>
-                </div>
-                <div class="submit-buttons">
-                    <button class="button submit-button" onclick="cancelNewPoint()">Cancel</button>
-                    <button class="button submit-button" onclick="submitChanges()">Submit Quest</button>
-                </div>
-            </div>
-            <div id="debug-window" class="nicebox">
-                <p id="state">Mode: VIEW</p>
-                <p id="debug-info"></p>
-            </div>
-            <div id="map"></div>
+    <div class="area" id="map-area">
+        <div id="map"> </div>
+        <div id="gps-step-editor" class="editor-window">
+			<div class="title-edit-area" id="gps-step-title-edit-area">
+				<input type="input" class="title-edit" id="gps-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="desc-edit-area" id="gps-step-desc-edit-area">
+				<textarea class="desc-edit" id="gps-step-desc-edit" placeholder="Enter the step description..."></textarea>
+			</div>
+			<div class="submit-button-area" id="gps-step-submit-button-area">
+				<button class="submit-button" id="gps-step-cancel" onclick="cancelGPSStep()">Cancel</button>
+				<button class="submit-button" id="gps-step-place-marker" onclick="placeMarker()">Place the marker</button>
+			</div>
         </div>
-        <div id="controls" class="nicebox">
-            <div id="user-info" class="control-area">
-                <img src="{% static 'logo.jpg' %}" class="logo"/>
-            </div>
-            <div id="quest-points" class="control-area">
-                <ul id="quest-points-list">
-                    <li style="height: 0">
-                        <div id="will-appear">
-                            Quest points will appear here...
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div id="control-buttons" class="control-area">
-                <button class="button control-button" onclick="newQuestPoint()">Add GPS quest point</button>
-                <button class="button control-button" onclick="newTextPoint()">Add text question</button>
-                <button class="button control-button" onclick="finalPoint()">Proceed to the final point</button>
-            </div>
+        <div id="question-step-editor" class="editor-window">
+			<div class="title-edit-area" id="question-step-title-edit-area">
+				<input type="input" class="title-edit" id="question-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="answer-edit-area" id="question-step-answer-edit-area">
+				Answer: <input type="input" class="answer-edit" id="question-step-answer-edit">
+			</div>
+			<div class="desc-edit-area" id="question-step-desc-edit-area">
+				<textarea class="desc-edit" id="question-step-desc-edit" placeholder="Enter the step description..."></textarea>
+			</div>
+			<div class="submit-button-area" id="question-step-submit-button-area">
+				<button class="submit-button" id="question-step-cancel" onclick="cancelQuestionStep()">Cancel</button>
+				<button class="submit-button" id="question-step-add-step" onclick="addQuestionStep()">Add step</button>
+			</div>
+        </div>
+        <div id="final-step-editor" class="editor-window">
+			<div class="title-edit-area" id="final-step-title-edit-area">
+				<input type="input" class="title-edit" id="final-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="desc-edit-area" id="final-step-desc-edit-area">
+				<textarea class="desc-edit" id="final-step-desc-edit" placeholder="Enter the step description..."></textarea>
+			</div>
+			<div class="submit-button-area" id="final-step-submit-button-area">
+				<button class="submit-button" id="final-step-cancel" onclick="cancelFinalStep()">Cancel</button>
+				<button class="submit-button" id="final-step-place-marker" onclick="submitQuest()">Submit the quest!</button>
+			</div>
         </div>
     </div>
-
+    <div class="area" id="control-area">
+        <div class="area" id="logo-area">
+            <img src="{% static 'logo.jpg' %}" id="logo">
+        </div>
+        <div class="area" id="step-list-area">
+            <p id="will-appear">Your steps will appear there...</p>
+            <div id="step-list">
+				<ul id="step-list-ul"></ul>
+            </div>
+        </div>
+        <div class="area" id="control-button-area">
+            <button class="control-button" id="new-gps-step-button" onclick="newGPSStep()">New GPS Step</button>
+            <button class="control-button" id="new-question-step-button" onclick="newQuestionStep()">New Question Step</button>
+            <button class="control-button" id="final-step-button" onclick="editFinalStep()">Edit Final Step</button>
+        </div>
+    </div>
+    
     <form name="save_quest" action="{% url 'save_quest' %}" method="post">
         {% csrf_token %}
         <input type="hidden" id="json" name="json" value="">
     </form>
-
-    <script type="text/javascript">
-        function cancelNewPoint() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().cancelNewPoint();
-        }
-
-        function saveChanges() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveChanges();
-        }
-
-        function newQuestPoint() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().newQuestPoint();
-        }
-
-        function newTextPoint() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().newTextPoint();
-        }
-
-        function placeMarker() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().placeMarker();
-        }
-        
-        function submitChanges() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().submitChanges();
-            document.save_quest.submit();
-        }
-
-        function finalPoint() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().finalPoint();
-        }
-
-        function saveTextChanges() {
-            CityQuestWebUI.ru.spbau.cityquest.webui.questeditor.getEditor().saveTextChanges();
-        }
-
-        function descOnChange(value, elem) {
-            elem.innerHTML = value;
-            elem.value = value;
-        }
-
-        function ptToJSON(title, desc, type, goal, keyword, lat, lng) {
-            return {
-                "title" : title,
-                "description": desc,
-                "type": type,
-                "goal": goal,
-                "keyword": keyword,
-                "lat": (lat === null ? null : lat()),
-                "lng": (lng === null ? null : lng())
-            }
-        }
+    
+    <script>
+		var editor;
+		function initEditor() {
+			editor = CityQuestWebUI.ru.spbau.cityquest.questeditor.editor;
+		}
+		function newGPSStep() {
+			initEditor();
+			editor.gpsEditor.open();
+		}
+		function placeMarker() {
+			initEditor();
+			editor.gpsEditor.close();
+			editor.gpsEditor.startMarkerPlacement();
+		}
+		function cancelGPSStep() {
+			initEditor();
+			editor.gpsEditor.cancel();
+			editor.gpsEditor.close();
+		}
+		function newQuestionStep() {
+			initEditor();
+			editor.questionEditor.open();
+		}
+		function addQuestionStep() {
+			initEditor();
+			editor.questionEditor.save();
+			editor.questionEditor.close();
+		}
+		function cancelQuestionStep() {
+			initEditor();
+			editor.questionEditor.cancel();
+			editor.questionEditor.close();
+		}
+		function editFinalStep() {
+			initEditor();
+			editor.finalStepEditor.open();
+		}
+		function submitQuest() {
+			initEditor();
+			editor.finalStepEditor.save();
+			editor.finalStepEditor.close();
+			editor.submitQuest();
+			document.save_quest.submit();
+		}
+		function cancelFinalStep() {
+			initEditor();
+			editor.finalStepEditor.cancel();
+			editor.finalStepEditor.close();
+		}
+		function pointToJson(title, desc, type, goal, keyword, lat, lng) {
+			return {
+				"title": title,
+				"description": desc,
+				"type": type,
+				"goal" : goal,
+				"keyword" : keyword,
+				"lat" : (lat == null ? null : lat()),
+				"lng" : (lng == null ? null : lng())
+			}
+		}
     </script>
-
 </body>
 </html>

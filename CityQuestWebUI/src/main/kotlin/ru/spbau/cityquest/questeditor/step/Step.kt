@@ -3,6 +3,10 @@ package ru.spbau.cityquest.questeditor.step
 import ru.spbau.cityquest.questeditor.editor
 import google.maps.LatLng
 
+import kotlin.js.Json
+
+external fun pointToJson(title : String, desc : String, type : String, goal : String, keyword : String, lat : Double?, lng : Double?) : Json
+
 abstract class Step(var stepTitle : String, var stepDesc : String)  {
     companion object {
         var nextId : Int = 0
@@ -16,6 +20,7 @@ abstract class Step(var stepTitle : String, var stepDesc : String)  {
     open fun deactivate() {}
 
     abstract fun getPictureClass() : String
+    abstract fun toJson() : Json
 }
 
 class GPSStep(title : String, desc : String, var position : LatLng) : Step(title, desc) {
@@ -58,11 +63,19 @@ class GPSStep(title : String, desc : String, var position : LatLng) : Step(title
     override fun getPictureClass() : String {
         return "step-list-gps-pic"
     }
+
+    override fun toJson() : Json {
+        return pointToJson(stepTitle, stepDesc, "geo", "", "", position.lat, position.lng)
+    }
 }
 
 class QuestionStep(title : String, desc : String, var answer : String) : Step(title, desc) {
     override fun getPictureClass() : String {
         return "step-list-question-pic"
+    }
+
+    override fun toJson() : Json {
+        return pointToJson(stepTitle, stepDesc, "key", "", answer, null, null)
     }
 }
 
@@ -71,5 +84,9 @@ class FinalStepPictureClassException : Exception("Attempt to get picture class f
 class FinalStep(title : String, desc : String) : Step(title, desc) {
     override fun getPictureClass() : String {
         throw FinalStepPictureClassException()
+    }
+
+    override fun toJson() : Json {
+        return pointToJson(stepTitle, stepDesc, "final", "", "", null, null)
     }
 }
