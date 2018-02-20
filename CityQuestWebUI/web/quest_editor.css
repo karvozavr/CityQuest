@@ -91,9 +91,17 @@
     padding: 1.5% 25px;
 }
 
+.answer-edit-area {
+    position: absolute;
+    height: 8%;
+    width: 99.5%;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
 .desc-edit-area {
     position: absolute;
-    height: 78%;
+    height: 76%;
     width: 99.5%;
     left: 0;
     padding: 1.5% 25px;
@@ -117,6 +125,18 @@
     height: 84%;
 }
 
+#question-step-editor {
+    visibility: hidden;
+}
+
+#question-step-answer-edit-area {
+    top: 8%;
+}
+
+#question-step-desc-edit-area {
+    top: 16%;
+}
+
 /*
     Window elements
  */
@@ -127,6 +147,13 @@
     border: none;
     border-bottom: 1px solid #00bfa5;
     top: 0;
+ }
+ 
+ .answer-edit {
+    font-size: 16pt;
+    width: 40%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
  }
 
 .desc-edit {
@@ -155,6 +182,8 @@
     padding: 0 0;
     height: 50px;
     width: 100%;
+    background-color: white;
+    border-bottom: 1px solid gray;
 }
 
 .step-list-pic {

@@ -25,7 +25,22 @@
 				<button class="submit-button" id="gps-step-cancel" onclick="cancelGPSStep()">Cancel</button>
 				<button class="submit-button" id="gps-step-place-marker" onclick="placeMarker()">Place the marker</button>
 			</div>
-        </div>        
+        </div>
+        <div id="question-step-editor" class="editor-window">
+			<div class="title-edit-area" id="question-step-title-edit-area">
+				<input type="input" class="title-edit" id="question-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="answer-edit-area" id="question-step-answer-edit-area">
+				Answer: <input type="input" class="answer-edit" id="question-step-answer-edit">
+			</div>
+			<div class="desc-edit-area" id="question-step-desc-edit-area">
+				<textarea class="desc-edit" id="question-step-desc-edit" placeholder="Enter the step description..."></textarea>
+			</div>
+			<div class="submit-button-area" id="question-step-submit-button-area">
+				<button class="submit-button" id="question-step-cancel" onclick="cancelQuestionStep()">Cancel</button>
+				<button class="submit-button" id="question-step-add-step" onclick="addQuestionStep()">Add step</button>
+			</div>
+        </div>
     </div>
     <div class="area" id="control-area">
         <div class="area" id="logo-area">
@@ -39,7 +54,7 @@
         </div>
         <div class="area" id="control-button-area">
             <button class="control-button" id="new-gps-step-button" onclick="newGPSStep()">New GPS Step</button>
-            <button class="control-button" id="new-question-step-button">New Question Step</button>
+            <button class="control-button" id="new-question-step-button" onclick="newQuestionStep()">New Question Step</button>
             <button class="control-button" id="final-step-button">Add Final Step</button>
         </div>
     </div>
@@ -61,6 +76,20 @@
 			initEditor();
 			editor.gpsEditor.cancel();
 			editor.gpsEditor.close();
+		}
+		function newQuestionStep() {
+			initEditor();
+			editor.questionEditor.open();
+		}
+		function addQuestionStep() {
+			initEditor();
+			editor.questionEditor.save();
+			editor.questionEditor.close();
+		}
+		function cancelQuestionStep() {
+			initEditor();
+			editor.questionEditor.cancel();
+			editor.questionEditor.close();
 		}
     </script>
 </body>

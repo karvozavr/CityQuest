@@ -12,8 +12,8 @@ object editor {
 
     @JsName("gpsEditor")
     val gpsEditor : GPSStepEditor = view.createGPSStepEditor()
+    val questionEditor : QuestionStepEditor = view.createQuestionStepEditor()
     /*
-    val questionEditor : QuestionStepEditor = TODO("Implement the Editor")
     val finalStepEditor : FinalStepEditor = TODO("Implement the Editor")
     */
 

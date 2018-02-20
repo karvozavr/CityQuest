@@ -84,11 +84,34 @@ class GPSStepEditor(ofWindow : HTMLDivElement,
     }
 }
 
-class QuestionStepEditor(ofWindow : HTMLDivElement) : StepEditor(ofWindow) {
-    override fun open() = TODO("Implement the QuestionStepEditor")
-    override fun save() = TODO("Implement the QuestionStepEditor")
-    override fun close() = TODO("Implement the QuestionStepEditor")
-    override fun cancel() = TODO("Implement the QuestionStepEditor")
+class QuestionStepEditor(ofWindow : HTMLDivElement,
+                         val titleEdit : HTMLInputElement,
+                         val answerEdit : HTMLInputElement,
+                         val descEdit : HTMLTextAreaElement) : StepEditor(ofWindow) {
+    private var currentStep : CurrentStepStorage<QuestionStep> = EmptyStepStorage<QuestionStep>()
+
+    override fun open() {
+        titleEdit.value = ""
+        descEdit.value = ""
+        currentStep = NewStepStorage<QuestionStep>(QuestionStep("", "", ""))
+        editor.view.openStepEditorWindow(this)
+    }
+    
+    override fun save() {
+        currentStep.getCurrentStep().stepTitle = titleEdit.value
+        currentStep.getCurrentStep().stepDesc = descEdit.value
+        currentStep.getCurrentStep().answer = answerEdit.value
+        currentStep.saveCurrentStep()
+        currentStep = EmptyStepStorage<QuestionStep>()
+    }
+    
+    override fun close() {
+        editor.view.closeStepEditorWindow(this)
+    }
+    
+    override fun cancel() {
+        currentStep = EmptyStepStorage<QuestionStep>()
+    }
 }
 
 class FinalStepEditor(ofWindow : HTMLDivElement) : StepEditor(ofWindow) {
