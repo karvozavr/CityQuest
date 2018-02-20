@@ -14,6 +14,18 @@
 <body>
     <div class="area" id="map-area">
         <div id="map"> </div>
+        <div id="gps-step-editor" class="editor-window">
+			<div class="title-edit-area" id="gps-step-title-edit-area">
+				<input type="input" class="title-edit" id="gps-step-title-edit" placeholder="Enter the step title...">
+			</div>
+			<div class="desc-edit-area" id="gps-step-desc-edit-area">
+				<textarea class="desc-edit" id="gps-step-desc-edit" placeholder="Enter the step description..."></textarea>
+			</div>
+			<div class="submit-button-area" id="gps-step-submit-button-area">
+				<button class="submit-button" id="gps-step-cancel" onclick="cancelGPSStep()">Cancel</button>
+				<button class="submit-button" id="gps-step-place-marker" onclick="placeMarker()">Place the marker</button>
+			</div>
+        </div>        
     </div>
     <div class="area" id="control-area">
         <div class="area" id="logo-area">
@@ -23,10 +35,30 @@
             <h3 align="center">Your steps will appear there</h3>
         </div>
         <div class="area" id="control-button-area">
-            <button class="control-button" id="new-gps-step-button">New GPS Step</button>
+            <button class="control-button" id="new-gps-step-button" onclick="newGPSStep()">New GPS Step</button>
             <button class="control-button" id="new-question-step-button">New Question Step</button>
             <button class="control-button" id="final-step-button">Add Final Step</button>
         </div>
     </div>
+    <script>
+		var editor;
+		function initEditor() {
+			editor = CityQuestWebUI.ru.spbau.cityquest.questeditor.editor;
+		}
+		function newGPSStep() {
+			initEditor();
+			editor.gpsEditor.open();
+		}
+		function placeMarker() {
+			initEditor();
+			editor.gpsEditor.close();
+			editor.gpsEditor.startMarkerPlacement();
+		}
+		function cancelGPSStep() {
+			initEditor();
+			editor.gpsEditor.cancel();
+			editor.gpsEditor.close();
+		}
+    </script>
 </body>
 </html>

@@ -1,4 +1,14 @@
 /*
+    Common element styles
+ */
+ 
+ div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+ }
+
+/*
     Areas
  */
 
@@ -49,6 +59,84 @@
 }
 
 /*
+    Windows
+*/
+
+.editor-window {
+    z-index: 5;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    background: #ffffff;
+}
+
+.title-edit-area {
+    position: absolute;
+    height: 8%;
+    width: 99.5%;
+    top: 0;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
+.desc-edit-area {
+    position: absolute;
+    height: 78%;
+    width: 99.5%;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
+.submit-button-area {
+    position: absolute;
+    height: 8%;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 0.5% 25px 1%;
+}
+
+#gps-step-editor {
+    visibility: hidden;
+}
+
+#gps-step-desc-edit-area {
+    top: 8%;
+    height: 84%;
+}
+
+/*
+    Window elements
+ */
+ 
+ .title-edit {
+    font-size: 16pt;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+    top: 0;
+ }
+
+.desc-edit {
+    height: 100%;
+    width: 100%;
+}
+
+.submit-button {
+    position: relative;
+    width: 20%;
+    margin-left: 2%;
+    height: 100%;
+    float: right;
+    background-color:  #00bfa5;
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+
+/*
     Various element styles
  */
 
@@ -63,10 +151,12 @@
 .control-button {
     position: static;
     width: 96%;
-    height: 25%;
+    height: 28%;
     background-color: #00bfa5;
     color: white;
     border: none;
     padding: 0 0;
     margin: 1% 2%;
+    border-radius: 4px;
 }
+
