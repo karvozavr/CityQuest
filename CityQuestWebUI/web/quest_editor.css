@@ -8,6 +8,16 @@
     box-sizing: border-box;
  }
 
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
 /*
     Areas
  */
@@ -45,7 +55,7 @@
 
 #step-list-area {
     position: absolute;
-    width: 95%;
+    width: 100%;
     top: 21%;
     height: 58%;
     padding: 0 5px;
@@ -137,6 +147,57 @@
 }
 
 /*
+    Step list items
+ */
+ 
+ .step-list-common {
+    position: relative;
+    padding: 0 0;
+    height: 50px;
+    width: 100%;
+}
+
+.step-list-pic {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 49px;
+    width: 49px;
+}
+
+.step-list-gps-pic {
+    content: url(gps_icon.png);
+}
+
+.step-list-lines {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 49px;
+    width: 49px;
+    content: url(lines_icon.png);
+}
+
+.step-list-title {
+    color: #00bfa5;
+    position: absolute;
+    left: 50px;
+    top: 0;
+    height: 30px;
+    font-size: 14pt;
+    padding-top: 5px;
+}
+
+.step-list-desc {
+    color: gray;
+    position: absolute;
+    left: 50px;
+    top: 30px;
+    height: 20px;
+    font-size: 10pt;
+}
+
+/*
     Various element styles
  */
 
@@ -160,3 +221,26 @@
     border-radius: 4px;
 }
 
+#will-appear {
+    position: ablsolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}  
+
+#step-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}   
+
+#step-list-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

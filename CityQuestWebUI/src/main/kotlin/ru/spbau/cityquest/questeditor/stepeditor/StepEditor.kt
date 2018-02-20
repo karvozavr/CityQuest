@@ -39,6 +39,7 @@ class NewStepStorage<out T : Step>(val currentStep : T) : CurrentStepStorage<T> 
     }
     override fun saveCurrentStep() {
         editor.storage.addStep(currentStep)
+        editor.view.draggableList.addStep(currentStep)
     }
 }
 

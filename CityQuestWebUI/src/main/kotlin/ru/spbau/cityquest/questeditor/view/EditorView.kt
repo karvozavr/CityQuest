@@ -15,6 +15,8 @@ class EditorView {
         val gpsEditorWindow = (document.getElementById("gps-step-editor") as HTMLDivElement?) ?: throw ElementNotFoundException("gps-step-editor")
         val gpsStepTitleEdit = (document.getElementById("gps-step-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("gps-step-title-edit")
         val gpsStepDescEdit = (document.getElementById("gps-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("gps-step-desc-edit")
+        val stepListUl = (document.getElementById("step-list-ul") as HTMLUListElement?) ?: throw ElementNotFoundException("step-list-ul")
+        val willAppearParagraph = (document.getElementById("will-appear") as HTMLParagraphElement?) ?: throw ElementNotFoundException("will-appear")
 
         val mapOptions = google.maps.MapOptions(LatLng(59.9342802, 30.3350986), 12)
         init {
@@ -27,9 +29,7 @@ class EditorView {
         return GPSStepEditor(gpsEditorWindow, gpsStepTitleEdit, gpsStepDescEdit)
     }
     
-    /*
-    fun getStepList() : DraggableList = TODO("Implement the EditorView DraggableList functions")
-    */
+    val draggableList = DraggableList(stepListUl, willAppearParagraph)
     
     fun openStepEditorWindow(stepEditor : StepEditor) {
         stepEditor.window.style.visibility = "visible"

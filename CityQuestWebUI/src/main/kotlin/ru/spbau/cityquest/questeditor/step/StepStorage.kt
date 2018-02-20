@@ -18,9 +18,8 @@ class StepStorage {
         updateIndices()
     }
     
-    fun moveStep(step : Step, after : Step) {
+    fun moveStep(step : Step, toIndex : Int) {
         removeStep(step)
-        val toIndex = storage.indexOfFirst { it.id == after.id }
         storage.add(toIndex, step)
         step.activate()
         updateIndices()
