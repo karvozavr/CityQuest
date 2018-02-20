@@ -14,6 +14,8 @@ abstract class Step(var stepTitle : String, var stepDesc : String)  {
     open fun activate() {}
     open fun setIndex(index : Int) {}
     open fun deactivate() {}
+
+    abstract fun getPictureClass() : String
 }
 
 class GPSStep(title : String, desc : String, var position : LatLng) : Step(title, desc) {
@@ -52,8 +54,22 @@ class GPSStep(title : String, desc : String, var position : LatLng) : Step(title
         markerStorage = NoMarkerStored()
         super.deactivate()
     }
+
+    override fun getPictureClass() : String {
+        return "step-list-gps-pic"
+    }
 }
 
-class QuestionStep(title : String, desc : String, var answer : String) : Step(title, desc)
+class QuestionStep(title : String, desc : String, var answer : String) : Step(title, desc) {
+    override fun getPictureClass() : String {
+        return "step-list-question-pic"
+    }
+}
 
-class FinalStep(title : String, desc : String) : Step(title, desc)
+class FinalStepPictureClassException : Exception("Attempt to get picture class from final step")
+
+class FinalStep(title : String, desc : String) : Step(title, desc) {
+    override fun getPictureClass() : String {
+        throw FinalStepPictureClassException()
+    }
+}

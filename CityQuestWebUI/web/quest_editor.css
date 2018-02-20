@@ -198,6 +198,10 @@
     content: url(gps_icon.png);
 }
 
+.step-list-question-pic {
+    content: url(question_icon.png);
+}
+
 .step-list-lines {
     position: absolute;
     right: 0;

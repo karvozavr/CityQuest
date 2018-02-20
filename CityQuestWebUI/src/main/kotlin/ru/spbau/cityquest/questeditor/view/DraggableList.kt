@@ -49,7 +49,7 @@ class DraggableList(val ulEl : HTMLUListElement, val emptyListDecoration : HTMLP
     private fun createListItem(step : Step) : HTMLLIElement {
         val linesDiv = document.create.div("step-list-lines")
         val commonDiv = document.create.div("step-list-common") {
-            div("step-list-pic step-list-gps-pic")
+            div("step-list-pic " + step.getPictureClass())
             div("step-list-title") {
                 +shrinkedText(step.stepTitle, 25)
             }
