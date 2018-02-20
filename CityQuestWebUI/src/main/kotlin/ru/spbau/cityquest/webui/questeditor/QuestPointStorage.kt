@@ -6,6 +6,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.*
 import org.w3c.dom.HTMLLIElement
 import kotlin.browser.document
+import kotlin.js.Json
 
 
 class QuestPointStorage(questEditor: QuestEditor) {
@@ -25,7 +26,7 @@ class QuestPointStorage(questEditor: QuestEditor) {
         val editButton = document.create.button(classes = "qpi-edit-button") {
             onClickFunction = {
                 editor.currentEdit = QuestEditor.CurrentEdit(point.id)
-                editor.editorState.switchState(QuestEditorStateManager.QuestEditorState.EDIT_QUEST_POINT)
+                editor.editorState.switchState(QuestEditorStateManager.QuestEditorState.EDIT_GPS_QUEST_POINT)
             }
         }
         val removeButton = document.create.button(classes = "qpi-remove-button") {
@@ -37,10 +38,10 @@ class QuestPointStorage(questEditor: QuestEditor) {
         val elem = document.create.div("quest-points-item") {
             div("qpi-pic")
             div("qpi-title") {
-                +point.title.substring(0, 30)
+                +point.title.substring(0, 20)
             }
             div("qpi-desc") {
-                +point.desc.substring(0, 50)
+                +point.desc.substring(0, 38)
             }
             onClickFunction = {
                 if (linesDiv.style.visibility == "hidden") {
@@ -129,4 +130,10 @@ class QuestPointStorage(questEditor: QuestEditor) {
 
     val size : Int
         get() = pointsList.size
+
+    fun getPointsJSONs() : List<Json> {
+        val questPoints = ArrayList<Json>()
+        pointsList.withIndex().mapTo(questPoints) { (i, pt) -> pt.toJson(i) }
+        return questPoints
+    }
 }

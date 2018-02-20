@@ -2,6 +2,7 @@ package ru.spbau.cityquest.webui.questeditor
 
 import google.maps.LatLng
 import google.maps.MapOptions
+import kotlin.js.Json
 
 var editor : QuestEditor? = null
 
@@ -9,6 +10,9 @@ var editor : QuestEditor? = null
 fun getEditor() : QuestEditor {
     return editor!!
 }
+
+external fun descOnChange(value: String, elem: Any)
+external fun ptToJSON(title: String, desc: String, type: String, goal: String, keyword: String, lat: Double?, lng: Double?) : Json
 
 fun main(args: Array<String>) {
     println("CityQuest Web UI in Kotlin is at your service!")

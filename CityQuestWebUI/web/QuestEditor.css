@@ -147,6 +147,7 @@
 }
 
 #debug-window {
+    visibility: hidden;
     position: absolute;
     top: 0;
     left: 120px;
@@ -222,7 +223,7 @@
 }
 
 .title-edit {
-    padding: 25px 5px;
+    padding: 5px 5px;
     position: relative;
     height: 8%;
     width: 100%;
@@ -234,9 +235,27 @@
 .desc-edit {
     padding: 10px 10px 10px 5px;
     position: relative;
-    height: 82%;
+    height: 74%;
     width: 100%;
     margin: 1% 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#desc-for-text {
+    height: 66%;
+}
+
+#desc-for-final {
+    height: 82%;
+}
+
+.ans-edit {
+    padding: 5px 5px;
+    position: relative;
+    height: 8%;
+    width: 100%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -254,6 +273,7 @@
     width: 100%;
     border: none;
     border-bottom: 1px solid #00bfa5;
+    vertical-align: bottom;
 }
 
 .desc-edit-input {
@@ -262,6 +282,37 @@
     width: 100%;
     border: 1px solid #00bfa5;
     border-radius: 4px;
+}
+
+.answer-edit-input {
+    font-size: 16pt;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+}
+
+.kwlabel {
+    float: left;
+    font-size: 20px;
+    font-family: Arial;
+    vertical-align: bottom;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.kwans {
+    overflow: hidden;
+    display: block;
+}
+.kwans input {
+    width: 100%;
+}
+
+.logo {
+    position: relative;
+    height: 100%;
+    margin: 0 0;
+    padding: 0 0;
 }
 
 html, body {
