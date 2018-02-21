@@ -26,6 +26,7 @@ object editor {
                 "description" to "Undescribed :(",
                 "avg_distance" to 1.0,
                 "author" to "CityQuest Community",
+                "image" to "",
                 "steps" to storage.toJsonList()
         ))
         view.setResultingJson(questJSON)
