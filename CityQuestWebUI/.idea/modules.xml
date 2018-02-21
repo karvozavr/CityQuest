@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CityQuestWebUI.iml" filepath="$PROJECT_DIR$/.idea/modules/CityQuestWebUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CityQuestWebUI.iml" filepath="$PROJECT_DIR$/CityQuestWebUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CityQuestWebUI_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CityQuestWebUI_main.iml" group="CityQuestWebUI" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CityQuestWebUI_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CityQuestWebUI_test.iml" group="CityQuestWebUI" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/earlyloader.iml" filepath="$PROJECT_DIR$/.idea/modules/earlyloader.iml" group="earlyloader" />
+      <module fileurl="file://$PROJECT_DIR$/earlyloader/earlyloader.iml" filepath="$PROJECT_DIR$/earlyloader/earlyloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/earlyloader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/earlyloader_main.iml" group="earlyloader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/earlyloader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/earlyloader_test.iml" group="earlyloader" />
     </modules>

@@ -1,0 +1,342 @@
+/*
+    Common element styles
+ */
+ 
+ div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+ }
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+/*
+    Areas
+ */
+
+.area {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+#map-area {
+    position: absolute;
+    height: 100%;
+    top:0;
+    left: 0;
+    width: 75%;
+}
+
+#control-area {
+    position: absolute;
+    height: 100%;
+    top:0;
+    right: 0;
+    width: 25%;
+}
+
+#logo-area {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 21%;
+    background-color: #00bfa5;
+    text-align: center;
+}
+
+#step-list-area {
+    position: absolute;
+    width: 100%;
+    top: 21%;
+    height: 58%;
+    padding: 0 5px;
+}
+
+#control-button-area {
+    position: absolute;
+    width: 100%;
+    top: 79%;
+    height: 21%;
+}
+
+/*
+    Windows
+*/
+
+.editor-window {
+    z-index: 5;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    background: #ffffff;
+}
+
+.title-edit-area {
+    position: absolute;
+    height: 8%;
+    width: 99.5%;
+    top: 0;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
+.answer-edit-area {
+    position: absolute;
+    height: 8%;
+    width: 99.5%;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
+.goal-edit-area {
+    position: absolute;
+    height: 8%;
+    width: 99.5%;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
+.desc-edit-area {
+    position: absolute;
+    height: 68%;
+    width: 99.5%;
+    left: 0;
+    padding: 1.5% 25px;
+}
+
+.submit-button-area {
+    position: absolute;
+    height: 8%;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 0.5% 25px 1%;
+}
+
+#gps-step-editor {
+    visibility: hidden;
+}
+
+#gps-step-goal-edit-area {
+    top: 8%;
+}
+
+#gps-step-desc-edit-area {
+    top: 16%;
+    height: 76%;
+}
+
+#question-step-editor {
+    visibility: hidden;
+}
+
+#question-step-goal-edit-area {
+    top: 8%;
+}
+
+#question-step-answer-edit-area {
+    top: 16%;
+}
+
+#question-step-desc-edit-area {
+    top: 24%;
+}
+
+#final-step-editor {
+    visibility: hidden;
+}
+
+#final-step-goal-edit-area {
+    top: 8%;
+}
+
+#final-step-desc-edit-area {
+    top: 16%;
+    height: 76%;
+}
+
+/*
+    Window elements
+ */
+ 
+ .title-edit {
+    font-size: 16pt;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+    top: 0;
+ }
+ 
+ .goal-edit {
+    font-size: 14pt;
+    width: 75%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+    top: 0;
+ }
+ 
+ .image-edit {
+    width: 20%;
+    position: relative;
+    left: 4%;
+ }
+ 
+ .answer-edit {
+    font-size: 16pt;
+    width: 40%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+ }
+
+.desc-edit {
+    height: 100%;
+    width: 100%;
+}
+
+.submit-button {
+    position: relative;
+    width: 20%;
+    margin-left: 2%;
+    height: 100%;
+    float: right;
+    background-color:  #00bfa5;
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+
+/*
+    Step list items
+ */
+ 
+ .step-list-common {
+    position: relative;
+    padding: 0 0;
+    height: 50px;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid gray;
+}
+
+.step-list-pic {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 49px;
+    width: 49px;
+}
+
+.step-list-gps-pic {
+    content: url(gps_icon.png);
+}
+
+.step-list-question-pic {
+    content: url(question_icon.png);
+}
+
+.step-list-lines {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 49px;
+    width: 49px;
+    content: url(lines_icon.png);
+}
+
+.step-list-title {
+    color: #00bfa5;
+    position: absolute;
+    left: 50px;
+    top: 0;
+    height: 30px;
+    font-size: 14pt;
+    padding-top: 5px;
+}
+
+.step-list-desc {
+    color: gray;
+    position: absolute;
+    left: 50px;
+    top: 30px;
+    height: 20px;
+    font-size: 10pt;
+}
+
+/*
+    Quest title window
+ */
+ 
+#quest-title-window {
+    z-index: 5;
+    position: absolute;
+    top: 1%;
+    left: 20%;
+    width: 70%;
+    height: 5%;
+    background: #ffffff;
+    padding: 0.5% 25px;
+    box-shadow: 0 4px 6px -4px #333;
+}
+
+#quest-title-edit {
+    width: 99.5%;
+}
+
+/*
+    Various element styles
+ */
+
+#map {
+    height: 100%;
+}
+
+#logo {
+    height: 100%;
+}
+
+.control-button {
+    position: static;
+    width: 96%;
+    height: 28%;
+    background-color: #00bfa5;
+    color: white;
+    border: none;
+    padding: 0 0;
+    margin: 1% 2%;
+    border-radius: 4px;
+}
+
+#will-appear {
+    position: ablsolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}  
+
+#step-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}   
+
+#step-list-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
