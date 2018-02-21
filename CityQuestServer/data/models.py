@@ -33,3 +33,6 @@ class QuestStep(models.Model):
 
     quest_host = models.ForeignKey(QuestInfo, on_delete=models.CASCADE)
     step_number = models.IntegerField(default=0)
+
+    def __str__(self):
+        return 'Step #' + str(self.id) + ' of quest #' + str(self.quest_host_id)
