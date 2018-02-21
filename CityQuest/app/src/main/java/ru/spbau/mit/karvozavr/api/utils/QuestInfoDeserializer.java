@@ -23,7 +23,11 @@ public class QuestInfoDeserializer implements JsonDeserializer<QuestInfo> {
         int peoplePassed = jsonQuestInfoFields.get("people_passed").getAsInt();
         String title = jsonQuestInfoFields.get("name").getAsString();
         String author = jsonQuestInfoFields.get("author").getAsString();
+
         String image = jsonQuestInfoFields.get("image").getAsString();
+        if (image == null || image.equals(""))
+            image = "empty_link";
+
         float avgDistance = jsonQuestInfoFields.get("avg_distance").getAsFloat();
         String description = jsonQuestInfoFields.get("description").getAsString();
         Integer rating = jsonQuestInfoFields.get("rating").getAsInt();

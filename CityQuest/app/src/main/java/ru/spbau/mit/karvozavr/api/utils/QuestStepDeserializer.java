@@ -30,14 +30,7 @@ public class QuestStepDeserializer implements JsonDeserializer<AbstractQuestStep
         String description = jsonQuestStepFields.get("description").getAsString();
         String goal = jsonQuestStepFields.get("goal").getAsString();
 
-        // FIXME: in case of trouble, delete on release
-        final String troubleImageUrl = "https://upload.wikimedia.org/wikipedia/en/2/24/Lenna.png";
-        String image;
-        if (jsonQuestStepFields.has("image")) {
-            image = jsonQuestStepFields.get("image").getAsString();
-        } else {
-            image = troubleImageUrl;
-        }
+        String image = jsonQuestStepFields.get("image").getAsString();
 
         if (image == null || image.equals(""))
             image = "empty_link";
