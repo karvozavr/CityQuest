@@ -57,13 +57,12 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
      * Setup RefreshLayout adapter & etc.
      */
     private void initRefreshLayout() {
-        swipeRefreshLayout.setOnRefreshListener(() -> new Handler().post(() -> {
-            galleryRecyclerView.setAdapter(new QuestInfoAdapter(QuestGalleryActivity.this));
-        }));
+        swipeRefreshLayout.setOnRefreshListener(() ->
+            new Handler().post(() -> galleryRecyclerView.setAdapter(new QuestInfoAdapter(QuestGalleryActivity.this))));
     }
 
     public void onLoadStarted() {
-        swipeRefreshLayout.setRefreshing(true);
+        //swipeRefreshLayout.setRefreshing(true);
     }
 
     public void onLoadFinished(boolean success) {
@@ -71,7 +70,7 @@ public class QuestGalleryActivity extends GoogleServicesActivity {
         TextView errorText = findViewById(R.id.load_error_message);
         if (success) {
             errorText.setVisibility(View.INVISIBLE);
-            Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(QuestGalleryActivity.this, "Updated", Toast.LENGTH_SHORT).show();
         } else {
             errorText.setVisibility(View.VISIBLE);
             if (QuestController.currentQuery.equals(""))
