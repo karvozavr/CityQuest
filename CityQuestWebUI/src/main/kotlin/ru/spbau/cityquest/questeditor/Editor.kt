@@ -22,7 +22,7 @@ object editor {
     @JsName("submitQuest")
     fun submitQuest() {
         val questJSON = JSON.stringify(json(
-                "name" to "Untitiled :(",
+                "name" to view.getQuestTitle(),
                 "description" to "Undescribed :(",
                 "avg_distance" to 1.0,
                 "author" to "CityQuest Community",

@@ -26,6 +26,7 @@ class EditorView {
         val finalStepGoalEdit = (document.getElementById("final-step-goal-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("final-step-goal-edit")
         val finalStepDescEdit = (document.getElementById("final-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("final-step-desc-edit")
         val stepListUl = (document.getElementById("step-list-ul") as HTMLUListElement?) ?: throw ElementNotFoundException("step-list-ul")
+        val questTitleEdit = (document.getElementById("quest-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("quest-title-edit")
         val willAppearParagraph = (document.getElementById("will-appear") as HTMLParagraphElement?) ?: throw ElementNotFoundException("will-appear")
         val jsonInput = (document.getElementById("json") as HTMLInputElement?) ?: throw ElementNotFoundException("json")
 
@@ -62,6 +63,10 @@ class EditorView {
         stepEditor.window.style.visibility = "hidden"
     }
 
+    fun getQuestTitle() : String {
+        return questTitleEdit.value
+    }
+    
     fun addMarker(position : LatLng) : google.maps.Marker {
         return google.maps.Marker(position, googleMap)
     }
