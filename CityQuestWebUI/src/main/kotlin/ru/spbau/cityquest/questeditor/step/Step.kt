@@ -5,9 +5,9 @@ import google.maps.LatLng
 
 import kotlin.js.Json
 
-external fun pointToJson(title : String, desc : String, type : String, goal : String, keyword : String, lat : Double?, lng : Double?) : Json
+external fun pointToJson(title : String, desc : String, type : String, goal : String, image : String, keyword : String, lat : Double?, lng : Double?) : Json
 
-abstract class Step(var stepTitle : String, var stepGoal : String, var stepDesc : String)  {
+abstract class Step(var stepTitle : String, var stepGoal : String, var stepDesc : String, var stepImage : String)  {
     companion object {
         var nextId : Int = 0
             get() = field++
@@ -23,7 +23,7 @@ abstract class Step(var stepTitle : String, var stepGoal : String, var stepDesc 
     abstract fun toJson() : Json
 }
 
-class GPSStep(title : String, goal : String, desc : String, var position : LatLng) : Step(title, goal, desc) {
+class GPSStep(title : String, goal : String, desc : String, image : String, var position : LatLng) : Step(title, goal, desc, image) {
     class NoMarkerStoredException : Exception("Attempt to get removed/not created marker")
 
     interface MarkerStorage {
@@ -65,28 +65,28 @@ class GPSStep(title : String, goal : String, desc : String, var position : LatLn
     }
 
     override fun toJson() : Json {
-        return pointToJson(stepTitle, stepDesc, "geo", stepGoal, "", position.lat, position.lng)
+        return pointToJson(stepTitle, stepDesc, "geo", stepGoal, stepImage, "", position.lat, position.lng)
     }
 }
 
-class QuestionStep(title : String, goal : String, desc : String, var answer : String) : Step(title, goal, desc) {
+class QuestionStep(title : String, goal : String, desc : String, image : String, var answer : String) : Step(title, goal, desc, image) {
     override fun getPictureClass() : String {
         return "step-list-question-pic"
     }
 
     override fun toJson() : Json {
-        return pointToJson(stepTitle, stepDesc, "key", stepGoal, answer, null, null)
+        return pointToJson(stepTitle, stepDesc, "key", stepGoal, stepImage, answer, null, null)
     }
 }
 
 class FinalStepPictureClassException : Exception("Attempt to get picture class from final step")
 
-class FinalStep(title : String, goal : String, desc : String) : Step(title, goal, desc) {
+class FinalStep(title : String, goal : String, desc : String, image : String) : Step(title, goal, desc, image) {
     override fun getPictureClass() : String {
         throw FinalStepPictureClassException()
     }
 
     override fun toJson() : Json {
-        return pointToJson(stepTitle, stepDesc, "final", stepGoal, "", null, null)
+        return pointToJson(stepTitle, stepDesc, "final", stepGoal, stepImage, "", null, null)
     }
 }

@@ -16,15 +16,18 @@ class EditorView {
         val gpsStepTitleEdit = (document.getElementById("gps-step-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("gps-step-title-edit")
         val gpsStepGoalEdit = (document.getElementById("gps-step-goal-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("gps-step-goal-edit")
         val gpsStepDescEdit = (document.getElementById("gps-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("gps-step-desc-edit")
+        val gpsStepImageEdit = (document.getElementById("gps-step-image-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("gps-step-image-edit")
         val questionEditorWindow = (document.getElementById("question-step-editor") as HTMLDivElement?) ?: throw ElementNotFoundException("question-step-editor")
         val questionStepTitleEdit = (document.getElementById("question-step-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("question-step-title-edit")
         val questionStepGoalEdit = (document.getElementById("question-step-goal-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("question-step-goal-edit")
         val questionStepAnswerEdit = (document.getElementById("question-step-answer-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("question-step-answer-edit")
         val questionStepDescEdit = (document.getElementById("question-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("question-step-desc-edit")
+        val questionStepImageEdit = (document.getElementById("question-step-image-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("question-step-image-edit")
         val finalStepEditorWindow = (document.getElementById("final-step-editor") as HTMLDivElement?) ?: throw ElementNotFoundException("final-step-editor")
         val finalStepTitleEdit = (document.getElementById("final-step-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("final-step-title-edit")
         val finalStepGoalEdit = (document.getElementById("final-step-goal-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("final-step-goal-edit")
         val finalStepDescEdit = (document.getElementById("final-step-desc-edit") as HTMLTextAreaElement?) ?: throw ElementNotFoundException("final-step-desc-edit")
+        val finalStepImageEdit = (document.getElementById("final-step-image-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("final-step-image-edit")
         val stepListUl = (document.getElementById("step-list-ul") as HTMLUListElement?) ?: throw ElementNotFoundException("step-list-ul")
         val questTitleEdit = (document.getElementById("quest-title-edit") as HTMLInputElement?) ?: throw ElementNotFoundException("quest-title-edit")
         val willAppearParagraph = (document.getElementById("will-appear") as HTMLParagraphElement?) ?: throw ElementNotFoundException("will-appear")
@@ -38,15 +41,15 @@ class EditorView {
     }
 
     fun createGPSStepEditor() : GPSStepEditor {
-        return GPSStepEditor(gpsEditorWindow, gpsStepTitleEdit, gpsStepGoalEdit, gpsStepDescEdit)
+        return GPSStepEditor(gpsEditorWindow, gpsStepTitleEdit, gpsStepGoalEdit, gpsStepDescEdit, gpsStepImageEdit)
     }
 
     fun createQuestionStepEditor() : QuestionStepEditor {
-        return QuestionStepEditor(questionEditorWindow, questionStepTitleEdit, gpsStepGoalEdit, questionStepAnswerEdit, questionStepDescEdit)
+        return QuestionStepEditor(questionEditorWindow, questionStepTitleEdit, gpsStepGoalEdit, questionStepAnswerEdit, questionStepDescEdit, questionStepImageEdit)
     }
 
     fun createFinalStepEditor() : FinalStepEditor {
-        return FinalStepEditor(finalStepEditorWindow, finalStepTitleEdit, finalStepGoalEdit, finalStepDescEdit)
+        return FinalStepEditor(finalStepEditorWindow, finalStepTitleEdit, finalStepGoalEdit, finalStepDescEdit, finalStepImageEdit)
     }
 
     fun setResultingJson(res : String) {

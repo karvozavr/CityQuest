@@ -24,6 +24,7 @@
 			</div>
 			<div class="goal-edit-area" id="gps-step-goal-edit-area">
 				<input type="input" class="goal-edit" id="gps-step-goal-edit" placeholder="Enter the step goal...">
+				<input type="input" class="image-edit" id="gps-step-image-edit" placeholder="Paste the image URL...">
 			</div>
 			<div class="desc-edit-area" id="gps-step-desc-edit-area">
 				<textarea class="desc-edit" id="gps-step-desc-edit" placeholder="Enter the step description..."></textarea>
@@ -39,6 +40,7 @@
 			</div>
 			<div class="goal-edit-area" id="question-step-goal-edit-area">
 				<input type="input" class="goal-edit" id="question-step-goal-edit" placeholder="Enter the step goal...">
+				<input type="input" class="image-edit" id="question-step-image-edit" placeholder="Paste the image URL...">
 			</div>
 			<div class="answer-edit-area" id="question-step-answer-edit-area">
 				Answer: <input type="input" class="answer-edit" id="question-step-answer-edit">
@@ -57,6 +59,7 @@
 			</div>
 			<div class="goal-edit-area" id="final-step-goal-edit-area">
 				<input type="input" class="goal-edit" id="final-step-goal-edit" placeholder="Enter the step goal...">
+				<input type="input" class="image-edit" id="final-step-image-edit" placeholder="Paste the image URL...">
 			</div>
 			<div class="desc-edit-area" id="final-step-desc-edit-area">
 				<textarea class="desc-edit" id="final-step-desc-edit" placeholder="Enter the step description..."></textarea>
@@ -138,12 +141,13 @@
 			editor.finalStepEditor.cancel();
 			editor.finalStepEditor.close();
 		}
-		function pointToJson(title, desc, type, goal, keyword, lat, lng) {
+		function pointToJson(title, desc, type, goal, image, keyword, lat, lng) {
 			return {
 				"title": title,
 				"description": desc,
 				"type": type,
 				"goal" : goal,
+				"image" : image,
 				"keyword" : keyword,
 				"lat" : (lat == null ? null : lat()),
 				"lng" : (lng == null ? null : lng())

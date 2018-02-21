@@ -180,10 +180,16 @@
  
  .goal-edit {
     font-size: 14pt;
-    width: 100%;
+    width: 75%;
     border: none;
     border-bottom: 1px solid #00bfa5;
     top: 0;
+ }
+ 
+ .image-edit {
+    width: 20%;
+    position: relative;
+    left: 4%;
  }
  
  .answer-edit {
