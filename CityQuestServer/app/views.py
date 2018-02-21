@@ -34,7 +34,8 @@ def save(request):
         s.step_number = i
         s.step_type = step["type"]
         s.description = step["description"]
-        s.image = '0'
+        if "image" in step:
+            q.image = step["image"]
         s.goal = step["goal"]
 
         if s.step_type == 'geo':
