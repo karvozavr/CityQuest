@@ -2,13 +2,13 @@ package ru.spbau.mit.karvozavr.cityquest.quest;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +23,12 @@ public class KeywordQuestStep extends AbstractQuestStep {
     @NotNull
     private final List<String> keywords;
 
-    public KeywordQuestStep(String title, String description, String goal, String[] keywords) {
-        super(title, description, goal, "keyword_quest_step_label");
+    public KeywordQuestStep(String title,
+                            String description,
+                            String goal,
+                            String[] keywords,
+                            String image) {
+        super(title, description, goal, "keyword_quest_step_label", image);
         this.keywords = new ArrayList<>();
 
         // keywords should be compared case insensitive

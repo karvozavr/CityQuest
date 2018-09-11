@@ -68,6 +68,9 @@ fabric.properties
 *.tar.gz
 *.rar
 
+# Permit gradle-wrapper.jar, though
+!**/gradle-wrapper.jar
+
 # Built application files
 *.apk
 *.ap_
@@ -123,3 +126,12 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+# CityQuestWebUI build files
+CityQuestWebUI/web/**/*.js
+CityQuestWebUI/web/**/*.js.map
+CityQuestWebUI/web/**/libs/*
+CityQuestWebUI/web/**/*.kjsm
+
+# CityQuestWebUI google maps API key
+CityQuestWebUI/src/main/kotlin/ru/spbau/cityquest/webui/questeditor/GoogleMapsAPIKey.kt

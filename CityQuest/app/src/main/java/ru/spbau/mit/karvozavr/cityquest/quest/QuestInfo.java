@@ -1,38 +1,41 @@
 package ru.spbau.mit.karvozavr.cityquest.quest;
 
-import android.graphics.drawable.Drawable;
-import android.media.Rating;
-
 import java.io.Serializable;
-
-import java.time.Duration;
 
 public class QuestInfo implements Serializable {
     public final int id;
     public String name;
-    public final User author;
-    public final Drawable image;
+    public final String author;
+    public final String image;
     public final float averageDistance;
     public final String description;
     public final String shortDescription;
     public final float rating;
+    public final int usersPassed;
 
-    public QuestInfo(
-            int id,
-            String title,
-            User author,
-            Drawable image,
-            float averageDistance,
-            String description,
-            String shortDescription,
-            float rating) {
+    public static final int shortDescriptionMaxLength = 256;
+
+    public QuestInfo(int id,
+                     String title,
+                     String author,
+                     String image,
+                     float averageDistance,
+                     String description,
+                     float rating,
+                     int usersPassed) {
         this.id = id;
         this.name = title;
         this.author = author;
         this.image = image;
         this.averageDistance = averageDistance;
         this.description = description;
-        this.shortDescription = shortDescription;
+
+        if (description.length() > shortDescriptionMaxLength)
+            this.shortDescription = description.substring(0, shortDescriptionMaxLength) + "…";
+        else
+            this.shortDescription = description;
+
         this.rating = rating;
+        this.usersPassed = usersPassed;
     }
 }

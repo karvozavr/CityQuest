@@ -21,10 +21,15 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
     private final double targetLocationLatitude;
     private final double targetLocationLongitude;
 
-    public GeoQuestStep(String title, String description, String goal, Location targetLocation) {
-        super(title, description, goal, "geo_quest_step_label");
-        targetLocationLatitude = targetLocation.getLatitude();
-        targetLocationLongitude = targetLocation.getLongitude();
+    public GeoQuestStep(String title,
+                        String description,
+                        String goal,
+                        double targetLatitude,
+                        double targetLongitude,
+                        String image) {
+        super(title, description, goal, "geo_quest_step_label", image);
+        targetLocationLatitude = targetLatitude;
+        targetLocationLongitude = targetLongitude;
     }
 
     @Override
@@ -32,9 +37,10 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
         final ProgressDialog progressDialog = ProgressDialog.show(context, "", "Checking position");
 
         new Handler().postDelayed(() -> {
-            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            LocationManager locationManager =
+                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
             if (ServiceProvider.getLocationAccess(context)) {
-                @SuppressLint("MissingPermission")
                 Location location = getLastKnownLocation(locationManager);
 
                 if (location == null) {
@@ -57,9 +63,12 @@ public class GeoQuestStep extends AbstractQuestStep implements Serializable {
             }
 
             progressDialog.dismiss();
-        }, 1000);
+        }, 100);
     }
 
+    /**
+     * Returns last known location with highest possible accuracy.
+     */
     @SuppressLint("MissingPermission")
     private Location getLastKnownLocation(LocationManager locationManager) {
         List<String> providers = locationManager.getProviders(true);

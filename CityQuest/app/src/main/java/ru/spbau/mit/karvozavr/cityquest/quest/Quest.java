@@ -2,7 +2,6 @@ package ru.spbau.mit.karvozavr.cityquest.quest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Represents quest entity
@@ -13,16 +12,20 @@ public class Quest implements Serializable {
 
     /**
      * Create Quest object from QuestInfo ans quest steps
-     * @param info quest info
+     *
+     * @param info  quest info
      * @param steps quest steps
      */
-    public Quest(QuestInfo info, AbstractQuestStep[] steps) {
+    public Quest(QuestInfo info, ArrayList<AbstractQuestStep> steps) {
         this.info = info;
-        this.steps = new ArrayList<>();
-        this.steps.addAll(Arrays.asList(steps));
+        this.steps = steps;
     }
 
     public AbstractQuestStep getStep(int index) {
         return steps.get(index);
+    }
+
+    public int numberOfSteps() {
+        return steps.size();
     }
 }

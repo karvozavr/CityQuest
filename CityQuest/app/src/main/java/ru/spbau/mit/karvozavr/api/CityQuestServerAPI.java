@@ -1,86 +1,85 @@
 package ru.spbau.mit.karvozavr.api;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
 
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
 import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
-import ru.spbau.mit.karvozavr.cityquest.quest.QuestController;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
-
 public class CityQuestServerAPI {
-    public static boolean isEnd = false;
-    private static final String SERVER_DOMAIN_NAME = "https://ru.wikipedia.org";
+    private static final String SERVER_DOMAIN_NAME = "http://vasalf.net:1791/data/";
 
-    public static Quest getQuestByID(int id) throws LoadingErrorException {
-        return QuestController.getSampleQuest();
+    private static final String TAG = "CityQuestServerAPI";
 
-        /*String url = SERVER_DOMAIN_NAME + "";  //
-        try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
-            return JsonReaderQuestParser.readQuestFromJson(jsonReader);
-        } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
-    }
-
-    public static QuestInfo getQuestInfoById(int questId) throws LoadingErrorException {
-        return QuestController.getSampleQuest().info;
-
-        /*String url = SERVER_DOMAIN_NAME + "";
-        try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
-            return JsonReaderQuestParser.readQuestInfoFromJson(jsonReader);
-        } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
-    }
-
-    public static List<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount)
-            throws LoadingErrorException {
+    public static ArrayList<QuestInfo> getQuestInfosFromTo(int startingFrom, int amount) {
         return getQuestInfosFromToByName(startingFrom, amount, "");
     }
 
-    public static List<QuestInfo> getQuestInfosFromToByName(int startingFrom, int amount, String name)
+    public static ArrayList<QuestInfo> getQuestInfosFromToByName(
+            int startingFrom, int amount, String name) {
+        String url = SERVER_DOMAIN_NAME + "get_infos?from=" + startingFrom + "&len=" + amount;
+
+        try {
+            url += "&contains=" + URLEncoder.encode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e){
+            // This should NEVER happen.
+            Log.e(TAG, "FATAL ERROR: All your encoding belong to us. Java has been broken. Entire world has collapsed");
+            throw new RuntimeException(e);
+        }
+
+        try (InputStream is = new URL(url).openStream()) {
+            return JsonReaderQuestParser.readQuestInfosFromJson(is);
+        } catch (Exception e) {
+            Log.e(TAG, "Error when tried to upload multiple QuestInfo: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public static Quest getQuestByQuestID(Integer questId) throws LoadingErrorException {
+        return new Quest(getQuestInfoByQuestID(questId), getStepsByQuestID(questId));
+    }
+
+    private static ArrayList<AbstractQuestStep> getStepsByQuestID(Integer questId)
             throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_steps?id=" + questId;
 
-        ArrayList<QuestInfo> list = new ArrayList<>();
-        int border = startingFrom + amount >= numberOfQuests() ? amount : numberOfQuests();
-        if (border == 42)
-
-        for (int i = 0; i < border; i++)
-            list.add(QuestController.getSampleQuest().info);
-
-        return list;
-
-        /*String url = SERVER_DOMAIN_NAME + "";
         try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
-            isEnd = numberOfQuests() <= startingFrom + amount;
-
-            return JsonReaderQuestParser.readQuestInfosFromJson(jsonReader);
+            return JsonReaderQuestParser.readQuestStepsFromJson(is);
         } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
+            Log.e(TAG, "Error when tried to upload QuestSteps: " + e.getMessage());
+            throw new LoadingErrorException("Failed to fetch data.", e);
+        }
     }
 
-    private static int numberOfQuests() throws LoadingErrorException {
-        return 42;
+    private static QuestInfo getQuestInfoByQuestID(Integer questId)
+            throws LoadingErrorException {
+        String url = SERVER_DOMAIN_NAME + "get_info?id=" + questId;
 
-        /*String url = SERVER_DOMAIN_NAME + "";
         try (InputStream is = new URL(url).openStream()) {
-            JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
-
-            jsonReader.beginObject();
-            int result = jsonReader.nextInt();
-            jsonReader.endObject();
-
-            return result;
+            return JsonReaderQuestParser.readSingleQuestInfoFromJson(is);
         } catch (Exception e) {
-            throw new LoadingErrorException();
-        }*/
+            Log.e(TAG, "Error when tried to upload QuestInfo by ID: " + e.getMessage());
+            throw new LoadingErrorException("Failed to fetch data.", e);
+        }
     }
+
+    public static boolean publishRating(Integer questId, Integer ratingUpdate) {
+        String url = SERVER_DOMAIN_NAME + "post_rating?id=" + questId + "&rate=" + ratingUpdate;
+
+        try (InputStream is = new URL(url).openStream(); Scanner scanner = new Scanner(is)) {
+            String s = scanner.nextLine();
+            return s.equals("done");
+        } catch (Exception e) {
+            Log.e(TAG, "Error when tried to publish rating: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

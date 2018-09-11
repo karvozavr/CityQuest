@@ -14,24 +14,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/gallery_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
-<!--
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+        <TextView
+            android:id="@+id/load_error_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_gravity="bottom|end"
-            app:srcCompat="@android:drawable/ic_menu_upload" />-->
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:text="" />
 
     </RelativeLayout>
 

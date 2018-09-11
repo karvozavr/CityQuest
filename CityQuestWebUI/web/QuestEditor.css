@@ -1,0 +1,326 @@
+#wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+#map {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+}
+
+#map-layout {
+    position: absolute;
+    float: left;
+    height: 100%;
+    width: 75%;
+}
+
+#controls {
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    right: 0;
+}
+
+#user-info {
+    height: 15%;
+    background-color: #00bfa5;
+}
+
+#quest-points {
+    text-align: left;
+    height: 67%;
+    #border: 1px solid black;
+    margin: 3% 0;
+    padding: 0 0;
+}
+
+#quest-points-list {
+    list-style: none;
+    padding: 0 0;
+    margin: 0 0;
+}
+
+#will-appear {
+    width: 100%;
+    font-size: 16pt;
+    color: gray;
+    text-align: center;
+}
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+.quest-points-item {
+    position: relative;
+    padding: 0 0;
+    height: 50px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid gray;
+}
+
+.qpi-pic {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 49px;
+    width: 49px;
+    content: url(GPSIcon.png);
+}
+
+.qpi-lines {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 49px;
+    width: 49px;
+    content: url(LinesIcon.png);
+    visibility: visible;
+}
+
+.qpi-remove-button {
+    background-color: red;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12pt;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    visibility: hidden;
+}
+
+.qpi-remove-button:hover {
+    color: black;
+    background-color: white;
+    border: 1px solid red;
+}
+
+.qpi-title {
+    color: #00bfa5;
+    position: absolute;
+    left: 50px;
+    top: 0;
+    height: 30px;
+    font-size: 14pt;
+    padding-top: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.qpi-desc {
+    position: absolute;
+    left: 50px;
+    top: 30px;
+    height: 20px;
+    font-size: 10pt;
+    color: gray;
+}
+
+#control-buttons {
+    height: 15%;
+    padding: 0 0;
+}
+
+#edit-gps-point {
+
+}
+
+#debug-window {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 120px;
+    height: 90px;
+    width: 300px;
+    padding: 0 20px;
+}
+
+.control-area {
+    position: relative;
+    width: 100%;
+    padding: inherit;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.dialog {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    visibility: hidden;
+}
+
+.nicebox {
+    z-index: 5;
+    box-shadow: 0 4px 6px -4px #333;
+    padding: 15px 20px;
+    background: rgb(255,255,255);
+    border: rgb(229,229,229) 1px solid;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color:  #00bfa5;
+    border: none;
+    color: white;
+    height: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12pt;
+    border-radius: 4px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    color: black;
+    background-color: white;
+    border: 1px solid #00bfa5;
+}
+
+.submit-button {
+    position: relative;
+    width: 16%;
+    margin-left: 5px;
+    height: 100%;
+    float: right;
+}
+
+.control-button {
+    position: relative;
+    width: 100%;
+    height: 30%;
+    margin: 1% 0;
+    float: right;
+}
+
+.title-edit {
+    padding: 5px 5px;
+    position: relative;
+    height: 8%;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.desc-edit {
+    padding: 10px 10px 10px 5px;
+    position: relative;
+    height: 74%;
+    width: 100%;
+    margin: 1% 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#desc-for-text {
+    height: 66%;
+}
+
+#desc-for-final {
+    height: 82%;
+}
+
+.ans-edit {
+    padding: 5px 5px;
+    position: relative;
+    height: 8%;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.submit-buttons {
+    right: 2px;
+    position: relative;
+    height: 6%;
+    width: 100%;
+}
+
+.title-edit-input {
+    font-size: 16pt;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+    vertical-align: bottom;
+}
+
+.desc-edit-input {
+    font-size: 12pt;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #00bfa5;
+    border-radius: 4px;
+}
+
+.answer-edit-input {
+    font-size: 16pt;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #00bfa5;
+}
+
+.kwlabel {
+    float: left;
+    font-size: 20px;
+    font-family: Arial;
+    vertical-align: bottom;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.kwans {
+    overflow: hidden;
+    display: block;
+}
+.kwans input {
+    width: 100%;
+}
+
+.logo {
+    position: relative;
+    height: 100%;
+    margin: 0 0;
+    padding: 0 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0;
+}

@@ -1,173 +1,62 @@
 package ru.spbau.mit.karvozavr.api;
 
-import android.util.JsonReader;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
+import ru.spbau.mit.karvozavr.api.utils.QuestInfoDeserializer;
+import ru.spbau.mit.karvozavr.api.utils.QuestStepDeserializer;
 import ru.spbau.mit.karvozavr.cityquest.quest.AbstractQuestStep;
-import ru.spbau.mit.karvozavr.cityquest.quest.FinalQuestStep;
-import ru.spbau.mit.karvozavr.cityquest.quest.GeoQuestStep;
-import ru.spbau.mit.karvozavr.cityquest.quest.KeywordQuestStep;
-import ru.spbau.mit.karvozavr.cityquest.quest.Quest;
 import ru.spbau.mit.karvozavr.cityquest.quest.QuestInfo;
 
+
 class JsonReaderQuestParser {
-    static Quest readQuestFromJson (JsonReader reader) throws IOException {
-        QuestInfo info = null;
-        ArrayList<AbstractQuestStep> steps = new ArrayList<>();
 
-        reader.beginObject();
-        while (reader.hasNext()) {
-            String name = reader.nextName();
-            switch (name) {
-                case "quest_info":
-                    info = readQuestInfoFromJson(reader);
-                    break;
-                case "steps":
-                    steps = readQuestStepsFromJson(reader);
-                    break;
-                default:
-                    reader.skipValue();
-                    break;
-            }
-        }
-        reader.endObject();
-
-        return new Quest(info, (AbstractQuestStep[]) steps.toArray());
+    static QuestInfo readSingleQuestInfoFromJson(InputStream is) {
+        return (QuestInfo) jsonStreamToObject(is,
+                QuestInfo.class,
+                new QuestInfoDeserializer(),
+                QuestInfo.class);
     }
 
-    static ArrayList<QuestInfo> readQuestInfosFromJson(JsonReader reader)
-            throws IOException {
-        ArrayList<QuestInfo> infos = new ArrayList<>();
-
-        reader.beginArray();
-        while (reader.hasNext()) {
-            infos.add(readQuestInfoFromJson(reader));
-        }
-        reader.endArray();
-
-        return infos;
+    static ArrayList<QuestInfo> readQuestInfosFromJson(InputStream is) {
+        Type collectionType = new TypeToken<ArrayList<QuestInfo>>(){}.getType();
+        return (ArrayList<QuestInfo>) jsonStreamToObject(is,
+                QuestInfo.class,
+                new QuestInfoDeserializer(), 
+                collectionType);
     }
 
-    static QuestInfo readQuestInfoFromJson(JsonReader reader) throws IOException {
-        int id = 0;
-        String name = null;
-        String author = null;
-        String image = null;
-        float averageDistance = 0;
-        String description = null;
-        String shortDescription = null;
-        float rating = 0;
+    static ArrayList<AbstractQuestStep> readQuestStepsFromJson(InputStream is) {
+        Type collectionType = new TypeToken<ArrayList<AbstractQuestStep>>(){}.getType();
+        ArrayList<AbstractQuestStep> steps = (ArrayList<AbstractQuestStep>) jsonStreamToObject(is,
+                AbstractQuestStep.class, 
+                new QuestStepDeserializer(), 
+                collectionType);
 
-        reader.beginObject();
-        while (reader.hasNext()) {
-            String argName = reader.nextName();
-            switch (argName) {
-                case "id":
-                    id = reader.nextInt();
-                    break;
-                case "name":
-                    name = reader.nextString();
-                    break;
-                case "author":
-                    author = reader.nextString();
-                    break;
-                case "image":
-                    image = reader.nextString();
-                    break;
-                case "avg_distance":
-                    averageDistance = (float) reader.nextDouble();
-                    break;
-                case "description":
-                    description = reader.nextString();
-                    break;
-                case "short_description":
-                    shortDescription = reader.nextString();
-                    break;
-                case "rating":
-                    rating = (float) reader.nextDouble();
-                    break;
-                default:
-                    reader.skipValue();
-                    break;
-            }
-        }
-        reader.endObject();
-
-        return new QuestInfo(id, name, null, null, averageDistance,
-                description, shortDescription, rating);
-    }
-
-    private static ArrayList<AbstractQuestStep> readQuestStepsFromJson(JsonReader reader)
-            throws IOException {
-        ArrayList<AbstractQuestStep> steps = new ArrayList<>();
-
-        reader.beginArray();
-        while (reader.hasNext()) {
-            steps.add(readOneQuestStepFromJson(reader));
-        }
-        reader.endArray();
+        // It is not guaranteed that objects are returned in the same order as they were in Json
+        Collections.sort(steps, (s1, s2) -> s1.stepNum - s2.stepNum);
 
         return steps;
     }
 
-    private static AbstractQuestStep readOneQuestStepFromJson(JsonReader reader)
-            throws IOException {
-        String title = null;
-        String description = null;
-        String goal = null;
-        String stepType = "";
-        ArrayList<String> keywords = new ArrayList<>();
-        String location = null;
+    private static Object jsonStreamToObject(InputStream is,
+                                             Class<?> c,
+                                             JsonDeserializer<?> deserializer,
+                                             Type objectType) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(c, deserializer);
+        Gson gson = gsonBuilder.serializeNulls().create();
 
-        reader.beginObject();
-        while (reader.hasNext()) {
-            String argName = reader.nextName();
-            switch (argName) {
-                case "title":
-                    title = reader.nextString();
-                    break;
-                case "description":
-                    description = reader.nextString();
-                    break;
-                case "goal":
-                    goal = reader.nextString();
-                    break;
-                case "step_type":
-                    stepType = reader.nextString();
-                    break;
-                case "location":
-                    location = reader.nextString();
-                    break;
-                case "keywords":
-                    readStringArrayFromJson(reader, keywords);
-                    break;
-                default:
-                    reader.skipValue();
-                    break;
-            }
-        }
-        reader.endObject();
-
-        switch (stepType) {
-            case "final" :
-                return new FinalQuestStep(title, description);
-            case "geo" :
-                return new GeoQuestStep(title, description, goal, null);
-            case "key" :
-                return new KeywordQuestStep(title, description, goal, (String[]) keywords.toArray());
-
-            default: return null;
-        }
+        return gson.fromJson(new BufferedReader(new InputStreamReader(is)), objectType);
     }
 
-    private static void readStringArrayFromJson(JsonReader reader, ArrayList<String> array)
-            throws IOException{
-        reader.beginArray();
-        while (reader.hasNext()) {
-            array.add(reader.nextString());
-        }
-        reader.endArray();
-    }
 }
