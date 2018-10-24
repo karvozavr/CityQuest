@@ -1,2 +1,2 @@
 # CityQuest
-`Смотреть Wiki`
+#### Service for creating interactive city quests
